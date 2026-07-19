@@ -16,7 +16,7 @@
 * Waiter Break Mode
 * Waiter Shift Change
 * Waiter Performance Report
-
+* if waiter is not available when user calls him it should show him currently no waiters are  avilable
 ---
 
 ## Customer

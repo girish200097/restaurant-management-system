@@ -17,7 +17,12 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
+    enum: ["customer","waiter","admin"],
     default:"customer",
+  },
+  isAvailablle:{
+    type:Boolean,
+    default:false,
   },
   isVerified: {
     type: Boolean,
@@ -32,7 +37,10 @@ const userSchema = new mongoose.Schema({
   profileCompleted: {
     type: Boolean,
     default: false,
-  }
+  },
+  password:{
+    type: String,
+  },
 });
 
 const User =mongoose.model("User",userSchema);

@@ -1,17 +1,13 @@
 require("dotenv").config();
+
 const express = require("express");
 const menuRoutes = require("./routes/menuRoutes");
 const authRoutes = require("./routes/authRoutes");
 const dns=require("dns");
 const userRoutes = require("./routes/userRoutes");
+const adminRoutes= require("./routes/adminRoutes");
 
-dns.setServers([
-  '1.1.1.1',
-  '8.8.8.8'
-])
-
-
-console.log(process.env.MONGODB_URI);
+require("./config/dns")
 
 const connectDB = require("./config/db");
 const PORT = process.env.PORT || 3000;
@@ -28,7 +24,7 @@ app.get("/", (req, res) => {
 app.use("/menu", menuRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-
+app.use("/admin",adminRoutes)
 
 
 app.listen(PORT, () => {
