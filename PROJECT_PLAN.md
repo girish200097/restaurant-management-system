@@ -18,6 +18,30 @@ Build a complete Restaurant Management System using:
 ## Features
 Authentication
 
+## QR Code Table Access
+
+## Idea
+
+- Customer logs in using email.
+- The customer can stay logged in and doesn't need to log in every time.
+- Every table has its own QR code.
+- The customer sits at a table and scans the QR code.
+- The table sends a request to the assigned waiter.
+- The waiter receives the request in the waiter panel.
+- The waiter accepts the request.
+- After the waiter accepts, the table becomes active for that customer.
+- The customer can now view the menu and place orders.
+- When the customer leaves, the waiter closes the table.
+- The table becomes inactive and cannot be used until a waiter accepts a new customer.
+
+## Benefits
+
+- Customer logs in only once.
+- Only an accepted customer can order.
+- Prevents fake orders from outside the restaurant.
+- Waiter controls table access.
+- Easy and secure workflow.
+ 
 Features
 ---------
 [ ] QR Code Login

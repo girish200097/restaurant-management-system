@@ -1,11 +1,12 @@
 require("dotenv").config();
 
 const express = require("express");
-const menuRoutes = require("./routes/menuRoutes");
 const authRoutes = require("./routes/authRoutes");
 const dns=require("dns");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes= require("./routes/adminRoutes");
+
+const menuRoutes = require("./routes/menuRoutes");
 
 require("./config/dns")
 
@@ -24,7 +25,8 @@ app.get("/", (req, res) => {
 app.use("/menu", menuRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.use("/admin",adminRoutes)
+app.use("/admin",adminRoutes);
+app.use("/admin",menuRoutes)
 
 
 app.listen(PORT, () => {
