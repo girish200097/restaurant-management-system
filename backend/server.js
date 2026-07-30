@@ -5,8 +5,8 @@ const authRoutes = require("./routes/authRoutes");
 const dns=require("dns");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes= require("./routes/adminRoutes");
-
 const menuRoutes = require("./routes/menuRoutes");
+const tableRoutes= require("./routes/tableRoutes");
 
 require("./config/dns")
 
@@ -26,8 +26,8 @@ app.use("/menu", menuRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/admin",adminRoutes);
-app.use("/admin",menuRoutes)
-
+app.use("/admin",menuRoutes);
+app.use("/admin",tableRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
