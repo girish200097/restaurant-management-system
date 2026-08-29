@@ -59,7 +59,8 @@ const newUser = await User.create({
 await sendEmail(
     email,
     "Login to Restaurant App",
-    "Click the magic link..."
+    `Click the magic link...
+    ${magicLink}`
 );
 
 return res.status(201).json({
@@ -109,7 +110,7 @@ const jwtToken = jwt.sign(
     },
     process.env.JWT_SECRET,
     {
-        expiresIn: "7d",
+        expiresIn: "367d",
     }
 );
 

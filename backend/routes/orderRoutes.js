@@ -1,0 +1,65 @@
+const express = require("express");
+
+const {createOrder,
+    getAllOrders,
+    getOrderById,
+    updateOrderStatus,
+    assignOrderToWaiter,
+    getMyOrders,
+    getMyAssignedOrders,
+    cancelOrder,
+    removeOrderItem,
+} = require("../controllers/orderController");
+const adminMiddleware = require("../middleware/adminMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
+const waiterMiddleware = require("../middleware/waiterMiddleware");
+const router = express.Router();
+
+router.post(
+    "/:tableId",
+     authMiddleware,
+     createOrder
+);
+router.get(
+    "/",
+    adminMiddleware,
+    getAllOrders
+);
+router.get(
+    "/my-orders",
+    authMiddleware,
+    getMyOrders
+);
+router.get(
+    "/my-assigned-orders",
+    waiterMiddleware,
+    getMyAssignedOrders
+);
+router.patch(
+    "/:id/cancel",
+    authMiddleware,
+    cancelOrder
+);
+router.delete(
+    "/:orderId/item/:menuItemId",
+    authMiddleware,
+    removeOrderItem
+);
+router.get(
+    "/:id",
+    authMiddleware,
+    getOrderById
+);
+router.patch(
+    "/:id/status",
+    waiterMiddleware,
+    updateOrderStatus
+);
+router.patch(
+    "/:id/assign",
+    waiterMiddleware,
+    assignOrderToWaiter
+);
+
+
+module.exports = router;
