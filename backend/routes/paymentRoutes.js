@@ -3,6 +3,7 @@ const express = require("express");
 const {
     createPayment,
     verifyPayment,
+    paymentWebhook,
 } = require("../controllers/paymentController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -17,10 +18,18 @@ router.post(
 );
 
 router.post(
+    "/webhook",
+    express.raw({ type: "application/json" }),
+    paymentWebhook
+);
+
+router.post(
     "/:orderId",
     authMiddleware,
     createPayment
 );
+
+
 
 
 

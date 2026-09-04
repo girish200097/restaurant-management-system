@@ -12,9 +12,6 @@ const PaymentButton = ({ orderId }) => {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`,
                     },
-                    body: JSON.stringify({
-                        paymentMethod: "upi",
-                    }),
                 }
             );
 
@@ -69,11 +66,18 @@ const PaymentButton = ({ orderId }) => {
                         }
 
                         console.log(verifyData);
+                        alert(verifyData.message);
                     }
                     catch (error) {
                         console.log(error);
                     }
                 },
+                modal :{
+                    ondismiss: function() {
+                        console.log("Payment cancelled by user")
+                    }
+                }
+                
             };
 
             const razorpay = new window.Razorpay(options);
