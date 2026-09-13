@@ -22,6 +22,10 @@ const paymentSchema = new mongoose.Schema({
         enum: ['pending', 'paid', 'failed'],
         default: 'pending',
     },
+    receiptSent: {
+    type: Boolean,
+    default: false,
+    },
 
     paymentMethod: {
         type: String,
@@ -44,6 +48,11 @@ const paymentSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
+    
+    webhookEventIds: {
+    type: [String],
+    default: [],
+},
 },
  {
         timestamps: true

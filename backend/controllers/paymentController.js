@@ -4,6 +4,8 @@ const Order = require("../models/orderModel");
 const Table = require("../models/tableModel");
 const razorpay = require("../config/razorpay");
 const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
+const sendReceiptEmail = require("../utils/sendReceiptEmail");
 
 //createPayment
 const createPayment = async (req, res) => {
@@ -107,6 +109,7 @@ const createPayment = async (req, res) => {
 //verifyPayment
 const verifyPayment = async (req, res) => {
     try {
+        console.log("VERIFY PAYMENT CALLED");
         const {
             razorpay_order_id,
             razorpay_payment_id,
@@ -175,7 +178,10 @@ const verifyPayment = async (req, res) => {
 
         await payment.save();
 
-        const order = await Order.findById(payment.order);
+       const order = await Order.findById(payment.order)
+        .populate("customer")
+        .populate("table")
+        .populate("items.menuItem");
 
         if (!order) {
             return res.status(404).json({
@@ -194,6 +200,25 @@ const verifyPayment = async (req, res) => {
         if (table) {
             table.status = "available";
             await table.save();
+        }
+
+        if (!payment.receiptSent) {
+            try {
+                console.log("Receipt will be sent to:", order.customer.email);
+
+                await sendReceiptEmail(
+                    order.customer,
+                    order,
+                    payment
+                );
+
+                payment.receiptSent = true;
+                await payment.save();
+
+                console.log("Receipt email sent successfully");
+            } catch (emailError) {
+                console.log("Failed to send receipt email:", emailError);
+            }
         }
 
         return res.status(200).json({
@@ -215,10 +240,17 @@ const verifyPayment = async (req, res) => {
 const paymentWebhook = async (req, res) => {
     try {
         const webhookSignature = req.headers["x-razorpay-signature"];
+        const webhookEventId = req.headers["x-razorpay-event-id"];
 
         if (!webhookSignature) {
             return res.status(400).json({
                 message: "Webhook signature is missing",
+            });
+        }
+
+        if (!webhookEventId) {
+            return res.status(400).json({
+                message: "Webhook event ID is missing",
             });
         }
 
@@ -230,17 +262,33 @@ const paymentWebhook = async (req, res) => {
             .update(req.body)
             .digest("hex");
 
-        if (expectedSignature !== webhookSignature) {
+        const expectedBuffer = Buffer.from(expectedSignature, "utf8");
+        const receivedBuffer = Buffer.from(webhookSignature, "utf8");
+
+        if (
+            expectedBuffer.length !== receivedBuffer.length ||
+            !crypto.timingSafeEqual(expectedBuffer, receivedBuffer)
+        ) {
             return res.status(400).json({
                 message: "Invalid webhook signature",
             });
         }
-
         const event = JSON.parse(req.body.toString());
 
         console.log("Razorpay webhook event:", event.event);
 
+        const existingPayment = await Payment.findOne({
+            webhookEventIds: webhookEventId,
+        });
+
+        if (existingPayment) {
+            return res.status(200).json({
+                message: "Webhook event already processed",
+            });
+        }
+
         if (event.event === "payment.captured") {
+            console.log("PAYMENT CAPTURED WEBHOOK REACHED");
             const razorpayPayment = event.payload.payment.entity;
 
             const payment = await Payment.findOne({
@@ -253,7 +301,15 @@ const paymentWebhook = async (req, res) => {
                 });
             }
 
-            if (payment.paymentStatus === "paid") {
+            if (razorpayPayment.amount !== payment.amount * 100) {
+                return res.status(400).json({
+                    message: "Payment amount mismatch",
+                });
+            }
+           if (payment.paymentStatus === "paid") {
+                payment.webhookEventIds.push(webhookEventId);
+                await payment.save();
+
                 return res.status(200).json({
                     message: "Payment already processed",
                 });
@@ -261,10 +317,14 @@ const paymentWebhook = async (req, res) => {
 
             payment.razorpayPaymentId = razorpayPayment.id;
             payment.paymentStatus = "paid";
+            payment.webhookEventIds.push(webhookEventId);
 
             await payment.save();
 
-            const order = await Order.findById(payment.order);
+            const order = await Order.findById(payment.order)
+            .populate("customer")
+            .populate("table")
+            .populate("items.menuItem");
 
             if (order) {
                 order.paymentStatus = "paid";
@@ -278,6 +338,26 @@ const paymentWebhook = async (req, res) => {
                 if (table) {
                     table.status = "available";
                     await table.save();
+                }
+                console.log("RECEIPT SECTION REACHED");
+                console.log("Receipt sent status:", payment.receiptSent);
+                if (!payment.receiptSent) {
+                try {
+                    console.log("Receipt will be sent to:", order.customer.email);
+
+                    await sendReceiptEmail(
+                        order.customer,
+                        order,
+                        payment
+                    );
+
+                        payment.receiptSent = true;
+                        await payment.save();
+
+                        console.log("Receipt email sent successfully");
+                    } catch (emailError) {
+                        console.log("Failed to send receipt email:", emailError);
+                    }
                 }
             }
         }
@@ -295,6 +375,7 @@ const paymentWebhook = async (req, res) => {
             }
 
             payment.paymentStatus = "failed";
+            payment.webhookEventIds.push(webhookEventId);
 
             await payment.save();
         }        

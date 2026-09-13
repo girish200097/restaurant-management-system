@@ -10,7 +10,7 @@ const menuRoutes = require("./routes/menuRoutes");
 const tableRoutes= require("./routes/tableRoutes");
 const orderRoutes= require("./routes/orderRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
-
+const testEmailRoutes = require("./routes/testEmailRoutes");
 
 
 
@@ -41,6 +41,7 @@ app.get("/", (req, res) => {
   res.send("Restaurant Backend Running");
 });
 
+app.use("/test", testEmailRoutes);
 app.use("/menu", menuRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);

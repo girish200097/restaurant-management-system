@@ -1,11 +1,15 @@
-const PaymentButton = ({ orderId }) => {
-
+import { useState } from "react";
+const PaymentButton = ({ orderId, onPaymentSuccess  }) => {
+const [error, setError] = useState("");
+const [isLoading, setIsLoading] = useState(false);
     const handlePayment = async () => {
         try {
+            setError("");
+            setIsLoading(true);
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://localhost:3000/payment/${orderId}`,
+                `${import.meta.env.VITE_API_URL}/payment/${orderId}`,
                 {
                     method: "POST",
                     headers: {
@@ -18,11 +22,10 @@ const PaymentButton = ({ orderId }) => {
             const data = await response.json();
             console.log("PAYMENT RESPONSE:", data);
 
-            if (!response.ok) {
-                console.log(data);
+           if (!response.ok) {
+                setError(data.message || "Unable to start payment");
                 return;
             }
-
             const options = {
                 key: data.key_id,
                 amount: data.razorpayOrder.amount,
@@ -36,7 +39,7 @@ const PaymentButton = ({ orderId }) => {
                         const token = localStorage.getItem("token");
 
                         const verifyResponse = await fetch(
-                            "http://localhost:3000/payment/verify",
+                            `${import.meta.env.VITE_API_URL}/payment/verify`,
                             {
                                 method: "POST",
 
@@ -61,12 +64,12 @@ const PaymentButton = ({ orderId }) => {
                         const verifyData = await verifyResponse.json();
 
                         if (!verifyResponse.ok) {
-                            console.log(verifyData);
+                            setError(verifyData.message || "Payment verification failed");
                             return;
                         }
 
                         console.log(verifyData);
-                        alert(verifyData.message);
+                        onPaymentSuccess(verifyData);
                     }
                     catch (error) {
                         console.log(error);
@@ -84,15 +87,27 @@ const PaymentButton = ({ orderId }) => {
 
             razorpay.open();
         }
+
         catch (error) {
             console.log(error);
+            setError("Something went wrong. Please try again.");
         }
+        finally {
+        setIsLoading(false);
+    }
     };
 
     return (
-        <button onClick={handlePayment}>
-            Pay Now
-        </button>
+       <button
+    onClick={handlePayment}
+        disabled={isLoading}
+    >
+        {isLoading ? "Opening Payment..." : "Pay Now"}
+        {error && (
+            <p>{error}</p>
+        )}
+    </button>
+    
     );
 };
 
