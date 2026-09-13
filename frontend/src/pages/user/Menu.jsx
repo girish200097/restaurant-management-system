@@ -16,7 +16,7 @@ function Menu() {
     const fetchMenus = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/menu/menu`
+          `${import.meta.env.VITE_API_URL}/menu`
         );
 
         const data = await response.json();
