@@ -11,6 +11,8 @@ function Menu() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isGeneratingReceipt, setIsGeneratingReceipt] = useState(false);
+  const [receiptSent, setReceiptSent] = useState(false);
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -135,6 +137,8 @@ const updateQuantity = (menuId, change) => {
 
 const handleGenerateReceipt = async () => {
     try {
+        setIsGeneratingReceipt(true);
+
         const token = localStorage.getItem("token");
 
         const response = await fetch(
@@ -156,11 +160,15 @@ const handleGenerateReceipt = async () => {
             return;
         }
 
+        setReceiptSent(true);
+
         alert("Receipt sent to your email ✅");
 
     } catch (error) {
         console.log(error);
         alert("Something went wrong");
+    } finally {
+        setIsGeneratingReceipt(false);
     }
 };
 
@@ -264,12 +272,20 @@ const handleGenerateReceipt = async () => {
             }}
           />
         )}
+        
         {paymentSuccess && (
           <div>
             <h2>Payment Successful ✅</h2>
 
-            <button onClick={handleGenerateReceipt}>
-              Generate Receipt
+            <button
+                onClick={handleGenerateReceipt}
+                disabled={isGeneratingReceipt || receiptSent}
+            >
+                {receiptSent
+                    ? "Receipt Sent ✅"
+                    : isGeneratingReceipt
+                    ? "Sending Receipt..."
+                    : "Generate Receipt"}
             </button>
           </div>
         )}

@@ -386,6 +386,12 @@ const generateReceipt = async (req, res) => {
             });
         }
 
+        if (payment.receiptSent) {
+            return res.status(400).json({
+                message: "Receipt has already been sent",
+            });
+        }
+
         // Get order with required information
         const order = await Order.findById(orderId)
             .populate("customer")
