@@ -3,10 +3,30 @@ import { useState } from "react";
 function Login() {
     const [email, setEmail] = useState("");
 
-    const handleSubmit = (event) => {
+   const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log("EMAIL:", email);
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/auth/login`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            console.log("LOGIN RESPONSE:", data);
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
