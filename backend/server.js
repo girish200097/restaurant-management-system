@@ -45,10 +45,10 @@ app.use("/test", testEmailRoutes);
 app.use("/menu", menuRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
-app.use("/admin",adminRoutes);
-app.use("/admin",menuRoutes);
-app.use("/admin",tableRoutes);
-app.use("/order",orderRoutes);
+app.use("/admin", adminRoutes);
+app.use("/admin/menu", menuRoutes);
+app.use("/admin", tableRoutes);
+app.use("/order", orderRoutes);
 app.use("/payment", paymentRoutes);
 
 app.listen(PORT, "0.0.0.0", () => {
