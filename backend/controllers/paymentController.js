@@ -202,24 +202,6 @@ const verifyPayment = async (req, res) => {
             await table.save();
         }
 
-        if (!payment.receiptSent) {
-            try {
-                console.log("Receipt will be sent to:", order.customer.email);
-
-                await sendReceiptEmail(
-                    order.customer,
-                    order,
-                    payment
-                );
-
-                payment.receiptSent = true;
-                await payment.save();
-
-                console.log("Receipt email sent successfully");
-            } catch (emailError) {
-                console.log("Failed to send receipt email:", emailError);
-            }
-        }
 
         return res.status(200).json({
             message: "Payment completed successfully",
@@ -339,26 +321,6 @@ const paymentWebhook = async (req, res) => {
                     table.status = "available";
                     await table.save();
                 }
-                console.log("RECEIPT SECTION REACHED");
-                console.log("Receipt sent status:", payment.receiptSent);
-                if (!payment.receiptSent) {
-                try {
-                    console.log("Receipt will be sent to:", order.customer.email);
-
-                    await sendReceiptEmail(
-                        order.customer,
-                        order,
-                        payment
-                    );
-
-                        payment.receiptSent = true;
-                        await payment.save();
-
-                        console.log("Receipt email sent successfully");
-                    } catch (emailError) {
-                        console.log("Failed to send receipt email:", emailError);
-                    }
-                }
             }
         }
         if (event.event === "payment.failed") {
@@ -393,8 +355,83 @@ const paymentWebhook = async (req, res) => {
     }
 };
 
+//generateReceipt
+
+const generateReceipt = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        // Check whether order ID is valid
+        if (!mongoose.Types.ObjectId.isValid(orderId)) {
+            return res.status(400).json({
+                message: "Invalid Order ID",
+            });
+        }
+
+        // Find the payment for this order
+        const payment = await Payment.findOne({
+            order: orderId,
+        });
+
+        if (!payment) {
+            return res.status(404).json({
+                message: "Payment not found",
+            });
+        }
+
+        // Payment must be completed
+        if (payment.paymentStatus !== "paid") {
+            return res.status(400).json({
+                message: "Payment is not completed",
+            });
+        }
+
+        // Get order with required information
+        const order = await Order.findById(orderId)
+            .populate("customer")
+            .populate("table")
+            .populate("items.menuItem");
+
+        if (!order) {
+            return res.status(404).json({
+                message: "Order not found",
+            });
+        }
+
+        // Make sure the logged-in customer owns this order
+        if (order.customer._id.toString() !== req.user.userId.toString()) {
+            return res.status(403).json({
+                message: "You are not allowed to generate this receipt",
+            });
+        }
+
+        // Send PDF receipt
+        await sendReceiptEmail(
+            order.customer,
+            order,
+            payment
+        );
+
+        // Mark receipt as sent
+        payment.receiptSent = true;
+        await payment.save();
+
+        return res.status(200).json({
+            message: "Receipt generated and sent successfully",
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+};
+
 module.exports = {
     createPayment,
     verifyPayment,
     paymentWebhook,
+    generateReceipt,
 };

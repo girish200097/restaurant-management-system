@@ -4,6 +4,7 @@ const {
     createPayment,
     verifyPayment,
     paymentWebhook,
+    generateReceipt,
 } = require("../controllers/paymentController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -27,6 +28,12 @@ router.post(
     "/:orderId",
     authMiddleware,
     createPayment
+);
+
+router.post(
+    "/receipt/:orderId",
+    authMiddleware,
+    generateReceipt
 );
 
 

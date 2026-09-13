@@ -9,12 +9,13 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const sendEmail = async (email, subject, message) => {
+const sendEmail = async (email, subject, message, attachments = []) => {
    await transporter.sendMail({
     from: `"Personal Project" <${process.env.EMAIL_FROM}>`,
     to: email,
     subject: subject,
     text: message,
+    attachments,
 });
 };
 

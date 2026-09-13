@@ -133,6 +133,37 @@ const updateQuantity = (menuId, change) => {
   );
 };
 
+const handleGenerateReceipt = async () => {
+    try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/payment/receipt/${orderId}`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("RECEIPT RESPONSE:", data);
+
+        if (!response.ok) {
+            alert(data.message || "Failed to generate receipt");
+            return;
+        }
+
+        alert("Receipt sent to your email ✅");
+
+    } catch (error) {
+        console.log(error);
+        alert("Something went wrong");
+    }
+};
+
   return (
     <div>
       {/* menu */}
@@ -236,6 +267,10 @@ const updateQuantity = (menuId, change) => {
         {paymentSuccess && (
           <div>
             <h2>Payment Successful ✅</h2>
+
+            <button onClick={handleGenerateReceipt}>
+              Generate Receipt
+            </button>
           </div>
         )}
         <h3>Total: ₹{getCartTotal()}</h3>

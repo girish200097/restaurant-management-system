@@ -1,44 +1,24 @@
 const sendEmail = require("./sendEmail");
+const generateReceiptPDF = require("./generateReceiptPDF");
 
 const sendReceiptEmail = async (customer, order, payment) => {
-    const items = order.items
-        .map((item) => {
-            return `${item.menuItem.name} x ${item.quantity} = ₹${
-                item.price * item.quantity
-            }`;
-        })
-        .join("\n");
+    const pdfBuffer = await generateReceiptPDF(
+        customer,
+        order,
+        payment
+    );
 
-    const message = `
-Restaurant Receipt
-==============================
-
-Customer: ${customer.name || "Customer"}
-Email: ${customer.email}
-
-Order ID: ${order._id}
-Table: ${order.table.tableNumber}
-Date: ${order.createdAt}
-
-------------------------------
-Items
-------------------------------
-${items}
-
-------------------------------
-Total: ₹${order.totalAmount}
-Payment Status: ${payment.paymentStatus}
-Payment ID: ${payment.razorpayPaymentId}
-
-==============================
-Thank you for ordering!
-`;
-
-console.log("Receipt will be sent to:", customer.email);
     await sendEmail(
         customer.email,
         "Restaurant Order Receipt",
-        message
+        "Thank you for your order. Your receipt is attached as a PDF.",
+        [
+            {
+                filename: `receipt-${order._id}.pdf`,
+                content: pdfBuffer,
+                contentType: "application/pdf",
+            },
+        ]
     );
 };
 
