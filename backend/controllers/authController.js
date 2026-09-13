@@ -20,28 +20,28 @@ const login=async (req,res)=>{
     }
 
     const loginToken = crypto.randomBytes(32).toString("hex");
-console.log(loginToken)
-const loginTokenExpires = new Date(
-    Date.now() + 15 * 60 * 1000);   
+    console.log(loginToken)
+    const loginTokenExpires = new Date(
+        Date.now() + 15 * 60 * 1000);   
 
-   const magicLink = `${process.env.BASE_URL}/auth/verify?token=${loginToken}`;
-try {
-const existingUser =await User.findOne({
-    email,
-})
+   const magicLink = `${process.env.FRONTEND_URL}/auth/verify?token=${loginToken}`;
+    try {
+    const existingUser =await User.findOne({
+        email,
+    })
 
-if(existingUser){
-existingUser.loginToken = loginToken;
-existingUser.loginTokenExpires = loginTokenExpires;
+    if(existingUser){
+    existingUser.loginToken = loginToken;
+    existingUser.loginTokenExpires = loginTokenExpires;
 
-await existingUser.save();
+    await existingUser.save();
 
-await sendEmail(
-    email,
-    "Login to Restaurant App",
-    `Click the magic link...
-        ${magicLink}`
-);
+    await sendEmail(
+        email,
+        "Login to Restaurant App",
+        `Click the magic link...
+            ${magicLink}`
+    );
 
     return res.json({
     message: "Congratulations! Your backend can send emails successfully.",
