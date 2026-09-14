@@ -1,8 +1,9 @@
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 function Navbar() {
+  const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   return (
     <nav>
@@ -30,6 +31,7 @@ function Navbar() {
               onClick={() => {
                 localStorage.removeItem("token");
                 setIsLoggedIn(false);
+                navigate("/");
               }}
             >
               Logout
