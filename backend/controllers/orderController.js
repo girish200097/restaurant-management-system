@@ -345,7 +345,7 @@ const getMyAssignedOrders = async(req,res) => {
 
         if(orders.length ===0) {
             return res.status(200).json({
-                messge: "No assigned order found",
+                message: "No assigned order found",
                 orders: [],
             });
         }
@@ -357,7 +357,7 @@ const getMyAssignedOrders = async(req,res) => {
     catch(error) {
         console.log(error)
 
-        return res.status(500),json({
+        return res.status(500).json({
             message: "Internal Server Error",
         })
     }

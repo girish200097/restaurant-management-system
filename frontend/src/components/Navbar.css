@@ -1,15 +1,39 @@
 nav {
-  padding: 15px;
+  padding: 15px 30px;
   background-color: lightgray;
 }
 
-ul {
+nav h2 {
+  margin: 0 0 15px;
+}
+
+nav ul {
   display: flex;
+  align-items: center;
   gap: 20px;
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-h2 {
-  margin-bottom: 10px;
+nav a {
+  text-decoration: none;
+  color: black;
+}
+
+nav button {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 15px;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 }

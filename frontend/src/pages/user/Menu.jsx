@@ -229,7 +229,7 @@ const handleGenerateReceipt = async () => {
             .filter((table) => table.status === "available")
             .map((table) => (
               <option key={table._id} value={table._id}>
-                Table {table.tableNumber} - {table.location} - Capacity {table.capacity}
+                Table {table.tableNumber} - {table.location}
               </option>
             ))}
         </select>

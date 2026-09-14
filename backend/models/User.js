@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     enum: ["customer","waiter","admin"],
     default:"customer",
   },
-  isAvailablle:{
+  isAvailable:{
     type:Boolean,
     default:false,
   },
