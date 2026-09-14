@@ -6,7 +6,31 @@ function VerifyLogin() {
             const params = new URLSearchParams(window.location.search);
             const token = params.get("token");
 
-            console.log("LOGIN TOKEN:", token);
+            if (!token) {
+                console.log("No login token found");
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/auth/verify?token=${token}`
+                );
+
+                const data = await response.json();
+
+                console.log("VERIFY RESPONSE:", data);
+
+                if (!response.ok) {
+                    console.log(data.message);
+                    return;
+                }
+
+                localStorage.setItem("token", data.token);
+
+                console.log("Login successful");
+            } catch (error) {
+                console.log(error);
+            }
         };
 
         verifyUser();
