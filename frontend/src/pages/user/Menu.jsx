@@ -80,54 +80,57 @@ const updateQuantity = (menuId, change) => {
 };
 
     const createOrder = async () => {
-      try {
-        const token = localStorage.getItem("token");
+        try {
+          const token = localStorage.getItem("token");
 
-        if (!selectedTable) {
-          alert("Please select a table");
-          return;
-        }
-
-        if (cart.length === 0) {
-          alert("Cart is empty");
-          return;
-        }
-
-        setIsCreatingOrder(true);
-
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/order/${selectedTable}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              items: cart.map((item) => ({
-                menuItem: item._id,
-                quantity: item.quantity,
-              })),
-            }),
+          if (!selectedTable) {
+            alert("Please select a table");
+            return;
           }
-        );
 
-        const data = await response.json();
+          if (cart.length === 0) {
+            alert("Cart is empty");
+            return;
+          }
 
-        if (!response.ok) {
-          alert(data.message);
-          return;
+          setIsCreatingOrder(true);
+
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/order/${selectedTable}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                items: cart.map((item) => ({
+                  menuItem: item._id,
+                  quantity: item.quantity,
+                })),
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            alert(data.message);
+            return;
+          }
+
+          console.log("ORDER RESPONSE:", data);
+
+          setOrderId(data.order._id);
+
+          alert("Order created successfully");
+
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsCreatingOrder(false);
         }
-
-        console.log("ORDER RESPONSE:", data);
-
-        setOrderId(data.order._id);
-
-        alert("Order created successfully");
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      };
     const getCartTotal = () => {
   return cart.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -173,10 +176,10 @@ const handleGenerateReceipt = async () => {
 };
 
   return (
-    <div>
+    <div className="menu-page">
       {/* menu */}
       <h1>Menu Page</h1>
-    <div className="menu-page">
+     <div className="category-container">
       <button onClick={() => setSelectedCategory("All")}>
         All
       </button>
