@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function VerifyLogin() {
     const navigate = useNavigate();
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const verifyUser = async () => {
@@ -10,7 +12,7 @@ function VerifyLogin() {
             const token = params.get("token");
 
             if (!token) {
-                console.log("No login token found");
+                setError("No login token found");
                 return;
             }
 
@@ -24,9 +26,9 @@ function VerifyLogin() {
                 console.log("VERIFY RESPONSE:", data);
 
                 if (!response.ok) {
-                    console.log(data.message);
-                    return;
-                }
+                setError(data.message || "Login verification failed");
+                return;
+            }
 
                 localStorage.setItem("token", data.token);
 
