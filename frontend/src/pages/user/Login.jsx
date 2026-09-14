@@ -5,6 +5,7 @@ function Login() {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -15,9 +16,12 @@ function Login() {
     }, [navigate]);
 
    const handleSubmit = async (event) => {
+    event.preventDefault();    
+        
         setMessage("");
         setError("");
-        event.preventDefault();
+        setIsLoading(true);
+        
 
         try {
             const response = await fetch(
@@ -43,6 +47,10 @@ function Login() {
 
         } catch (error) {
             console.log(error);
+            setError("Something went wrong. Please try again.");
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 
@@ -58,8 +66,8 @@ function Login() {
                     onChange={(event) => setEmail(event.target.value)}
                 />
 
-                <button type="submit">
-                    Send Login Link
+                <button type="submit" disabled={isLoading}>
+                    {isLoading ? "Sending..." : "Send Login Link"}
                 </button>
                 {message && <p>{message}</p>}
                 {error && <p>{error}</p>}
