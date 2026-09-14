@@ -198,22 +198,24 @@ const handleGenerateReceipt = async () => {
       </button>
     </div>
 
-    <div className="menu-container">
-      {menus
-        .filter((menu) => menu.isAvailable)
-        .filter(
-          (menu) =>
-            selectedCategory === "All" ||
-            menu.category === selectedCategory
-        )
-        .map((menu) => (
-          <MenuCard
-            key={menu._id}
-            menu={menu}
-            onAddToCart={addToCart}
-          />
-        ))}
-    </div>
+    {!paymentSuccess && (
+      <div className="menu-container">
+        {menus
+          .filter((menu) => menu.isAvailable)
+          .filter(
+            (menu) =>
+              selectedCategory === "All" ||
+              menu.category === selectedCategory
+          )
+          .map((menu) => (
+            <MenuCard
+              key={menu._id}
+              menu={menu}
+              onAddToCart={addToCart}
+            />
+          ))}
+      </div>
+    )}
 {/* table */}
         <h2>Select Table</h2>
 
