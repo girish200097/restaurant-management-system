@@ -3,12 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function VerifyLogin() {
     const navigate = useNavigate();
-    localStorage.setItem("token", data.token);
 
-    console.log("Login successful");
-
-    navigate("/");
-    
     useEffect(() => {
         const verifyUser = async () => {
             const params = new URLSearchParams(window.location.search);
@@ -36,13 +31,15 @@ function VerifyLogin() {
                 localStorage.setItem("token", data.token);
 
                 console.log("Login successful");
+
+                navigate("/");
             } catch (error) {
                 console.log(error);
             }
         };
 
         verifyUser();
-    }, []);
+    }, [navigate]);
 
     return (
         <div>
