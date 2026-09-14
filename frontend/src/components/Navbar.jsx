@@ -1,6 +1,9 @@
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 function Navbar() {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   return (
     <nav>
       <h2>Restaurant Management System</h2>
@@ -21,9 +24,22 @@ function Navbar() {
         <li>
   <Link to="/call-waiter">Call Waiter</Link>
 </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
+        {isLoggedIn ? (
+          <li>
+            <button
+              onClick={() => {
+                localStorage.removeItem("token");
+                setIsLoggedIn(false);
+              }}
+            >
+              Logout
+            </button>
+          </li>
+        ) : (
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        )}
       </ul>
     </nav>
   );
