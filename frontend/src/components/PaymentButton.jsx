@@ -7,6 +7,12 @@ const [isLoading, setIsLoading] = useState(false);
             setError("");
             setIsLoading(true);
             const token = localStorage.getItem("token");
+ 
+            if (!token) {
+                setError("Please login first");
+                setIsLoading(false);
+                return;
+            }
 
             const response = await fetch(
                 `${import.meta.env.VITE_API_URL}/payment/${orderId}`,
