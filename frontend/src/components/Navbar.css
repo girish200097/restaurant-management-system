@@ -3,37 +3,62 @@ nav {
   background-color: lightgray;
 }
 
-nav h2 {
-  margin: 0 0 15px;
+.navbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-nav ul {
+.navbar-header h2 {
+  margin: 0;
+}
+
+.nav-links {
   display: flex;
   align-items: center;
   gap: 20px;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 15px 0 0;
 }
 
-nav a {
+.nav-links a {
   text-decoration: none;
   color: black;
 }
 
-nav button {
+.nav-links button {
+  cursor: pointer;
   padding: 6px 12px;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  border: none;
+  background: none;
   cursor: pointer;
 }
 
+/* Mobile */
 @media (max-width: 768px) {
   nav {
     padding: 15px;
   }
 
-  nav ul {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+    margin-top: 15px;
+  }
+
+  .nav-links.active {
+    display: flex;
   }
 }
