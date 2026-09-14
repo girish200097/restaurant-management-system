@@ -14,8 +14,8 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/auth/verify" element={<VerifyLogin />} />
       <Route path="/room-booking" element={<RoomBooking />} />
-<Route path="/table-reservation" element={<TableReservation />} />
-<Route path="/call-waiter" element={<CallWaiter />} />
+      <Route path="/table-reservation" element={<TableReservation />} />
+      <Route path="/call-waiter" element={<CallWaiter />} />
     </Routes>
   );
 }

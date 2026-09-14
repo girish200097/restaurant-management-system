@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -13,6 +15,8 @@ function Login() {
     }, [navigate]);
 
    const handleSubmit = async (event) => {
+        setMessage("");
+        setError("");
         event.preventDefault();
 
         try {
@@ -30,8 +34,12 @@ function Login() {
             );
 
             const data = await response.json();
-
             console.log("LOGIN RESPONSE:", data);
+            if (!response.ok) {
+                setError(data.message || "Unable to send login link");
+                return;
+            }
+            setMessage("Login link sent! Please check your email.");
 
         } catch (error) {
             console.log(error);
@@ -53,6 +61,8 @@ function Login() {
                 <button type="submit">
                     Send Login Link
                 </button>
+                {message && <p>{message}</p>}
+                {error && <p>{error}</p>}
             </form>
         </div>
     );
