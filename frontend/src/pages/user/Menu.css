@@ -93,7 +93,6 @@
 
 
 /* Mobile */
-
 @media (max-width: 768px) {
 
   .menu-page {
@@ -102,10 +101,11 @@
 
   .menu-container {
     grid-template-columns: 1fr;
+    justify-items: center;
   }
 
   .category-container {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .table-section select {
