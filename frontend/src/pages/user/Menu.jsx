@@ -176,7 +176,7 @@ const handleGenerateReceipt = async () => {
     <div>
       {/* menu */}
       <h1>Menu Page</h1>
-    <div className="category-container">
+    <div className="menu-page">
       <button onClick={() => setSelectedCategory("All")}>
         All
       </button>
