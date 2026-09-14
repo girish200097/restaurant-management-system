@@ -1,10 +1,12 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 function VerifyLogin() {
     const navigate = useNavigate();
     const [error, setError] = useState("");
+    const { setIsLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         const verifyUser = async () => {
@@ -26,17 +28,19 @@ function VerifyLogin() {
                 console.log("VERIFY RESPONSE:", data);
 
                 if (!response.ok) {
-                setError(data.message || "Login verification failed");
-                return;
-            }
+                    setError(data.message || "Login verification failed");
+                    return;
+                }
 
                 localStorage.setItem("token", data.token);
+                setIsLoggedIn(true);
 
                 console.log("Login successful");
 
                 navigate("/");
             } catch (error) {
                 console.log(error);
+                setError("Something went wrong. Please try again.");
             }
         };
 
@@ -45,7 +49,18 @@ function VerifyLogin() {
 
     return (
         <div>
-            <h1>Verifying Login...</h1>
+            {error ? (
+                <>
+                    <h1>Login Failed</h1>
+                    <p>{error}</p>
+
+                    <button onClick={() => navigate("/login")}>
+                        Back to Login
+                    </button>
+                </>
+            ) : (
+                <h1>Verifying Login...</h1>
+            )}
         </div>
     );
 }
