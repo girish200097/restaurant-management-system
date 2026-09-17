@@ -190,17 +190,8 @@ const verifyPayment = async (req, res) => {
         }
 
         order.paymentStatus = "paid";
-        order.orderStatus = "completed";
-        order.isActive = false;
 
         await order.save();
-
-        const table = await Table.findById(order.table);
-
-        if (table) {
-            table.status = "available";
-            await table.save();
-        }
 
 
         return res.status(200).json({
@@ -310,17 +301,8 @@ const paymentWebhook = async (req, res) => {
 
             if (order) {
                 order.paymentStatus = "paid";
-                order.orderStatus = "completed";
-                order.isActive = false;
 
                 await order.save();
-
-                const table = await Table.findById(order.table);
-
-                if (table) {
-                    table.status = "available";
-                    await table.save();
-                }
             }
         }
         if (event.event === "payment.failed") {
