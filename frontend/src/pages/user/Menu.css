@@ -268,21 +268,44 @@
 
 
   /* Menu */
+@media (max-width: 768px) {
+
+  .menu-page {
+    padding: 12px;
+  }
+
+  .menu-page h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  /* Categories */
+
+  .category-container {
+    gap: 6px;
+    margin-bottom: 15px;
+  }
+
+  .category-container button {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  /* Menu - 2 items per row */
 
   .menu-container {
-    display: flex;
+    display: grid;
 
-    flex-direction: column;
+    grid-template-columns: repeat(2, 1fr);
 
     gap: 10px;
+
+    width: 100%;
 
     padding: 0;
 
     margin: 0 auto 25px;
-
-    width: 100%;
   }
-
 
   /* Table */
 
@@ -292,44 +315,15 @@
 
   .table-section select {
     width: 100%;
-
     min-width: 0;
   }
 
-
-  /* Cart */
-
-  .cart-section {
-    margin-top: 20px;
-  }
-
-  .cart-item {
-    max-width: 100%;
-
-    padding: 10px 0;
-  }
-
-
-  /* Quantity */
-
-  .quantity-controls {
-    gap: 7px;
-  }
-
-  .quantity-controls button {
-    width: 27px;
-    height: 27px;
-  }
-
-
-  /* Create order */
+  /* Create Order */
 
   .create-order-button {
     width: 100%;
   }
-
 }
-
 
 /* Tablet */
 
