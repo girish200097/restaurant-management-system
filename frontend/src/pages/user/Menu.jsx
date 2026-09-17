@@ -294,7 +294,7 @@ function Menu() {
 
       {/* Cart */}
 
-      <div className="cart-section">
+      {/* <div className="cart-section">
 
         <h2>Cart</h2>
 
@@ -346,7 +346,7 @@ function Menu() {
 
         ))}
 
-      </div>
+      </div> */}
 
 
       {/* Create Order */}
