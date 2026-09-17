@@ -5,8 +5,11 @@ import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
+
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -19,64 +22,95 @@ function Navbar() {
     navigate("/");
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (!search.trim()) {
+      return;
+    }
+
+    navigate(`/menu?search=${encodeURIComponent(search)}`);
+    setSearch("");
+    closeMenu();
+  };
+
   return (
     <nav>
-      <div className="navbar-header">
-        <h2>Restaurant Management System</h2>
+      <div className="navbar-container">
+
+        <div className="navbar-left">
+          <h2 className="logo">
+            Restaurant
+          </h2>
+
+          <form className="search-box" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search food..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+
+            <button type="submit">
+              🔍
+            </button>
+          </form>
+        </div>
 
         <button
-          className="menu-toggle"
+          className="checkbtn"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           ☰
         </button>
-      </div>
 
-      <ul className={isMenuOpen ? "nav-links active" : "nav-links"}>
-        <li>
-          <Link to="/" onClick={closeMenu}>
-            Home
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/menu" onClick={closeMenu}>
-            Menu
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/room-booking" onClick={closeMenu}>
-            Book Room
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/table-reservation" onClick={closeMenu}>
-            Reserve Table
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/call-waiter" onClick={closeMenu}>
-            Call Waiter
-          </Link>
-        </li>
-
-        {isLoggedIn ? (
+        <ul className={isMenuOpen ? "nav-links active" : "nav-links"}>
           <li>
-            <button onClick={handleLogout}>
-              Logout
-            </button>
-          </li>
-        ) : (
-          <li>
-            <Link to="/login" onClick={closeMenu}>
-              Login
+            <Link to="/" onClick={closeMenu}>
+              Home
             </Link>
           </li>
-        )}
-      </ul>
+
+          <li>
+            <Link to="/menu" onClick={closeMenu}>
+              Menu
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/room-booking" onClick={closeMenu}>
+              Book Room
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/table-reservation" onClick={closeMenu}>
+              Reserve Table
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/call-waiter" onClick={closeMenu}>
+              Call Waiter
+            </Link>
+          </li>
+
+          {isLoggedIn ? (
+            <li>
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" onClick={closeMenu}>
+                Login
+              </Link>
+            </li>
+          )}
+        </ul>
+
+      </div>
     </nav>
   );
 }
