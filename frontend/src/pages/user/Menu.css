@@ -49,33 +49,38 @@
 }
 
 
-/* Table selection */
-
 /* Table Selection */
 
 .table-section {
   margin: 30px auto;
+
   text-align: center;
 }
 
 .table-section h2 {
   margin-bottom: 12px;
+
   font-size: 20px;
 }
+
 
 /* Table Dropdown */
 
 .table-section select {
   width: 280px;
+
   padding: 12px 16px;
 
   border: 2px solid #0082e6;
+
   border-radius: 10px;
 
   background-color: white;
+
   color: #333;
 
   font-size: 15px;
+
   font-weight: 500;
 
   cursor: pointer;
@@ -88,7 +93,8 @@
     transform 0.2s ease;
 }
 
-/* Hover */
+
+/* Dropdown Hover */
 
 .table-section select:hover {
   border-color: #1b9bff;
@@ -98,7 +104,8 @@
   transform: translateY(-2px);
 }
 
-/* Focus */
+
+/* Dropdown Focus */
 
 .table-section select:focus {
   border-color: #006bb6;
@@ -106,34 +113,15 @@
   box-shadow: 0 0 0 4px rgba(0, 130, 230, 0.15);
 }
 
-/* Dropdown options */
+
+/* Dropdown Options */
 
 .table-section select option {
   padding: 10px;
+
   background-color: white;
+
   color: #333;
-}
-
-/* Mobile */
-
-@media (max-width: 768px) {
-
-  .table-section {
-    margin: 25px auto;
-  }
-
-  .table-section h2 {
-    font-size: 18px;
-  }
-
-  .table-section select {
-    width: 100%;
-    max-width: 350px;
-
-    padding: 11px 14px;
-
-    font-size: 14px;
-  }
 }
 
 
@@ -141,72 +129,6 @@
 
 .cart-section {
   margin-top: 30px;
-}
-
-.cart-item {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-  max-width: 500px;
-
-  padding: 10px 0;
-
-  border-bottom: 1px solid #ddd;
-}
-
-.cart-item-info {
-  min-width: 0;
-}
-
-.cart-item-name {
-  margin: 0 0 4px;
-
-  font-weight: 600;
-}
-
-.cart-item-price {
-  margin: 0;
-
-  font-size: 14px;
-
-  color: #555;
-}
-
-
-/* Quantity */
-
-.quantity-controls {
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-}
-
-.quantity-controls button {
-  width: 28px;
-  height: 28px;
-
-  border: 1px solid #ddd;
-
-  border-radius: 5px;
-
-  background: white;
-
-  cursor: pointer;
-
-  font-size: 16px;
-}
-
-.quantity-controls span {
-  min-width: 20px;
-
-  text-align: center;
-
-  font-weight: 600;
 }
 
 
@@ -244,7 +166,6 @@
     padding: 12px;
   }
 
-
   .menu-page h1 {
     font-size: 24px;
 
@@ -266,30 +187,6 @@
     font-size: 12px;
   }
 
-
-  /* Menu */
-@media (max-width: 768px) {
-
-  .menu-page {
-    padding: 12px;
-  }
-
-  .menu-page h1 {
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
-
-  /* Categories */
-
-  .category-container {
-    gap: 6px;
-    margin-bottom: 15px;
-  }
-
-  .category-container button {
-    padding: 7px 12px;
-    font-size: 12px;
-  }
 
   /* Menu - 2 items per row */
 
@@ -307,16 +204,29 @@
     margin: 0 auto 25px;
   }
 
+
   /* Table */
 
   .table-section {
-    margin-bottom: 20px;
+    margin: 25px auto 20px;
+  }
+
+  .table-section h2 {
+    font-size: 18px;
   }
 
   .table-section select {
     width: 100%;
+
+    max-width: 350px;
+
     min-width: 0;
+
+    padding: 11px 14px;
+
+    font-size: 14px;
   }
+
 
   /* Create Order */
 
@@ -324,6 +234,7 @@
     width: 100%;
   }
 }
+
 
 /* Tablet */
 
