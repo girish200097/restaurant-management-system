@@ -17,6 +17,38 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.quantity-controls button {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #ddd;
+  border-radius: 5px;
+
+  background: white;
+  cursor: pointer;
+
+  font-size: 17px;
+  line-height: 1;
+}
+
+.quantity-controls span {
+  width: 25px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}
 .menu-card-content {
   flex: 1;
   min-width: 0;
