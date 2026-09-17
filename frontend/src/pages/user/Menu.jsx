@@ -237,7 +237,7 @@ function Menu() {
 
           {menus
             .filter((menu) => menu.isAvailable)
-            .filter(
+            .filter(  
               (menu) =>
                 selectedCategory === "All" ||
                 menu.category === selectedCategory
@@ -247,6 +247,10 @@ function Menu() {
                 key={menu._id}
                 menu={menu}
                 onAddToCart={addToCart}
+                quantity={
+                  cart.find((item) => item._id === menu._id)?.quantity || 0
+                }
+                onUpdateQuantity={updateQuantity}
               />
             ))}
 
