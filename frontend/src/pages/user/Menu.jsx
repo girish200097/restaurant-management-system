@@ -235,32 +235,32 @@ function Menu() {
 
       {/* Menu */}
 
-      {!paymentSuccess && (
-        <div className="menu-container">
+            {!paymentSuccess && (
+              <div className="menu-container">
 
-         {menus
-          .filter((menu) => menu.isAvailable)
-          .filter(
-            (menu) =>
-              selectedCategory === "All" ||
-              menu.category === selectedCategory
-          )
-          .filter((menu) =>
-            menu.name
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
-          )
-          .map((menu) => (
-            <MenuCard
-              key={menu._id}
-              menu={menu}
-              onAddToCart={addToCart}
-              quantity={
-                cart.find((item) => item._id === menu._id)?.quantity || 0
-              }
-              onUpdateQuantity={updateQuantity}
-            />
-          ))}
+              {menus
+        .filter((menu) => menu.isAvailable)
+        .filter(
+          (menu) =>
+            selectedCategory === "All" ||
+            menu.category === selectedCategory
+        )
+        .filter((menu) =>
+          menu.name
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
+        )
+        .map((menu) => (
+          <MenuCard
+            key={menu._id}
+            menu={menu}
+            onAddToCart={addToCart}
+            quantity={
+              cart.find((item) => item._id === menu._id)?.quantity || 0
+            }
+            onUpdateQuantity={updateQuantity}
+          />
+        ))}
 
         </div>
       )}

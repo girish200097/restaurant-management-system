@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-
+  const [search, setSearch] = useState("");
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,7 +48,10 @@ function Navbar() {
               type="text"
               placeholder="Search food..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                navigate(`/menu?search=${encodeURIComponent(e.target.value)}`);
+              }}
             />
 
             <button type="submit">
