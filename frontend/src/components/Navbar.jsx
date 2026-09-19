@@ -22,18 +22,6 @@ function Navbar() {
     navigate("/");
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-
-    if (!search.trim()) {
-      return;
-    }
-
-    navigate(`/menu?search=${encodeURIComponent(search)}`);
-    setSearch("");
-    closeMenu();
-  };
-
   return (
     <nav>
       <div className="navbar-container">
@@ -44,13 +32,14 @@ function Navbar() {
           </h2>
 
           
-            <input
+            <div className="search-box">
+              <input
                 type="text"
-                className="search-input"
                 placeholder="Search food..."
                 value={search}
                 onChange={(e) => {
                   const value = e.target.value;
+
                   setSearch(value);
 
                   navigate(
@@ -61,7 +50,8 @@ function Navbar() {
                 }}
               />
 
-            <span>🔍</span>
+              <span>🔍</span>
+            </div>
         </div>
 
         <button
