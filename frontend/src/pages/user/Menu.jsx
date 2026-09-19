@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import PaymentButton from "../../components/PaymentButton";
 import MenuCard from "../../components/MenuCard";
 import "./Menu.css";
+import { useSearchParams } from "react-router-dom";
 
 function Menu() {
+  const [searchParams] = useSearchParams();
+  const searchText = searchParams.get("search") || "";
   const [menus, setMenus] = useState([]);
   const [cart, setCart] = useState([]);
   const [tables, setTables] = useState([]);
@@ -235,24 +238,29 @@ function Menu() {
       {!paymentSuccess && (
         <div className="menu-container">
 
-          {menus
-            .filter((menu) => menu.isAvailable)
-            .filter(  
-              (menu) =>
-                selectedCategory === "All" ||
-                menu.category === selectedCategory
-            )
-            .map((menu) => (
-              <MenuCard
-                key={menu._id}
-                menu={menu}
-                onAddToCart={addToCart}
-                quantity={
-                  cart.find((item) => item._id === menu._id)?.quantity || 0
-                }
-                onUpdateQuantity={updateQuantity}
-              />
-            ))}
+         {menus
+          .filter((menu) => menu.isAvailable)
+          .filter(
+            (menu) =>
+              selectedCategory === "All" ||
+              menu.category === selectedCategory
+          )
+          .filter((menu) =>
+            menu.name
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+          )
+          .map((menu) => (
+            <MenuCard
+              key={menu._id}
+              menu={menu}
+              onAddToCart={addToCart}
+              quantity={
+                cart.find((item) => item._id === menu._id)?.quantity || 0
+              }
+              onUpdateQuantity={updateQuantity}
+            />
+          ))}
 
         </div>
       )}
@@ -290,64 +298,6 @@ function Menu() {
         </select>
 
       </div>
-
-
-      {/* Cart */}
-
-      {/* <div className="cart-section">
-
-        <h2>Cart</h2>
-
-        {cart.map((item) => (
-
-          <div
-            className="cart-item"
-            key={item._id}
-          >
-
-            <div className="cart-item-info">
-
-              <p className="cart-item-name">
-                {item.name}
-              </p>
-
-              <p className="cart-item-price">
-                ₹{item.price}
-              </p>
-
-            </div>
-
-
-            <div className="quantity-controls">
-
-              <button
-                onClick={() =>
-                  updateQuantity(item._id, -1)
-                }
-              >
-                -
-              </button>
-
-              <span>
-                {item.quantity}
-              </span>
-
-              <button
-                onClick={() =>
-                  updateQuantity(item._id, 1)
-                }
-              >
-                +
-              </button>
-
-            </div>
-
-          </div>
-
-        ))}
-
-      </div> */}
-
 
       {/* Create Order */}
 
