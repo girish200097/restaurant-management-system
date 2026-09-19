@@ -3,7 +3,7 @@ import PaymentButton from "../../components/PaymentButton";
 import MenuCard from "../../components/MenuCard";
 import "./Menu.css";
 import { useSearchParams } from "react-router-dom";
-
+  
 function Menu() {
   const [searchParams] = useSearchParams();
   const searchText = searchParams.get("search") || "";

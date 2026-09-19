@@ -43,21 +43,25 @@ function Navbar() {
             Restaurant
           </h2>
 
-          <form className="search-box" onSubmit={handleSearch}>
+          
             <input
-              type="text"
-              placeholder="Search food..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                navigate(`/menu?search=${encodeURIComponent(e.target.value)}`);
-              }}
-            />
+                type="text"
+                className="search-input"
+                placeholder="Search food..."
+                value={search}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSearch(value);
 
-            <button type="submit">
-              🔍
-            </button>
-          </form>
+                  navigate(
+                    value.trim()
+                      ? `/menu?search=${encodeURIComponent(value)}`
+                      : "/menu"
+                  );
+                }}
+              />
+
+            <span>🔍</span>
         </div>
 
         <button
