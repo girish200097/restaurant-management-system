@@ -24,6 +24,10 @@ const createPayment = async (req, res) => {
             });
         }
         const order = await Order.findById(orderId);
+        console.log("ORDER ID:", orderId);
+        console.log("ORDER CUSTOMER:", order?.customer?.toString());
+        console.log("LOGGED IN USER:", req.user?.userId);
+        console.log("ROLE:", req.user?.role);
 
         if (!order) {
             return res.status(404).json({
@@ -32,8 +36,9 @@ const createPayment = async (req, res) => {
         }
 
         if (order.customer.toString() !== req.user.userId) {
-
-            return res.status(403).json({
+            console.log("ORDER CUSTOMER:", order.customer.toString());
+            console.log("LOGGED IN USER:", req.user.userId);
+            return res.status(403).json({    
                 message: "You can only pay for your own order",
             });
         }
