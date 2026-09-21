@@ -335,7 +335,7 @@ function Menu() {
       {paymentSuccess && (
 
         <div className="payment-success">
-
+          console.log("CART:", cart);
           <h2>
             Payment Successful ✅
           </h2>
