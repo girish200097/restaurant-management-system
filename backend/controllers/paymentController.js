@@ -193,6 +193,10 @@ const verifyPayment = async (req, res) => {
 
         await order.save();
 
+        if (order.table) {
+            order.table.status = "available";
+            await order.table.save();
+        }
 
         return res.status(200).json({
             message: "Payment completed successfully",
