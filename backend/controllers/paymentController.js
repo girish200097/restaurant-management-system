@@ -32,6 +32,10 @@ const createPayment = async (req, res) => {
         }
 
         if (order.customer.toString() !== req.user.userId) {
+
+             console.log("ORDER CUSTOMER:", order.customer.toString());
+            console.log("LOGGED IN USER:", req.user.userId);
+
             return res.status(403).json({
                 message: "You can only pay for your own order",
             });
@@ -310,7 +314,7 @@ const paymentWebhook = async (req, res) => {
                 }
             }
         }
-        
+
         if (event.event === "payment.failed") {
             const razorpayPayment = event.payload.payment.entity;
 
