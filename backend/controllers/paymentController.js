@@ -33,9 +33,6 @@ const createPayment = async (req, res) => {
 
         if (order.customer.toString() !== req.user.userId) {
 
-             console.log("ORDER CUSTOMER:", order.customer.toString());
-            console.log("LOGGED IN USER:", req.user.userId);
-
             return res.status(403).json({
                 message: "You can only pay for your own order",
             });
@@ -182,11 +179,11 @@ const verifyPayment = async (req, res) => {
 
         await payment.save();
 
-       const order = await Order.findById(payment.order)
+       const order = await Order.findById(orderId)
         .populate("customer")
         .populate("table")
         .populate("items.menuItem");
-
+        
         if (!order) {
             return res.status(404).json({
                 message: "Order not found",
