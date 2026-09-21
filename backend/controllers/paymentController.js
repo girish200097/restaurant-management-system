@@ -23,8 +23,11 @@ const createPayment = async (req, res) => {
                 message: "Invalid order Id",
             });
         }
-
         const order = await Order.findById(orderId);
+        console.log("ORDER ID:", orderId);
+    console.log("ORDER CUSTOMER:", order?.customer?.toString());
+    console.log("LOGGED IN USER:", req.user?.userId);
+    console.log("ROLE:", req.user?.role);
 
         if (!order) {
             return res.status(404).json({
@@ -33,11 +36,12 @@ const createPayment = async (req, res) => {
         }
 
         if (order.customer.toString() !== req.user.userId) {
-            return res.status(403).json({
+            console.log("ORDER CUSTOMER:", order.customer.toString());
+            console.log("LOGGED IN USER:", req.user.userId);
+            return res.status(403).json({    
                 message: "You can only pay for your own order",
             });
         }
-
         if (order.paymentStatus === "paid") {
             return res.status(400).json({
                 message: "Order is already paid",
@@ -73,32 +77,31 @@ const createPayment = async (req, res) => {
                 },
                 key_id: process.env.RAZORPAY_KEY_ID,
             });
-        }
+        }        
 
-        const razorpayOrder = await razorpay.orders.create({
-            amount: Math.round(order.totalAmount * 100),
-            currency: "INR",
-            receipt: `order_${order._id}`,
-        });
-
-        const payment = await Payment.create({
-            order: orderId,
-            customer: order.customer,
-            amount: order.totalAmount,
-            razorpayOrderId: razorpayOrder.id,
-        });
+            const razorpayOrder = await razorpay.orders.create({
+                amount: Math.round(order.totalAmount * 100),
+                currency: "INR",
+                receipt: `order_${order._id}`,
+                });
+        
+            const payment = await Payment.create({
+                order: orderId,
+                customer: order.customer,
+                amount: order.totalAmount,
+                razorpayOrderId: razorpayOrder.id,
+    });
 
         return res.status(201).json({
             message: "Payment created successfully",
             payment,
-            razorpayOrder: {
+            razorpayOrder:{
                 id: razorpayOrder.id,
                 amount: razorpayOrder.amount,
                 currency: razorpayOrder.currency,
             },
             key_id: process.env.RAZORPAY_KEY_ID,
         });
-
     }
     catch (error) {
         console.log(error);
@@ -109,12 +112,10 @@ const createPayment = async (req, res) => {
     }
 };
 
-
 //verifyPayment
 const verifyPayment = async (req, res) => {
     try {
         console.log("VERIFY PAYMENT CALLED");
-
         const {
             razorpay_order_id,
             razorpay_payment_id,
@@ -159,16 +160,17 @@ const verifyPayment = async (req, res) => {
         }
 
         if (payment.paymentStatus === "paid") {
-            payment.razorpayPaymentId = razorpay_payment_id;
-            payment.razorpaySignature = razorpay_signature;
+        payment.razorpayPaymentId = razorpay_payment_id;
+        payment.razorpaySignature = razorpay_signature;
 
-            await payment.save();
+        await payment.save();
 
-            return res.status(200).json({
-                message: "Payment completed successfully",
-                payment,
-            });
-        }
+        return res.status(200).json({
+            message: "Payment completed successfully",
+            payment,
+        });
+    }
+
 
         if (payment.customer.toString() !== req.user.userId) {
             return res.status(403).json({
@@ -182,27 +184,31 @@ const verifyPayment = async (req, res) => {
 
         await payment.save();
 
-        const order = await Order.findById(orderId)
-            .populate("customer")
-            .populate("table")
-            .populate("items.menuItem");
+       const order = await Order.findById(payment.order)
+                .populate("customer")
+                .populate("table")
+                .populate("items.menuItem");
 
-        if (!order) {
-            return res.status(404).json({
-                message: "Order not found",
+            if (!order) {
+                return res.status(404).json({
+                    message: "Order not found",
+                });
+            }
+
+            order.paymentStatus = "paid";
+
+            await order.save();
+
+            if (order.table) {
+                order.table.status = "available";
+                await order.table.save();
+            }
+
+            return res.status(200).json({
+                message: "Payment completed successfully",
+                payment,
+                order,
             });
-        }
-
-        order.paymentStatus = "paid";
-
-        await order.save();
-
-        return res.status(200).json({
-            message: "Payment completed successfully",
-            payment,
-            order,
-        });
-
     }
     catch (error) {
         console.log(error);
@@ -212,7 +218,6 @@ const verifyPayment = async (req, res) => {
         });
     }
 };
-
 
 // paymentWebhook
 const paymentWebhook = async (req, res) => {
@@ -251,7 +256,6 @@ const paymentWebhook = async (req, res) => {
                 message: "Invalid webhook signature",
             });
         }
-
         const event = JSON.parse(req.body.toString());
 
         console.log("Razorpay webhook event:", event.event);
@@ -268,7 +272,6 @@ const paymentWebhook = async (req, res) => {
 
         if (event.event === "payment.captured") {
             console.log("PAYMENT CAPTURED WEBHOOK REACHED");
-
             const razorpayPayment = event.payload.payment.entity;
 
             const payment = await Payment.findOne({
@@ -286,8 +289,7 @@ const paymentWebhook = async (req, res) => {
                     message: "Payment amount mismatch",
                 });
             }
-
-            if (payment.paymentStatus === "paid") {
+           if (payment.paymentStatus === "paid") {
                 payment.webhookEventIds.push(webhookEventId);
                 await payment.save();
 
@@ -303,9 +305,9 @@ const paymentWebhook = async (req, res) => {
             await payment.save();
 
             const order = await Order.findById(payment.order)
-                .populate("customer")
-                .populate("table")
-                .populate("items.menuItem");
+            .populate("customer")
+            .populate("table")
+            .populate("items.menuItem");
 
             if (order) {
                 order.paymentStatus = "paid";
@@ -336,12 +338,11 @@ const paymentWebhook = async (req, res) => {
             payment.webhookEventIds.push(webhookEventId);
 
             await payment.save();
-        }
+        }        
 
         return res.status(200).json({
             message: "Webhook processed successfully",
         });
-
     }
     catch (error) {
         console.log(error);
@@ -352,19 +353,20 @@ const paymentWebhook = async (req, res) => {
     }
 };
 
-
 //generateReceipt
 
 const generateReceipt = async (req, res) => {
     try {
         const { orderId } = req.params;
 
+        // Check whether order ID is valid
         if (!mongoose.Types.ObjectId.isValid(orderId)) {
             return res.status(400).json({
                 message: "Invalid Order ID",
             });
         }
 
+        // Find the payment for this order
         const payment = await Payment.findOne({
             order: orderId,
         });
@@ -375,6 +377,7 @@ const generateReceipt = async (req, res) => {
             });
         }
 
+        // Payment must be completed
         if (payment.paymentStatus !== "paid") {
             return res.status(400).json({
                 message: "Payment is not completed",
@@ -387,6 +390,7 @@ const generateReceipt = async (req, res) => {
             });
         }
 
+        // Get order with required information
         const order = await Order.findById(orderId)
             .populate("customer")
             .populate("table")
@@ -398,18 +402,21 @@ const generateReceipt = async (req, res) => {
             });
         }
 
+        // Make sure the logged-in customer owns this order
         if (order.customer._id.toString() !== req.user.userId.toString()) {
             return res.status(403).json({
                 message: "You are not allowed to generate this receipt",
             });
         }
 
+        // Send PDF receipt
         await sendReceiptEmail(
             order.customer,
             order,
             payment
         );
 
+        // Mark receipt as sent
         payment.receiptSent = true;
         await payment.save();
 
@@ -425,7 +432,6 @@ const generateReceipt = async (req, res) => {
         });
     }
 };
-
 
 module.exports = {
     createPayment,
