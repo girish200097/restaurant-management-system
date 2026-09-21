@@ -34,6 +34,8 @@ const createOrder = async(req,res) => {
 
         const activeOrder = await Order.findOne({
             table: tableId,
+            customer: req.user.userId,
+            paymentStatus: { $ne: "paid" },
             orderStatus: {
                 $in: ["pending", "preparing", "served"],
             },
