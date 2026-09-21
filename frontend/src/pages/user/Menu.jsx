@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
   
 function Menu() {
   const [searchParams] = useSearchParams();
+  const [paidAmount, setPaidAmount] = useState(0);
   const searchText = searchParams.get("search") || "";
   const [menus, setMenus] = useState([]);
   const [cart, setCart] = useState([]);
@@ -322,9 +323,10 @@ function Menu() {
         <PaymentButton
           orderId={orderId}
           onPaymentSuccess={() => {
-            setPaymentSuccess(true);
-            setCart([]);
-            setSelectedTable("");
+              setPaidAmount(getCartTotal());
+              setPaymentSuccess(true);
+              setCart([]);
+              setSelectedTable("");
           }}
         />
       )}
@@ -335,7 +337,6 @@ function Menu() {
       {paymentSuccess && (
 
         <div className="payment-success">
-          console.log("CART:", cart);
           <h2>
             Payment Successful ✅
           </h2>
@@ -360,7 +361,7 @@ function Menu() {
 
 
       <h3>
-        Total: ₹{getCartTotal()}
+          Total: ₹{paymentSuccess ? paidAmount : getCartTotal()}
       </h3>
 
     </div>
