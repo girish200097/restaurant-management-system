@@ -37,20 +37,22 @@ function Navbar() {
                 type="text"
                 placeholder="Search food..."
                 value={search}
-                onChange={(e) => {
-                  const value = e.target.value;
+                onChange={(e) => setSearch(e.target.value)}
+              />
 
-                  setSearch(value);
+              <button
+                onClick={() => {
+                  const value = search.trim();
 
                   navigate(
-                    value.trim()
+                    value
                       ? `/menu?search=${encodeURIComponent(value)}`
                       : "/menu"
                   );
                 }}
-              />
-
-              <span>🔍</span>
+              >
+                🔍
+              </button>
             </div>
         </div>
 
