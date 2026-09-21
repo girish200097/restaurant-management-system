@@ -1,19 +1,40 @@
 import "./Navbar.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
+const [searchParams] = useSearchParams();
+
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Keep input synchronized with URL
+  useEffect(() => {
+    const searchFromUrl = searchParams.get("search") || "";
+    setSearch(searchFromUrl);
+  }, [searchParams]);
 
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  const handleSearch = (e) => {
+  const value = e.target.value;
+
+  setSearch(value);
+
+  if (value.trim()) {
+    navigate(
+      `/menu?search=${encodeURIComponent(value)}`
+    );
+  } else {
+    navigate("/menu");
+  }
+};
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -27,33 +48,22 @@ function Navbar() {
       <div className="navbar-container">
 
         <div className="navbar-left">
+
           <h2 className="logo">
             Restaurant
           </h2>
 
-          
-            <div className="search-box">
-              <input
-                type="text"
-                placeholder="Search food..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search food..."
+              value={search}
+              onChange={handleSearch}
+            />
 
-              <button
-                onClick={() => {
-                  const value = search.trim();
+            <span>🔍</span>
+          </div>
 
-                  navigate(
-                    value
-                      ? `/menu?search=${encodeURIComponent(value)}`
-                      : "/menu"
-                  );
-                }}
-              >
-                🔍
-              </button>
-            </div>
         </div>
 
         <button
@@ -63,7 +73,14 @@ function Navbar() {
           ☰
         </button>
 
-        <ul className={isMenuOpen ? "nav-links active" : "nav-links"}>
+        <ul
+          className={
+            isMenuOpen
+              ? "nav-links active"
+              : "nav-links"
+          }
+        >
+
           <li>
             <Link to="/" onClick={closeMenu}>
               Home
@@ -83,7 +100,10 @@ function Navbar() {
           </li>
 
           <li>
-            <Link to="/table-reservation" onClick={closeMenu}>
+            <Link
+              to="/table-reservation"
+              onClick={closeMenu}
+            >
               Reserve Table
             </Link>
           </li>
@@ -96,7 +116,10 @@ function Navbar() {
 
           {isLoggedIn ? (
             <li>
-              <button className="logout-button" onClick={handleLogout}>
+              <button
+                className="logout-button"
+                onClick={handleLogout}
+              >
                 Logout
               </button>
             </li>
@@ -107,6 +130,7 @@ function Navbar() {
               </Link>
             </li>
           )}
+
         </ul>
 
       </div>
@@ -114,4 +138,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Navbar;  
