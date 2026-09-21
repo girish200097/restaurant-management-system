@@ -179,27 +179,31 @@ const verifyPayment = async (req, res) => {
 
         await payment.save();
 
-       const order = await Order.findById(orderId)
-        .populate("customer")
-        .populate("table")
-        .populate("items.menuItem");
-        
-        if (!order) {
-            return res.status(404).json({
-                message: "Order not found",
+       const order = await Order.findById(payment.order)
+                .populate("customer")
+                .populate("table")
+                .populate("items.menuItem");
+
+            if (!order) {
+                return res.status(404).json({
+                    message: "Order not found",
+                });
+            }
+
+            order.paymentStatus = "paid";
+
+            await order.save();
+
+            if (order.table) {
+                order.table.status = "available";
+                await order.table.save();
+            }
+
+            return res.status(200).json({
+                message: "Payment completed successfully",
+                payment,
+                order,
             });
-        }
-
-        order.paymentStatus = "paid";
-
-        await order.save();
-
-
-        return res.status(200).json({
-            message: "Payment completed successfully",
-            payment,
-            order,
-        });
     }
     catch (error) {
         console.log(error);
