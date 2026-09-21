@@ -37,7 +37,11 @@ function VerifyLogin() {
 
                 console.log("Login successful");
 
-                navigate("/");
+                if (data.profileCompleted) {
+                    navigate("/menu");
+                } else {
+                    navigate("/home");
+                }
             } catch (error) {
                 console.log(error);
                 setError("Something went wrong. Please try again.");
