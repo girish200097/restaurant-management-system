@@ -103,8 +103,8 @@ function Home() {
                             required
                         />
                     </div>
-
-                    <div className="form-group">
+{/* 
+                    <div className="form-group"> */}
                         <label>Phone Number</label>
 
                         <div className="phone-input">
@@ -119,7 +119,7 @@ function Home() {
                                 required
                             />
                         </div>
-                    </div>
+                    {/* </div> */}
 
                     <button type="submit" disabled={loading}>
                         {loading ? "Saving..." : "Continue to Restaurant"}
