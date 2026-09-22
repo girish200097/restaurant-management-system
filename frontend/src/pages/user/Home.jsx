@@ -103,8 +103,7 @@ function Home() {
                             required
                         />
                     </div>
-{/* 
-                    <div className="form-group"> */}
+
                         <label>Phone Number</label>
 
                         <div className="phone-input">
@@ -113,13 +112,16 @@ function Home() {
                             <input
                                 type="tel"
                                 value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/\D/g, "");
+                                    setPhone(value);
+                                }}
                                 placeholder="Enter phone number"
                                 maxLength="10"
                                 required
                             />
                         </div>
-                    {/* </div> */}
+        
 
                     <button type="submit" disabled={loading}>
                         {loading ? "Saving..." : "Continue to Restaurant"}
