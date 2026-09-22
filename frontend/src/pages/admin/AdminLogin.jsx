@@ -50,39 +50,52 @@ function AdminLogin() {
     };
 
     return (
-        <div>
-            <h1>Admin Login</h1>
+            <div className="admin-login-page">
 
-            <form onSubmit={handleLogin}>
+                <div className="admin-login-card">
 
-                <input
-                    type="email"
-                    placeholder="Admin Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+                    <h1>Admin Login</h1>
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                    <form
+                        className="admin-login-form"
+                        onSubmit={handleLogin}
+                    >
 
-                <button
-                    type="submit"
-                    disabled={loading}
-                >
-                    {loading ? "Logging in..." : "Login"}
-                </button>
+                        <input
+                            type="email"
+                            placeholder="Admin Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-            </form>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
 
-            {message && <p>{message}</p>}
-        </div>
-    );
+                        <button
+                            type="submit"
+                            disabled={loading}
+                        >
+                            {loading ? "Logging in..." : "Login"}
+                        </button>
+
+                    </form>
+
+                    {message && (
+                        <p className="admin-login-message">
+                            {message}
+                        </p>
+                    )}
+
+                </div>
+
+            </div>
+        );
 }
 
 export default AdminLogin;
