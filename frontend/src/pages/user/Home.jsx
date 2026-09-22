@@ -123,6 +123,7 @@ function Home() {
                                 }}
                                 placeholder="Enter phone number"
                                 maxLength="10"
+                                minLength="10"
                                 required
                             />
                         </div>
