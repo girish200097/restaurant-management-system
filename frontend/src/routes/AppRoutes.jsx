@@ -7,6 +7,7 @@ import TableReservation from "../pages/user/TableReservation";
 import CallWaiter from "../pages/user/CallWaiter";
 import VerifyLogin from "../pages/user/VerifyLogin";
 import ProtectedRoute from "../components/ProtectedRoute";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 function AppRoutes() {
   return (
     <Routes>
@@ -24,6 +25,10 @@ function AppRoutes() {
       <Route path="/room-booking" element={<RoomBooking />} />
       <Route path="/table-reservation" element={<TableReservation />} />
       <Route path="/call-waiter" element={<CallWaiter />} />
+      <Route
+          path="/admin/dashboard"
+          element={<AdminDashboard />}
+      />
     </Routes>
   );
 }
