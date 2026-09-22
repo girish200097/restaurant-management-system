@@ -9,7 +9,9 @@ function Home() {
     const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const [profileCompleted, setProfileCompleted] = useState(false);
+    const [profileCompleted, setProfileCompleted] = useState(
+                localStorage.getItem("profileCompleted") === "true"
+            );
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,7 +42,10 @@ function Home() {
                 return;
             }
 
+           localStorage.setItem("profileCompleted", "true");
             setProfileCompleted(true);
+
+            
 
         } catch (error) {
             console.log(error);
