@@ -16,7 +16,7 @@ const createAdmin = async ()=> {
             console.log("admin already exists");
             process.exit();
         }
-        const hashedPassword =await bcrypt.hash("admin123",10);
+        const hashedPassword =await bcrypt.hash("Girish@20",10);
         password: hashedPassword;
 
         const admin = new User({
