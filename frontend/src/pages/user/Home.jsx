@@ -9,6 +9,7 @@ function Home() {
     const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [profileCompleted, setProfileCompleted] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,7 +40,7 @@ function Home() {
                 return;
             }
 
-            navigate("/menu");
+            setProfileCompleted(true);
 
         } catch (error) {
             console.log(error);
@@ -48,6 +49,35 @@ function Home() {
             setLoading(false);
         }
     };
+
+    if (profileCompleted) {
+            return (
+                <div className="home-page">
+                    <div className="profile-card welcome-card">
+
+                        <div className="welcome-icon">
+                            🍽️
+                        </div>
+
+                        <h1>Welcome to Our Restaurant! 🎉</h1>
+
+                        <p>
+                            Your profile has been completed successfully.
+                        </p>
+
+                        <p>
+                            We're happy to have you here. Explore our menu
+                            and discover something delicious!
+                        </p>
+
+                        <button onClick={() => navigate("/menu")}>
+                            Explore Menu
+                        </button>
+
+                    </div>
+                </div>
+            );
+        }
 
     return (
         <div className="home-page">
@@ -77,13 +107,18 @@ function Home() {
                     <div className="form-group">
                         <label>Phone Number</label>
 
-                        <input
-                            type="tel"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            placeholder="Enter your phone number"
-                            required
-                        />
+                        <div className="phone-input">
+                            <span className="country-code">+91</span>
+
+                            <input
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder="Enter phone number"
+                                maxLength="10"
+                                required
+                            />
+                        </div>
                     </div>
 
                     <button type="submit" disabled={loading}>
