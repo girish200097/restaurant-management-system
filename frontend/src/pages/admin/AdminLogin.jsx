@@ -31,6 +31,7 @@ function AdminLogin() {
             );
 
             const data = await response.json();
+            console.log("ADMIN LOGIN RESPONSE:", data);
 
             if (!response.ok) {
                 setMessage(data.message || "Login failed");
