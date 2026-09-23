@@ -1,6 +1,53 @@
+import { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
+
+    const [users, setUsers] = useState(0);
+    const [menus, setMenus] = useState(0);
+    const [tables, setTables] = useState(0);
+
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const token = localStorage.getItem("adminToken");
+
+                const [usersResponse, menuResponse, tableResponse] =
+                    await Promise.all([
+                        fetch(
+                            `${import.meta.env.VITE_API_URL}/user/users`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                },
+                            }
+                        ),
+
+                        fetch(
+                            `${import.meta.env.VITE_API_URL}/menu`
+                        ),
+
+                        fetch(
+                            `${import.meta.env.VITE_API_URL}/admin/table`
+                        ),
+                    ]);
+
+                const usersData = await usersResponse.json();
+                const menuData = await menuResponse.json();
+                const tableData = await tableResponse.json();
+
+                setUsers(usersData.users?.length || 0);
+                setMenus(menuData.menus?.length || 0);
+                setTables(tableData.tables?.length || 0);
+
+            } catch (error) {
+                console.log("Dashboard error:", error);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
     return (
         <div className="admin-dashboard">
 
@@ -10,12 +57,12 @@ function AdminDashboard() {
 
                 <div className="dashboard-card">
                     <h3>Menu</h3>
-                    <p>Manage menu items</p>
+                    <p>{menus} Menu Items</p>
                 </div>
 
                 <div className="dashboard-card">
                     <h3>Tables</h3>
-                    <p>Manage restaurant tables</p>
+                    <p>{tables} Tables</p>
                 </div>
 
                 <div className="dashboard-card">
@@ -25,7 +72,7 @@ function AdminDashboard() {
 
                 <div className="dashboard-card">
                     <h3>Users</h3>
-                    <p>View customers</p>
+                    <p>{users} Customers</p>
                 </div>
 
                 <div className="dashboard-card">
