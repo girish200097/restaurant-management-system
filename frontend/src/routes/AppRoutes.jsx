@@ -10,6 +10,8 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import AdminLogin from "../pages/admin/AdminLogin";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminLayout from "../pages/admin/AdminLayout";
+import AdminProtectedRoute from "../components/AdminProtectedRoute";
+
 
 function AppRoutes() {
   return (
@@ -36,7 +38,11 @@ function AppRoutes() {
 
             <Route
                 path="dashboard"
-                element={<AdminDashboard />}
+                element={
+                    <AdminProtectedRoute>
+                        <AdminDashboard />
+                    </AdminProtectedRoute>
+                }
             />
         </Route>
     </Routes>
