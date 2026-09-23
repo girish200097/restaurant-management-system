@@ -118,6 +118,7 @@ return res.json({
     message: "Login Successful",
     token: jwtToken,
     profileCompleted: user.profileCompleted,
+    role: user.role,
 });
 }
 

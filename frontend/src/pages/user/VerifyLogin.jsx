@@ -37,7 +37,9 @@ function VerifyLogin() {
 
                 console.log("Login successful");
 
-                if (data.profileCompleted) {
+                if (data.role === "admin") {
+                    navigate("/admin/dashboard");
+                } else if (data.profileCompleted) {
                     navigate("/menu");
                 } else {
                     navigate("/home");
