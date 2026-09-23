@@ -1,4 +1,4 @@
-// import "./AdminMenu.css";
+import "./AdminMenu.css";
 
 function AdminMenu() {
     return (
