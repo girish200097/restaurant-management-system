@@ -139,3 +139,58 @@
         font-size: 16px;
     }
 }
+
+.add-menu-form {
+    margin-top: 25px;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid #f0ded2;
+    box-shadow: 0 10px 30px rgba(80, 45, 25, 0.08);
+}
+
+.add-menu-form h2 {
+    margin-top: 0;
+    color: #2b211c;
+}
+
+.add-menu-form input,
+.add-menu-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 1px solid #e3d4cc;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.add-menu-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.add-menu-form-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.save-menu-btn,
+.cancel-menu-btn {
+    border: none;
+    padding: 11px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.save-menu-btn {
+    background: #e85d24;
+    color: white;
+}
+
+.cancel-menu-btn {
+    background: #eee5df;
+    color: #2b211c;
+}
