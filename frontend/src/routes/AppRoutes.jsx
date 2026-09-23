@@ -11,7 +11,7 @@ import AdminLogin from "../pages/admin/AdminLogin";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminLayout from "../pages/admin/AdminLayout";
 import AdminProtectedRoute from "../components/AdminProtectedRoute";
-
+import AdminMenu from "../pages/admin/AdminMenu";
 
 function AppRoutes() {
   return (
@@ -41,6 +41,14 @@ function AppRoutes() {
                 element={
                     <AdminProtectedRoute>
                         <AdminDashboard />
+                    </AdminProtectedRoute>
+                }
+            />
+            <Route
+                path="menu"
+                element={
+                    <AdminProtectedRoute>
+                        <AdminMenu />
                     </AdminProtectedRoute>
                 }
             />

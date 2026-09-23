@@ -1,0 +1,54 @@
+.admin-menu {
+    min-height: calc(100vh - 70px);
+    padding: 40px 6%;
+    background: linear-gradient(
+        135deg,
+        #fffaf5,
+        #fff4eb
+    );
+    box-sizing: border-box;
+}
+
+.admin-menu h1 {
+    margin: 0 0 25px;
+    color: #2b211c;
+    font-size: 34px;
+}
+
+.add-menu-btn {
+    border: none;
+    background: #e85d24;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.add-menu-btn:hover {
+    background: #d94f18;
+}
+
+.admin-menu-list {
+    margin-top: 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid #f0ded2;
+    box-shadow: 0 10px 30px rgba(80, 45, 25, 0.08);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .admin-menu {
+        padding: 30px 15px;
+    }
+
+    .admin-menu h1 {
+        font-size: 28px;
+    }
+
+    .add-menu-btn {
+        width: 100%;
+    }
+}
