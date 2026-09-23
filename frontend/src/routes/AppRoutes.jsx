@@ -9,6 +9,7 @@ import VerifyLogin from "../pages/user/VerifyLogin";
 import ProtectedRoute from "../components/ProtectedRoute";
 import AdminLogin from "../pages/admin/AdminLogin";
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminLayout from "../pages/admin/AdminLayout";
 
 function AppRoutes() {
   return (
@@ -27,14 +28,17 @@ function AppRoutes() {
       <Route path="/room-booking" element={<RoomBooking />} />
       <Route path="/table-reservation" element={<TableReservation />} />
       <Route path="/call-waiter" element={<CallWaiter />} />
-      <Route
-          path="/admin/login"
-          element={<AdminLogin />}
-      />
-      <Route
-          path="/admin/dashboard"
-          element={<AdminDashboard />}
-      />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route
+                path="login"
+                element={<AdminLogin />}
+            />
+
+            <Route
+                path="dashboard"
+                element={<AdminDashboard />}
+            />
+        </Route>
     </Routes>
   );
 }
