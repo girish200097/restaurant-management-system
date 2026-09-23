@@ -70,12 +70,16 @@ function AdminMenu() {
                     onChange={(e) => setPrice(e.target.value)}
                 />
 
-                <input
-                    type="text"
-                    placeholder="Category"
+               <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                />
+                >
+                    <option value="">Select Category</option>
+                    <option value="Starter">Starter</option>
+                    <option value="Main Course">Main Course</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Beverage">Beverage</option>
+                </select>
 
                 <input
                     type="text"

@@ -194,3 +194,15 @@
     background: #eee5df;
     color: #2b211c;
 }
+.add-menu-form select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 1px solid #e3d4cc;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+}
