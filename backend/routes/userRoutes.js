@@ -2,8 +2,13 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const {updateProfile,getAllUsers} = require("../controllers/userController");
+const adminMiddleware = require("../middleware/adminMiddleware");
 
 router.patch("/profile",authMiddleware,updateProfile);
-router.get("/users", getAllUsers);
+router.get(
+    "/users",
+    adminMiddleware,
+    getAllUsers
+);
 
 module.exports =router;
