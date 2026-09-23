@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import "./AdminMenu.css";
-import { useEffect, useState } from "react";
-
 function AdminMenu() {
     const [menuItems, setMenuItems] = useState([]);
     const [loading, setLoading] = useState(true);
