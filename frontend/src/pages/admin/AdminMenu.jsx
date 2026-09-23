@@ -8,7 +8,7 @@ function AdminMenu() {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
-    const [image, setImage] = useState("");
+   const [image, setImage] = useState(null);
 
     useEffect(() => {
         const fetchMenuItems = async () => {
@@ -33,6 +33,14 @@ function AdminMenu() {
 
         fetchMenuItems();
     }, []);
+
+    const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+
+    if (selectedImage) {
+        setImage(selectedImage);
+    }
+};
 
     return (
         <div className="admin-menu">
@@ -81,12 +89,32 @@ function AdminMenu() {
                     <option value="Beverage">Beverage</option>
                 </select>
 
-                <input
-                    type="text"
-                    placeholder="Image URL"
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                />
+               <div className="image-upload">
+
+                    <label htmlFor="menu-image" className="image-upload-box">
+                        {image ? (
+                            <img
+                                src={URL.createObjectURL(image)}
+                                alt="Menu preview"
+                                className="image-preview"
+                            />
+                        ) : (
+                            <>
+                                <span className="image-plus">+</span>
+                                <span>Add Image</span>
+                            </>
+                        )}
+                    </label>
+
+                    <input
+                        id="menu-image"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        hidden
+                    />
+
+                </div>
 
                 <div className="add-menu-form-actions">
                     <button

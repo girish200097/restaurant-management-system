@@ -206,3 +206,45 @@
     background: white;
     cursor: pointer;
 }
+.image-upload {
+    margin-bottom: 20px;
+}
+
+.image-upload-box {
+    width: 180px;
+    height: 180px;
+    border: 2px dashed #e3d4cc;
+    border-radius: 14px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: #76665d;
+    cursor: pointer;
+
+    overflow: hidden;
+    background: #fffaf5;
+}
+
+.image-upload-box:hover {
+    border-color: #e85d24;
+}
+
+.image-plus {
+    font-size: 42px;
+    line-height: 1;
+    color: #e85d24;
+    margin-bottom: 8px;
+}
+
+.image-upload-box span:last-child {
+    font-size: 14px;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
