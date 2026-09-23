@@ -2,9 +2,11 @@ const express = require("express");
 
 const {addMenu,getAllMenu,getMenuById,updateMenu,deleteMenu,updateMenuAvailability,} = require("../controllers/menuController");
 const adminMiddleware = require("../middleware/adminMiddleware");
-const router = express.Router();
+const upload = require("../middleware/uploadMiddleware");
 
-router.post("/", adminMiddleware, addMenu);
+const router = express.Router();
+     
+router.post("/", adminMiddleware, upload.single("image"), addMenu);
 
 router.get("/", getAllMenu);
 

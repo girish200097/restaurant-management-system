@@ -1,45 +1,73 @@
 const mongoose = require("mongoose");
 const Menu = require("../models/Menu");
+const cloudinary = require("../config/cloudinary");
 
 //addMenu
-const addMenu = async(req,res) => {
-    
-    try{
-        const {name,description,price,category} = req.body;
+const addMenu = async (req, res) => {
+    try {
+        const { name, description, price, category } = req.body;
 
-    if(!name || !description || !price || !category) {
-        return res.status(400).json({
-            message:"All Fields are required"
+        if (!name || !description || !price || !category) {
+            return res.status(400).json({
+                message: "All Fields are required",
+            });
+        }
+
+        const existingMenu = await Menu.findOne({
+            name: new RegExp(`^${name.trim()}$`, "i"),
+        });
+
+        if (existingMenu) {
+            return res.status(409).json({
+                message: "Menu Item is Already exist",
+            });
+        }
+
+        let imageUrl = "";
+
+        if (req.file) {
+            const uploadResult = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: "restaurant-menu",
+                    },
+                    (error, result) => {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve(result);
+                        }
+                    }
+                );
+
+                uploadStream.end(req.file.buffer);
+            });
+
+            imageUrl = uploadResult.secure_url;
+        }
+
+        const menu = new Menu({
+            name,
+            description,
+            price,
+            category,
+            image: imageUrl,
+        });
+
+        await menu.save();
+
+        return res.status(201).json({
+            message: "Menu Items Added Successfully",
+            menu,
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
         });
     }
-
-    const existingMenu =await Menu.findOne({
-        name: new RegExp(`^${name.trim()}$`,"i"),
-    });
-    if(existingMenu){
-        return res.status(409).json({
-            message:"Menu Item is Already exist"
-        })
-    }
-    const menu = new Menu({
-        name,
-        description,
-        price,
-        category,
-    });
-
-    await menu.save();
-    return res.status(201).json({
-        message:"Menu Items Added Successfully",
-        menu,
-    });}
-
-catch (error) {
-    return res.status(500).json({
-        message: "Internal Server Error",
-    });
-}
-}
+};
 
 //getAllMenu
 const getAllMenu = async(req,res) => {

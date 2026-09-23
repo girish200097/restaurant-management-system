@@ -42,6 +42,60 @@ function AdminMenu() {
     }
 };
 
+const handleAddMenu = async () => {
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const formData = new FormData();
+
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("price", price);
+        formData.append("category", category);
+
+        if (image) {
+            formData.append("image", image);
+        }
+
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/admin/menu`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("ADD MENU RESPONSE:", data);
+
+        if (!response.ok) {
+            alert(data.message || "Failed to add menu");
+            return;
+        }
+
+        setMenuItems((previousItems) => [
+            ...previousItems,
+            data.menu,
+        ]);
+
+        setName("");
+        setDescription("");
+        setPrice("");
+        setCategory("");
+        setImage(null);
+        setShowForm(false);
+
+        alert("Menu item added successfully");
+    } catch (error) {
+        console.log("Add menu error:", error);
+        alert("Something went wrong");
+    }
+};
+
     return (
         <div className="admin-menu">
             <h1>Menu Management</h1>
@@ -117,9 +171,10 @@ function AdminMenu() {
                 </div>
 
                 <div className="add-menu-form-actions">
-                    <button
+                   <button
                         className="save-menu-btn"
                         type="button"
+                        onClick={handleAddMenu}
                     >
                         Add Menu
                     </button>
