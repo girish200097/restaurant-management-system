@@ -371,3 +371,9 @@
         padding: 8px 13px;
     }
 }
+@media (max-width: 600px) {
+    .menu-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
