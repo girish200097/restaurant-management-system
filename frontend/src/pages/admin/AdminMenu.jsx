@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./AdminMenu.css";
+
 function AdminMenu() {
     const [menuItems, setMenuItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -8,9 +9,12 @@ function AdminMenu() {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
-   const [image, setImage] = useState(null);
-   const [editingItem, setEditingItem] = useState(null);
-   const [editingItem, setEditingItem] = useState(null);
+    const [image, setImage] = useState(null);
+    const [editingItem, setEditingItem] = useState(null);
+
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const dragStart = useRef({ x: 0, y: 0 });
 
     useEffect(() => {
         const fetchMenuItems = async () => {
