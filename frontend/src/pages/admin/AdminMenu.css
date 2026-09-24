@@ -140,13 +140,35 @@
     }
 }
 
+.add-menu-form::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    z-index: -1;
+}
+
 .add-menu-form {
-    margin-top: 25px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 90%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+
     background: white;
     padding: 25px;
     border-radius: 18px;
     border: 1px solid #f0ded2;
-    box-shadow: 0 10px 30px rgba(80, 45, 25, 0.08);
+    box-shadow: 0 15px 40px rgba(80, 45, 25, 0.2);
+
+    z-index: 1001;
+    box-sizing: border-box;
 }
 
 .add-menu-form h2 {
@@ -249,10 +271,6 @@
     object-fit: cover;
 }
 
-.admin-menu-actions {
-    margin-top: 15px;
-}
-
 .edit-menu-btn {
     padding: 8px 18px;
     border: none;
@@ -293,4 +311,16 @@
 .edit-menu-btn:hover,
 .delete-menu-btn:hover {
     opacity: 0.9;
+}
+@media (max-width: 600px) {
+    .add-menu-form {
+        width: 94%;
+        max-height: 90vh;
+        padding: 20px;
+    }
+
+    .image-upload-box {
+        width: 140px;
+        height: 140px;
+    }
 }
