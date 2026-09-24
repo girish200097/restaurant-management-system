@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./AdminMenu.css";
 function AdminMenu() {
     const [menuItems, setMenuItems] = useState([]);
@@ -9,6 +9,7 @@ function AdminMenu() {
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
    const [image, setImage] = useState(null);
+   const [editingItem, setEditingItem] = useState(null);
    const [editingItem, setEditingItem] = useState(null);
 
     useEffect(() => {
@@ -197,21 +198,62 @@ const handleDeleteMenu = async (id) => {
     }
 };
 
+const handleMouseDown = (e) => {
+    setIsDragging(true);
+
+    dragStart.current = {
+        x: e.clientX - position.x,
+        y: e.clientY - position.y,
+    };
+};
+
+const handleMouseMove = (e) => {
+    if (!isDragging) return;
+
+    setPosition({
+        x: e.clientX - dragStart.current.x,
+        y: e.clientY - dragStart.current.y,
+    });
+};
+
+const handleMouseUp = () => {
+    setIsDragging(false);
+};
     return (
         <div className="admin-menu">
             <h1>Menu Management</h1>
 
             <button
                 className="add-menu-btn"
-                onClick={() => setShowForm(true)}
+                onClick={() => {
+                    setPosition({ x: 0, y: 0 });
+                    setShowForm(true);
+                }}
             >
                 + Add Menu Item
             </button>
 
             {showForm && (
-    <div className="add-menu-form">
+    <div
+        className="add-menu-form"
+        style={{
+            transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))`,
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+    >
+        <div
+            className="menu-form-header"
+            onMouseDown={handleMouseDown}
+        >
+            <h2>
+                {editingItem ? "Edit Menu Item" : "Add Menu Item"}
+            </h2>
 
-                <h2>{editingItem ? "Edit Menu Item" : "Add Menu Item"}</h2>
+            <span className="drag-hint">
+                ⋮⋮
+            </span>
+        </div>
 
                 <input
                     type="text"
@@ -341,6 +383,7 @@ const handleDeleteMenu = async (id) => {
                                     className="edit-menu-btn"
                                     onClick={() => {
                                         setEditingItem(item);
+                                        setPosition({ x: 0, y: 0 });
                                         setName(item.name);
                                         setDescription(item.description);
                                         setPrice(item.price);
