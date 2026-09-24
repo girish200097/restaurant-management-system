@@ -155,6 +155,48 @@ const handleEditMenu = async () => {
     }
 };
 
+const handleDeleteMenu = async (id) => {
+    const confirmDelete = window.confirm(
+        "Are you sure you want to delete this menu item?"
+    );
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/menu/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("DELETE MENU RESPONSE:", data);
+
+        if (!response.ok) {
+            alert(data.message || "Failed to delete menu");
+            return;
+        }
+
+        setMenuItems((previousItems) =>
+            previousItems.filter((item) => item._id !== id)
+        );
+
+        alert("Menu item deleted successfully");
+    } catch (error) {
+        console.log("Delete menu error:", error);
+        alert("Something went wrong");
+    }
+};
+
     return (
         <div className="admin-menu">
             <h1>Menu Management</h1>
@@ -294,22 +336,29 @@ const handleEditMenu = async () => {
                                         : "Unavailable"}
                                 </p>
 
-                                <div className="admin-menu-actions">
-                                    <button
-                                        className="edit-menu-btn"
-                                        onClick={() => {
-                                            setEditingItem(item);
-                                            setName(item.name);
-                                            setDescription(item.description);
-                                            setPrice(item.price);
-                                            setCategory(item.category);
-                                            setImage(null);
-                                            setShowForm(true);
-                                        }}
-                                    >
-                                        Edit
-                                    </button>
-                                </div>
+                             <div className="admin-menu-actions">
+                                <button
+                                    className="edit-menu-btn"
+                                    onClick={() => {
+                                        setEditingItem(item);
+                                        setName(item.name);
+                                        setDescription(item.description);
+                                        setPrice(item.price);
+                                        setCategory(item.category);
+                                        setImage(null);
+                                        setShowForm(true);
+                                    }}
+                                >
+                                    Edit
+                                </button>
+
+                                <button
+                                    className="delete-menu-btn"
+                                    onClick={() => handleDeleteMenu(item._id)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                             </div>
                         </div>
                     ))}

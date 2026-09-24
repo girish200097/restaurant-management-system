@@ -266,3 +266,31 @@
 .edit-menu-btn:hover {
     opacity: 0.9;
 }
+.admin-menu-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.edit-menu-btn,
+.delete-menu-btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+}
+
+.edit-menu-btn {
+    background: #f39c12;
+}
+
+.delete-menu-btn {
+    background: #e74c3c;
+}
+
+.edit-menu-btn:hover,
+.delete-menu-btn:hover {
+    opacity: 0.9;
+}
