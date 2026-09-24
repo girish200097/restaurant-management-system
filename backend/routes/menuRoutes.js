@@ -12,7 +12,7 @@ router.get("/", getAllMenu);
 
 router.get("/:id", getMenuById);
 
-router.put("/:id", adminMiddleware, updateMenu);
+router.put("/:id", adminMiddleware, upload.single("image"), updateMenu);
 
 router.delete("/:id", adminMiddleware, deleteMenu);
 

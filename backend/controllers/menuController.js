@@ -125,65 +125,96 @@ const getMenuById = async(req,res)=> {
 }
 
 //updateMenu
-    const updateMenu = async(req,res) => {
-        try{
-                const {id} = req.params;
-                const {name,description,price,category,isAvailable} = req.body;
+  //updateMenu
+const updateMenu = async(req,res) => {
+    try{
+        const {id} = req.params;
+        const {name,description,price,category,isAvailable} = req.body;
 
-                if (!mongoose.Types.ObjectId.isValid(id)) {
-                        return res.status(400).json({
-                            message: "Invalid menu ID",
-                        });
-                }
-
-                const updateData = {}
-                if(name !== undefined) {
-                    updateData.name=name;
-                }
-                if(price !== undefined) {
-                    updateData.price=price;
-                }
-                if(description !== undefined) {
-                    updateData.description=description;
-                }
-                if(category !== undefined) {
-                    updateData.category=category;
-                }
-                if(isAvailable !== undefined) {
-                    updateData.isAvailable=isAvailable;
-                }
-
-                if (Object.keys(updateData).length === 0) {
-    return res.status(400).json({
-        message: "No fields provided to update"
-    });
-}
-                const updatedMenu = await Menu.findByIdAndUpdate(
-                    id,
-                    updateData,
-                    {
-                        new:true
-                    }
-                )
-
-                if(!updatedMenu){
-                    return res.status(404).json({
-                        message: "Menu item not found",
-                    })
-                }
-                return res.status(200).json({
-                    message: "Menu updated successfully",
-                    menu : updatedMenu
-                })
-
-        }
-        catch(error) {
-            console.log(error);
-            return res.status(500).json({
-                message: "Internal Server Error",
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid menu ID",
             });
         }
+
+        const updateData = {};
+
+        if(name !== undefined) {
+            updateData.name = name;
+        }
+
+        if(price !== undefined) {
+            updateData.price = price;
+        }
+
+        if(description !== undefined) {
+            updateData.description = description;
+        }
+
+        if(category !== undefined) {
+            updateData.category = category;
+        }
+
+        if(isAvailable !== undefined) {
+            updateData.isAvailable = isAvailable;
+        }
+
+        // Upload new image if admin selected one
+        if(req.file) {
+            const uploadResult = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: "restaurant-menu",
+                    },
+                    (error, result) => {
+                        if(error) {
+                            reject(error);
+                        } else {
+                            resolve(result);
+                        }
+                    }
+                );
+
+                uploadStream.end(req.file.buffer);
+            });
+
+            updateData.image = uploadResult.secure_url;
+        }
+
+        if(Object.keys(updateData).length === 0) {
+            return res.status(400).json({
+                message: "No fields provided to update"
+            });
+        }
+
+        const updatedMenu = await Menu.findByIdAndUpdate(
+            id,
+            updateData,
+            {
+                new:true
+            }
+        );
+
+        if(!updatedMenu){
+            return res.status(404).json({
+                message: "Menu item not found",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Menu updated successfully",
+            menu: updatedMenu
+        });
+
     }
+    catch(error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+}
 
     const deleteMenu = async(req,res) => {
         try {

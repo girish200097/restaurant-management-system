@@ -248,3 +248,21 @@
     height: 100%;
     object-fit: cover;
 }
+
+.admin-menu-actions {
+    margin-top: 15px;
+}
+
+.edit-menu-btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #f39c12;
+    color: white;
+    font-weight: 600;
+}
+
+.edit-menu-btn:hover {
+    opacity: 0.9;
+}

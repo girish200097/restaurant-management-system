@@ -32,17 +32,18 @@ function VerifyLogin() {
                     return;
                 }
 
-                localStorage.setItem("token", data.token);
-                setIsLoggedIn(true);
-
-                console.log("Login successful");
-
-                if (data.role === "admin") {
+               if (data.role === "admin") {
+                    localStorage.setItem("adminToken", data.token);
                     navigate("/admin/dashboard");
-                } else if (data.profileCompleted) {
-                    navigate("/menu");
                 } else {
-                    navigate("/home");
+                    localStorage.setItem("token", data.token);
+                    setIsLoggedIn(true);
+
+                    if (data.profileCompleted) {
+                        navigate("/menu");
+                    } else {
+                        navigate("/home");
+                    }
                 }
             } catch (error) {
                 console.log(error);

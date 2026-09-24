@@ -9,6 +9,7 @@ function AdminMenu() {
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
    const [image, setImage] = useState(null);
+   const [editingItem, setEditingItem] = useState(null);
 
     useEffect(() => {
         const fetchMenuItems = async () => {
@@ -96,6 +97,64 @@ const handleAddMenu = async () => {
     }
 };
 
+const handleEditMenu = async () => {
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const formData = new FormData();
+
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("price", price);
+        formData.append("category", category);
+
+        if (image) {
+            formData.append("image", image);
+        }
+
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/menu/${editingItem._id}`,
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("EDIT MENU RESPONSE:", data);
+
+        if (!response.ok) {
+            alert(data.message || "Failed to update menu");
+            return;
+        }
+
+        setMenuItems((previousItems) =>
+            previousItems.map((item) =>
+                item._id === editingItem._id
+                    ? data.menu
+                    : item
+            )
+        );
+
+        setName("");
+        setDescription("");
+        setPrice("");
+        setCategory("");
+        setImage(null);
+        setEditingItem(null);
+        setShowForm(false);
+
+        alert("Menu item updated successfully");
+    } catch (error) {
+        console.log("Edit menu error:", error);
+        alert("Something went wrong");
+    }
+};
+
     return (
         <div className="admin-menu">
             <h1>Menu Management</h1>
@@ -110,7 +169,7 @@ const handleAddMenu = async () => {
             {showForm && (
     <div className="add-menu-form">
 
-                <h2>Add Menu Item</h2>
+                <h2>{editingItem ? "Edit Menu Item" : "Add Menu Item"}</h2>
 
                 <input
                     type="text"
@@ -171,18 +230,26 @@ const handleAddMenu = async () => {
                 </div>
 
                 <div className="add-menu-form-actions">
-                   <button
-                        className="save-menu-btn"
-                        type="button"
-                        onClick={handleAddMenu}
-                    >
-                        Add Menu
-                    </button>
+                  <button
+                    className="save-menu-btn"
+                    type="button"
+                    onClick={editingItem ? handleEditMenu : handleAddMenu}
+                >
+                    {editingItem ? "Update Menu" : "Add Menu"}
+                </button>
 
                     <button
                         className="cancel-menu-btn"
                         type="button"
-                        onClick={() => setShowForm(false)}
+                        onClick={() => {
+                            setShowForm(false);
+                            setEditingItem(null);
+                            setName("");
+                            setDescription("");
+                            setPrice("");
+                            setCategory("");
+                            setImage(null);
+                        }}
                     >
                         Cancel
                     </button>
@@ -226,6 +293,23 @@ const handleAddMenu = async () => {
                                         ? "Available"
                                         : "Unavailable"}
                                 </p>
+
+                                <div className="admin-menu-actions">
+                                    <button
+                                        className="edit-menu-btn"
+                                        onClick={() => {
+                                            setEditingItem(item);
+                                            setName(item.name);
+                                            setDescription(item.description);
+                                            setPrice(item.price);
+                                            setCategory(item.category);
+                                            setImage(null);
+                                            setShowForm(true);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}
