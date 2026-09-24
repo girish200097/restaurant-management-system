@@ -202,6 +202,48 @@ const handleDeleteMenu = async (id) => {
     }
 };
 
+const handleAvailabilityChange = async (id, value) => {
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const isAvailable = value === "available";
+
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/menu/${id}/availability`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    isAvailable,
+                }),
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("AVAILABILITY RESPONSE:", data);
+
+        if (!response.ok) {
+            alert(data.message || "Failed to update status");
+            return;
+        }
+
+        setMenuItems((previousItems) =>
+            previousItems.map((item) =>
+                item._id === id
+                    ? data.menu
+                    : item
+            )
+        );
+    } catch (error) {
+        console.log("Availability update error:", error);
+        alert("Something went wrong");
+    }
+};
+
 const handleMouseDown = (e) => {
     setIsDragging(true);
 
@@ -350,8 +392,13 @@ const handleMouseUp = () => {
                 <p className="menu-loading">Loading menu...</p>
             ) : (
                 <div className="admin-menu-grid">
-                    {menuItems.map((item) => (
-                        <div className="admin-menu-card" key={item._id}>
+                                    {menuItems.map((item) => (
+                                        <div
+                    className={`admin-menu-card ${
+                        !item.isAvailable ? "menu-not-available" : ""
+                    }`}
+                    key={item._id}
+                >
                             {item.image && (
                                 <img
                                     src={item.image}
@@ -375,12 +422,25 @@ const handleMouseUp = () => {
                                     {item.description}
                                 </p>
 
-                                <p>
-                                    Status:{" "}
-                                    {item.isAvailable
-                                        ? "Available"
-                                        : "Unavailable"}
-                                </p>
+                                <div className="menu-status-control">
+                                    <select
+                                    value={item.isAvailable ? "available" : "unavailable"}
+                                    onChange={(e) =>
+                                        handleAvailabilityChange(
+                                            item._id,
+                                            e.target.value
+                                        )
+                                    }
+                                >
+                                    <option value="available">
+                                        Available
+                                    </option>
+
+                                    <option value="unavailable">
+                                        Not Available
+                                    </option>
+                                </select>
+                                </div>
 
                              <div className="admin-menu-actions">
                                 <button

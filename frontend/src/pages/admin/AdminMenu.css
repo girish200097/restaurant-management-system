@@ -342,3 +342,48 @@
     color: #a8958b;
     cursor: move;
 }   
+.menu-status-control {
+    margin-top: 15px;
+}
+
+.menu-status-control select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #e3d4cc;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Not available card */
+
+.admin-menu-card.menu-not-available {
+    position: relative;
+    background: #f3f3f3;
+    border-color: #d6d6d6;
+    opacity: 0.85;
+}
+
+.admin-menu-card.menu-not-available .admin-menu-image {
+    filter: grayscale(100%);
+}
+
+.admin-menu-card.menu-not-available::after {
+    content: "NOT AVAILABLE";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 28px;
+    font-weight: 800;
+    color: #d93636;
+
+    text-align: center;
+    white-space: nowrap;
+
+    pointer-events: none;
+}
