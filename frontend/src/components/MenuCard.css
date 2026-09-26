@@ -1,20 +1,22 @@
 .menu-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    position: relative;
+    overflow: hidden;
 
-  width: 100%;
-  max-width: 500px;
-  min-height: 140px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  padding: 12px;
+    width: 100%;
+    min-height: 160px;
 
-  border: 1px solid #ddd;
-  border-radius: 10px;
+    padding: 14px;
 
-  background: white;
+    border: 1px solid #f0ded2;
+    border-radius: 14px;
 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: white;
+
+    box-sizing: border-box;
 }
 
 .quantity-controls {
@@ -153,4 +155,33 @@
     width: 85px;
     height: 85px;
   }
+  .not-available {
+        width: 150%;
+        padding: 5px 0;
+        font-size: 8px;
+    }
+}
+.not-available {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 150%;
+
+    padding: 7px 0;
+
+    background: #c0392b;
+    color: white;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-align: center;
+
+    letter-spacing: 0.5px;
+
+    transform: translate(-50%, -50%) rotate(-45deg);
+
+    z-index: 5;
 }
