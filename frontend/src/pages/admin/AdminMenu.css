@@ -387,3 +387,10 @@
 
     pointer-events: none;
 }
+@media (max-width: 600px) {
+    .admin-menu-card.menu-not-available::after {
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+    }
+}

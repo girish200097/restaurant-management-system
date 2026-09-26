@@ -240,7 +240,6 @@ function Menu() {
               <div className="menu-container">
 
               {menus
-        .filter((menu) => menu.isAvailable)
         .filter(
           (menu) =>
             selectedCategory === "All" ||
