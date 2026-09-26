@@ -63,6 +63,14 @@ function MenuCard({
         </div>
       )}
 
+      {/* Unavailable ribbon */}
+
+      {!menu.isAvailable && (
+        <div className="not-available">
+          CURRENTLY NOT AVAILABLE
+        </div>
+      )}
+
     </div>
   );
 }
