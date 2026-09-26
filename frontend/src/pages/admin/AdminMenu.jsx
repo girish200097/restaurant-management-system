@@ -437,7 +437,7 @@ const handleMouseUp = () => {
                                     </option>
 
                                     <option value="unavailable">
-                                       Currently Not Available
+                                        Not Available
                                     </option>
                                 </select>
                                 </div>
