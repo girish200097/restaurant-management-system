@@ -4,11 +4,6 @@ import "./AdminNavbar.css";
 function AdminNavbar() {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem("adminToken");
-        navigate("/admin/login");
-    };
-
     return (
         <nav className="admin-navbar">
 
@@ -50,12 +45,6 @@ function AdminNavbar() {
                     onClick={() => navigate("/admin/profile")}
                 >
                     👤 Admin
-                </button>
-
-                <button
-                    onClick={handleLogout}
-                >
-                    Logout
                 </button>
 
             </div>
