@@ -1,3 +1,7 @@
+/* ================================
+   MENU PAGE
+================================ */
+
 .menu-page {
     min-height: 100vh;
     padding: 40px 6%;
@@ -10,6 +14,11 @@
     box-sizing: border-box;
 }
 
+
+/* ================================
+   PAGE TITLE
+================================ */
+
 .menu-page > h1 {
     text-align: center;
     font-size: 38px;
@@ -18,6 +27,11 @@
     font-weight: 700;
     letter-spacing: -0.5px;
 }
+
+
+/* ================================
+   CATEGORY BUTTONS
+================================ */
 
 .category-container {
     display: flex;
@@ -44,6 +58,22 @@
         color 0.2s ease;
 }
 
+.category-container button:hover {
+    transform: translateY(-2px);
+    background: #fff0e5;
+    color: #e85d24;
+    box-shadow: 0 6px 15px rgba(120, 70, 40, 0.12);
+}
+
+.category-container button:active {
+    transform: scale(0.96);
+}
+
+
+/* ================================
+   MENU GRID
+================================ */
+
 .menu-container {
     display: grid;
     grid-template-columns: repeat(
@@ -54,7 +84,230 @@
     margin-bottom: 45px;
 }
 
+
+/* ================================
+   TABLE SECTION
+================================ */
+
+.table-section {
+    max-width: 600px;
+    margin: 20px auto 25px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #f2dfd2;
+    border-radius: 18px;
+    box-shadow:
+        0 10px 30px rgba(92, 54, 32, 0.08);
+}
+
+.table-section h2 {
+    margin: 0 0 15px;
+    text-align: center;
+    color: #3b2a21;
+    font-size: 22px;
+}
+
+.table-section select {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #e4cfc1;
+    border-radius: 10px;
+    background: #fff;
+    color: #44352d;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.table-section select:focus {
+    border-color: #ff6b35;
+    box-shadow:
+        0 0 0 3px rgba(255, 107, 53, 0.12);
+}
+
+
+/* ================================
+   CREATE ORDER
+================================ */
+
+.create-order-button {
+    display: block;
+    width: min(600px, 100%);
+    margin: 0 auto 25px;
+    padding: 15px 25px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #ff7a3d,
+        #f4511e
+    );
+
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(244, 81, 30, 0.25);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.create-order-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(244, 81, 30, 0.3);
+}
+
+.create-order-button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.create-order-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* ================================
+   TOTAL
+================================ */
+
+.menu-page > h3 {
+    width: min(600px, 100%);
+    margin: 20px auto 30px;
+
+    padding: 18px 22px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: #ffffff;
+
+    border: 1px solid #f0ded2;
+    border-radius: 14px;
+
+    color: #2d211b;
+
+    font-size: 21px;
+
+    box-shadow:
+        0 8px 25px rgba(70, 40, 20, 0.08);
+}
+
+.menu-page > h3::before {
+    content: "Order Total";
+    font-size: 15px;
+    color: #806b5e;
+    font-weight: 500;
+}
+
+
+/* ================================
+   PAYMENT SUCCESS
+================================ */
+
+.payment-success {
+    width: min(600px, 100%);
+    margin: 25px auto;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        #f1fff6,
+        #ffffff
+    );
+
+    border: 1px solid #ccebd9;
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 30px rgba(40, 120, 70, 0.10);
+
+    animation: successAppear 0.45s ease;
+}
+
+.payment-success h2 {
+    margin: 0 0 20px;
+    color: #21844a;
+    font-size: 24px;
+}
+
+.payment-success button {
+    border: none;
+    padding: 12px 24px;
+
+    border-radius: 10px;
+
+    background: #21844a;
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.payment-success button:hover:not(:disabled) {
+    background: #176b3a;
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(33, 132, 74, 0.22);
+}
+
+.payment-success button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+
+/* ================================
+   ANIMATIONS
+================================ */
+
+@keyframes successAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
 @media (max-width: 768px) {
+
     .menu-page {
         padding: 30px 20px;
     }
@@ -77,9 +330,31 @@
         grid-template-columns: 1fr;
         gap: 18px;
     }
+
+    .table-section {
+        padding: 20px;
+    }
+
+    .create-order-button {
+        width: 100%;
+    }
+
+    .menu-page > h3 {
+        width: 100%;
+    }
+
+    .payment-success {
+        padding: 25px 20px;
+    }
 }
 
+
+/* ================================
+   SMALL PHONES
+================================ */
+
 @media (max-width: 400px) {
+
     .menu-page {
         padding: 25px 15px;
     }
@@ -96,7 +371,6 @@
         padding: 8px 13px;
     }
 }
-
 @media (max-width: 600px) {
     .menu-container {
         grid-template-columns: repeat(2, 1fr);
