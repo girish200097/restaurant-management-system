@@ -74,7 +74,7 @@
     }
 
     .menu-container {
-        grid-template-columns: 2fr;
+        grid-template-columns: 1fr;
         gap: 18px;
     }
 }
@@ -94,5 +94,12 @@
 
     .category-container button {
         padding: 8px 13px;
+    }
+}
+
+@media (max-width: 600px) {
+    .menu-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
 }
