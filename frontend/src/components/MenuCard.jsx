@@ -15,11 +15,6 @@ function MenuCard({
       <div className="menu-card-content">
 
         <h2>{menu.name}</h2>
-
-        <p className="menu-card-description">
-          {menu.description}
-        </p>
-
         <p className="menu-card-price">
           ₹{menu.price}
         </p>

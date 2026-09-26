@@ -308,12 +308,6 @@ const handleMouseUp = () => {
                     onChange={(e) => setName(e.target.value)}
                 />
 
-                <textarea
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
-
                 <input
                     type="number"
                     placeholder="Price"
@@ -418,10 +412,6 @@ const handleMouseUp = () => {
                                     ₹{item.price}
                                 </p>
 
-                                <p>
-                                    {item.description}
-                                </p>
-
                                 <div className="menu-status-control">
                                     <select
                                     value={item.isAvailable ? "available" : "unavailable"}
@@ -449,7 +439,6 @@ const handleMouseUp = () => {
                                         setEditingItem(item);
                                         setPosition({ x: 0, y: 0 });
                                         setName(item.name);
-                                        setDescription(item.description);
                                         setPrice(item.price);
                                         setCategory(item.category);
                                         setImage(null);
