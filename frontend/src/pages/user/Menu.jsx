@@ -135,7 +135,7 @@ function Menu() {
 
       setOrderId(data.order._id);
 
-      alert("Order created successfully");
+      alert(data.message);
     } catch (error) {
       console.log(error);
     } finally {
