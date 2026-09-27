@@ -67,6 +67,11 @@ useEffect(() => {
     setSelectedTable(savedTable);
   }
 }, []);
+  useEffect(() => {
+    if (selectedTable) {
+      localStorage.setItem("selectedTable", selectedTable);
+    }
+  }, [selectedTable]);
 
   const addToCart = (menu) => {
     const existingItem = cart.find(
