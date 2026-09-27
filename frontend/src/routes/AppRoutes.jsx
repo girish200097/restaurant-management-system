@@ -12,6 +12,7 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminLayout from "../pages/admin/AdminLayout";
 import AdminProtectedRoute from "../components/AdminProtectedRoute";
 import AdminMenu from "../pages/admin/AdminMenu";
+import WaiterDashboard from "../pages/waiter/WaiterDashboard";
 
 function AppRoutes() {
   return (
@@ -30,6 +31,15 @@ function AppRoutes() {
       <Route path="/room-booking" element={<RoomBooking />} />
       <Route path="/table-reservation" element={<TableReservation />} />
       <Route path="/call-waiter" element={<CallWaiter />} />
+
+      <Route
+        path="/waiter-dashboard"
+        element={
+            <ProtectedRoute>
+            <WaiterDashboard />
+            </ProtectedRoute>
+        }
+        />
       <Route path="/admin" element={<AdminLayout />}>
         <Route
                 path="login"
