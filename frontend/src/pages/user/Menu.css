@@ -572,3 +572,67 @@
         font-size: 18px;
     }
 }
+.pay-now-button {
+    display: block;
+
+    width: 100%;
+    max-width: 600px;
+
+    margin: 20px auto;
+    padding: 14px 24px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #e85d24;
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 16px rgba(232, 93, 36, 0.25);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.pay-now-button:hover {
+    background: #d94f19;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(232, 93, 36, 0.3);
+}
+
+.pay-now-button:active {
+    transform: translateY(0);
+}
+
+.pay-now-button:disabled {
+    background: #bdbdbd;
+    color: #ffffff;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .pay-now-button {
+        width: 100%;
+        padding: 13px 18px;
+
+        font-size: 15px;
+
+        border-radius: 9px;
+    }
+}

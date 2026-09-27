@@ -105,9 +105,10 @@ const [isLoading, setIsLoading] = useState(false);
 
     return (
        <button
-    onClick={handlePayment}
-        disabled={isLoading}
-    >
+            className="pay-now-button"
+            onClick={handlePayment}
+            disabled={isLoading}
+        >
         {isLoading ? "Opening Payment..." : "Pay Now"}
         {error && (
             <p>{error}</p>
