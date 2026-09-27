@@ -37,9 +37,13 @@ function VerifyLogin() {
                     navigate("/admin/dashboard");
                 } else {
                     localStorage.setItem("token", data.token);
+                    localStorage.setItem("role", data.role);
+
                     setIsLoggedIn(true);
 
-                    if (data.profileCompleted) {
+                    if (data.role === "waiter") {
+                        navigate("/waiter-dashboard");
+                    } else if (data.profileCompleted) {
                         navigate("/menu");
                     } else {
                         navigate("/home");
