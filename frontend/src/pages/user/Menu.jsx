@@ -49,6 +49,17 @@ function Menu() {
     fetchMenus();
   }, []);
 
+  useEffect(() => {
+  const savedCart = localStorage.getItem("cart");
+
+  if (savedCart) {
+    setCart(JSON.parse(savedCart));
+  }
+}, []);
+useEffect(() => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}, [cart]);
+
   const addToCart = (menu) => {
     const existingItem = cart.find(
       (item) => item._id === menu._id
