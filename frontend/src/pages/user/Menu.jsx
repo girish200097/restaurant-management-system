@@ -60,6 +60,14 @@ useEffect(() => {
   localStorage.setItem("cart", JSON.stringify(cart));
 }, [cart]);
 
+useEffect(() => {
+  const savedTable = localStorage.getItem("selectedTable");
+
+  if (savedTable) {
+    setSelectedTable(savedTable);
+  }
+}, []);
+
   const addToCart = (menu) => {
     const existingItem = cart.find(
       (item) => item._id === menu._id
@@ -337,6 +345,7 @@ useEffect(() => {
               setPaymentSuccess(true);
               setCart([]);
               setSelectedTable("");
+              localStorage.removeItem("selectedTable");
           }}
         />
       )}
