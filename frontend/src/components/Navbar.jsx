@@ -92,22 +92,6 @@ const [searchParams] = useSearchParams();
               Menu
             </Link>
           </li>
-
-          <li>
-            <Link to="/room-booking" onClick={closeMenu}>
-              Book Room
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              to="/table-reservation"
-              onClick={closeMenu}
-            >
-              Reserve Table
-            </Link>
-          </li>
-
           <li>
             <Link to="/call-waiter" onClick={closeMenu}>
               Call Waiter
