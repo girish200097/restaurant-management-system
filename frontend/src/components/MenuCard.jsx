@@ -23,6 +23,7 @@ function MenuCard({
           <button
             className="add-button"
             onClick={() => onAddToCart(menu)}
+            disabled={!menu.isAvailable}
           >
             Add
           </button>
