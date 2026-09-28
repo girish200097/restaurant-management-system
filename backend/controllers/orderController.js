@@ -44,12 +44,43 @@ const createOrder = async(req,res) => {
         let totalAmount = 0;
 
         if(activeOrder) {
+                if (!activeOrder.waiter) {
+                        const availableWaiters = await User.find({
+                            role: "waiter",
+                            isAvailable: true,
+                        });
+
+                        let assignedWaiter = null;
+
+                        if (availableWaiters.length > 0) {
+                            let fewestOrders = Infinity;
+
+                            for (const waiter of availableWaiters) {
+                                const orderCount = await Order.countDocuments({
+                                    waiter: waiter._id,
+                                    isActive: true,
+                                    orderStatus: {
+                                        $in: ["pending", "preparing", "served"],
+                                    },
+                                });
+
+                                if (orderCount < fewestOrders) {
+                                    fewestOrders = orderCount;
+                                    assignedWaiter = waiter._id;
+                                }
+                            }
+                        }
+
+                        if (assignedWaiter) {
+                            activeOrder.waiter = assignedWaiter;
+                        }
+                    }
             for(const newItem of items) {
-                if (newItem.quantity <= 0) {
-    return res.status(400).json({
-        message: "Quantity must be greater than 0",
-    });
-}
+                            if (newItem.quantity <= 0) {
+                return res.status(400).json({
+                    message: "Quantity must be greater than 0",
+                });
+            }
                 const menu = await Menu.findById(newItem.menuItem);
                 if(!menu) {
                     return res.status(404).json({
@@ -147,17 +178,6 @@ const createOrder = async(req,res) => {
                     }
                 }
             }
-
-            console.log(
-                "AVAILABLE WAITERS:",
-                availableWaiters.map((waiter) => ({
-                    id: waiter._id,
-                    name: waiter.name,
-                    isAvailable: waiter.isAvailable,
-                }))
-            );
-
-            console.log("ASSIGNED WAITER:", assignedWaiter);
 
             const newOrder = await Order.create({
                 customer: req.user.userId,
