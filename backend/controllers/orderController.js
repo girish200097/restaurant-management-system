@@ -43,83 +43,83 @@ const createOrder = async(req,res) => {
         });
         let totalAmount = 0;
 
-        if(activeOrder) {
-                if (!activeOrder.waiter) {
-                        const availableWaiters = await User.find({
-                            role: "waiter",
-                            isAvailable: true,
-                        });
+        if (activeOrder) {
+    const updatedOrderItems = [];
+    let totalAmount = 0;
 
-                        let assignedWaiter = null;
-
-                        if (availableWaiters.length > 0) {
-                            let fewestOrders = Infinity;
-
-                            for (const waiter of availableWaiters) {
-                                const orderCount = await Order.countDocuments({
-                                    waiter: waiter._id,
-                                    isActive: true,
-                                    orderStatus: {
-                                        $in: ["pending", "preparing", "served"],
-                                    },
-                                });
-
-                                if (orderCount < fewestOrders) {
-                                    fewestOrders = orderCount;
-                                    assignedWaiter = waiter._id;
-                                }
-                            }
-                        }
-
-                        if (assignedWaiter) {
-                            activeOrder.waiter = assignedWaiter;
-                        }
-                    }
-            for(const newItem of items) {
-                            if (newItem.quantity <= 0) {
-                return res.status(400).json({
-                    message: "Quantity must be greater than 0",
-                });
-            }
-                const menu = await Menu.findById(newItem.menuItem);
-                if(!menu) {
-                    return res.status(404).json({
-                        message: `Menu item not found`,
-                    });
-                }
-                if (!menu.isAvailable){
-                return res.status(400).json({
-                    message: "Menu item is not available",
-                });
-            }
-                const existingItem = activeOrder.items.find(
-                    item => item.menuItem.toString() === newItem.menuItem.toString()    
-                );
-
-               if(existingItem) {
-                    existingItem.quantity = newItem.quantity;
-                }
-                else {
-                    activeOrder.items.push({
-                        menuItem: newItem.menuItem,
-                        quantity: newItem.quantity,
-                        price: menu.price,
-                    });
-                }
-
-                
-            }
-            for(const item of activeOrder.items) {
-            totalAmount += item.price * item.quantity;
-            }
-            
-            activeOrder.totalAmount = totalAmount;
-            await activeOrder.save();
-            return res.status(200).json({
-                message: "Order updated successfully",
-                order: activeOrder,
+    for (const newItem of items) {
+        if (newItem.quantity <= 0) {
+            return res.status(400).json({
+                message: "Quantity must be greater than 0",
             });
         }
+
+        const menu = await Menu.findById(newItem.menuItem);
+
+        if (!menu) {
+            return res.status(404).json({
+                message: "Menu item not found",
+            });
+        }
+
+        if (!menu.isAvailable) {
+            return res.status(400).json({
+                message: "Menu item is not available",
+            });
+        }
+
+        totalAmount += menu.price * newItem.quantity;
+
+        updatedOrderItems.push({
+            menuItem: newItem.menuItem,
+            quantity: newItem.quantity,
+            price: menu.price,
+        });
+    }
+
+    activeOrder.items = updatedOrderItems;
+    activeOrder.totalAmount = totalAmount;
+
+    // Assign waiter only if the existing order doesn't have one
+    if (!activeOrder.waiter) {
+        const availableWaiters = await User.find({
+            role: "waiter",
+            isAvailable: true,
+        });
+
+        let assignedWaiter = null;
+
+        if (availableWaiters.length > 0) {
+            let fewestOrders = Infinity;
+
+            for (const waiter of availableWaiters) {
+                const orderCount = await Order.countDocuments({
+                    waiter: waiter._id,
+                    isActive: true,
+                    orderStatus: {
+                        $in: ["pending", "preparing", "served"],
+                    },
+                });
+
+                if (orderCount < fewestOrders) {
+                    fewestOrders = orderCount;
+                    assignedWaiter = waiter._id;
+                }
+            }
+        }
+
+        if (assignedWaiter) {
+            activeOrder.waiter = assignedWaiter;
+        }
+    }
+
+    await activeOrder.save();
+
+    return res.status(200).json({
+        message: "Order updated successfully",
+        order: activeOrder,
+    });
+}
 
        else {
         const orderItems = [];
