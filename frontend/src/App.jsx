@@ -7,10 +7,11 @@ function AppContent() {
   const location = useLocation();
 
   const isAdminPage = location.pathname.startsWith("/admin");
+  const isWaiterPage = location.pathname.startsWith("/waiter");
 
   return (
     <>
-      {!isAdminPage && <Navbar />}
+      {!isAdminPage && !isWaiterPage && <Navbar />}
 
       <AppRoutes />
     </>

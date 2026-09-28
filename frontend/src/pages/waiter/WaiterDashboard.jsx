@@ -102,6 +102,7 @@ function WaiterDashboard() {
                                 onChange={(event) =>
                                     updateOrderStatus(order._id, event.target.value)
                                 }
+                                disabled={order.orderStatus === "completed"}
                             >
                                 <option value="pending">Pending</option>
                                 <option value="preparing">Preparing</option>

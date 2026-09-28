@@ -2,7 +2,7 @@ const Order = require("../models/orderModel");
 const Table = require("../models/tableModel");
 const Menu = require("../models/Menu");
 const mongoose = require("mongoose");
-const User = require("../models/userModel");
+const User = require("../models/User");
 
 //createOrder
 const createOrder = async(req,res) => {
@@ -121,7 +121,7 @@ const createOrder = async(req,res) => {
 
         console.log("REQ.USER:", req.user);
         console.log("USER ID:", req.user.userId);
-        
+
         const availableWaiters = await User.find({
                 role: "waiter",
                 isAvailable: true,
@@ -269,6 +269,12 @@ const updateOrderStatus = async (req,res) => {
         if(!order) {
             return res.status(404).json({
                 message: "Order not found",
+            });
+        }
+
+        if (order.orderStatus === "completed") {
+            return res.status(400).json({
+                message: "Completed orders cannot be updated",
             });
         }
         if(!order.waiter || order.waiter.toString() !== req.user.userId){
