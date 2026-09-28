@@ -182,7 +182,7 @@ const verifyPayment = async (req, res) => {
 
         await payment.save();
 
-        const order = await Order.findById(orderId)
+      const order = await Order.findById(payment.order)
             .populate("customer")
             .populate("table")
             .populate("items.menuItem");
