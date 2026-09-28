@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import WaiterNavbar from "./WaiterNavbar";
+import "./WaiterDashboard.css";
 
 function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
@@ -47,26 +48,53 @@ function WaiterDashboard() {
             ) : orders.length === 0 ? (
                 <p>No assigned orders</p>
             ) : (
-                <div>
+                <div className="waiter-orders">
                     {orders.map((order) => (
-                        <div key={order._id}>
-                            <h2>Order #{order._id}</h2>
+                        <div className="waiter-order-card" key={order._id}>
 
-                            <p>
-                                Customer: {order.customer?.name}
-                            </p>
+                            <div className="waiter-order-header">
+                                <h2>Order #{order._id}</h2>
 
-                            <p>
-                                Table: {order.table?.tableNumber}
-                            </p>
+                                <span className="waiter-order-status">
+                                    {order.orderStatus}
+                                </span>
+                            </div>
 
-                            <p>
-                                Status: {order.orderStatus}
-                            </p>
+                            <div className="waiter-order-info">
+                                <p>
+                                    Customer: {order.customer?.name}
+                                </p>
 
-                            <p>
-                                Total: ₹{order.totalAmount}
-                            </p>
+                                <p>
+                                    Table: {order.table?.tableNumber}
+                                </p>
+                            </div>
+
+                            <div className="waiter-order-items">
+                                <h3>Items</h3>
+
+                                {order.items?.map((item) => (
+                                    <div
+                                        className="waiter-order-item"
+                                        key={item._id}
+                                    >
+                                        <span>
+                                            {item.menuItem?.name}
+                                        </span>
+
+                                        <span>
+                                            × {item.quantity}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="waiter-order-footer">
+                                <strong>
+                                    Total: ₹{order.totalAmount}
+                                </strong>
+                            </div>
+
                         </div>
                     ))}
                 </div>

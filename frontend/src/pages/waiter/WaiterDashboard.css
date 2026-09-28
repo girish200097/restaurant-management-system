@@ -1,0 +1,53 @@
+.waiter-orders {
+    padding: 30px;
+}
+
+.waiter-order-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.waiter-order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.waiter-order-header h2 {
+    margin: 0;
+}
+
+.waiter-order-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #f2f2f2;
+    font-size: 14px;
+}
+
+.waiter-order-info p {
+    margin: 6px 0;
+}
+
+.waiter-order-items {
+    margin-top: 20px;
+}
+
+.waiter-order-items h3 {
+    margin-bottom: 10px;
+}
+
+.waiter-order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.waiter-order-footer {
+    margin-top: 15px;
+    text-align: right;
+}
