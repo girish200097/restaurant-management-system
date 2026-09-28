@@ -17,7 +17,7 @@ import WaiterDashboard from "../pages/waiter/WaiterDashboard";
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Login />} />
       <Route
           path="/menu"
           element={
