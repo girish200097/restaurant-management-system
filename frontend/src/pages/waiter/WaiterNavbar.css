@@ -1,0 +1,34 @@
+.waiter-navbar {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.waiter-navbar-logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.waiter-navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.waiter-navbar-links a {
+    text-decoration: none;
+    color: #333;
+}
+
+.waiter-navbar-links button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 15px;
+}
