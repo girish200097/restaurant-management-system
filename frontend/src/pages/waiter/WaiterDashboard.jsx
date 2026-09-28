@@ -174,7 +174,7 @@ useEffect(() => {
                                 <option value="pending">Pending</option>
                                 <option value="preparing">Preparing</option>
                                 <option value="served">Served</option>
-                                <option value="completed">Completed</option>
+                                <option value="completed" disabled>Completed</option>
                                 <option value="cancelled">Cancelled</option>
                             </select>
                         </div>
