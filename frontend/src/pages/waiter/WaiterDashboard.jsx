@@ -5,37 +5,99 @@ import "./WaiterDashboard.css";
 function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [orderMessage, setOrderMessage] = useState("");
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const token = localStorage.getItem("token");
+   useEffect(() => {
+    let firstLoad = true;
 
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/order/my-assigned-orders`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+    const fetchOrders = async () => {
+        try {
+            const token = localStorage.getItem("token");
 
-                const data = await response.json();
-
-                console.log("ASSIGNED ORDERS:", data);
-
-                if (response.ok) {
-                    setOrders(data.orders);
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/order/my-assigned-orders`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        };
+            );
 
-        fetchOrders();
-    }, []);
+            const data = await response.json();
+
+            if (!response.ok) {
+                return;
+            }
+
+            const newOrders = data.orders || [];
+
+            setOrders((currentOrders) => {
+                if (!firstLoad) {
+                    // Check for new orders
+                    const hasNewOrder = newOrders.some(
+                        (newOrder) =>
+                            !currentOrders.some(
+                                (oldOrder) =>
+                                    oldOrder._id === newOrder._id
+                            )
+                    );
+
+                    if (hasNewOrder) {
+                        setOrderMessage("New order received");
+                    }
+
+                    // Check for updated orders
+                    const hasUpdatedOrder = newOrders.some((newOrder) => {
+                        const oldOrder = currentOrders.find(
+                            (order) => order._id === newOrder._id
+                        );
+
+                        if (!oldOrder) {
+                            return false;
+                        }
+
+                        return (
+                            newOrder.totalAmount !== oldOrder.totalAmount ||
+                            JSON.stringify(newOrder.items) !==
+                                JSON.stringify(oldOrder.items)
+                        );
+                    });
+
+                    if (hasUpdatedOrder) {
+                        setOrderMessage("Order has been updated");
+                    }
+                }
+
+                return newOrders;
+            });
+
+            firstLoad = false;
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchOrders();
+
+    const interval = setInterval(fetchOrders, 5000);
+
+    return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+    if (!orderMessage) {
+        return;
+    }
+
+    const timer = setTimeout(() => {
+        setOrderMessage("");
+    }, 4000);
+
+    return () => clearTimeout(timer);
+}, [orderMessage]);
+
     const updateOrderStatus = async (orderId, status) => {
         try {
             const token = localStorage.getItem("token");
@@ -82,6 +144,11 @@ function WaiterDashboard() {
         <div>
             <WaiterNavbar />
 
+            {orderMessage && (
+                <div className="waiter-order-message">
+                    {orderMessage}
+                </div>
+            )}
             <h1>Waiter Dashboard</h1>
 
             {loading ? (
