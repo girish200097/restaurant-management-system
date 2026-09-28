@@ -1,11 +1,41 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import "./WaiterNavbar.css";
+
 
 function WaiterNavbar() {
     const [isAvailable, setIsAvailable] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
+    useEffect(() => {
+            const fetchProfile = async () => {
+                try {
+                    const token = localStorage.getItem("token");
+
+                    const response = await fetch(
+                        `${import.meta.env.VITE_API_URL}/user/profile`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        console.log(data.message);
+                        return;
+                    }
+
+                    setIsAvailable(data.user.isAvailable);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+
+            fetchProfile();
+        }, []);
     const toggleAvailability = async () => {
         const newStatus = !isAvailable;
 
