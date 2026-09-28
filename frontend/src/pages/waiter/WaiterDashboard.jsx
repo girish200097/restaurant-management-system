@@ -36,6 +36,47 @@ function WaiterDashboard() {
 
         fetchOrders();
     }, []);
+    const updateOrderStatus = async (orderId, status) => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/order/${orderId}/status`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        orderStatus: status,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            console.log("STATUS UPDATE:", data);
+
+            if (!response.ok) {
+                alert(data.message || "Failed to update order");
+                return;
+            }
+
+            setOrders((currentOrders) =>
+                currentOrders.map((order) =>
+                    order._id === orderId
+                        ? {
+                              ...order,
+                              orderStatus: status,
+                          }
+                        : order
+                )
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div>
@@ -53,12 +94,22 @@ function WaiterDashboard() {
                         <div className="waiter-order-card" key={order._id}>
 
                             <div className="waiter-order-header">
-                                <h2>Order #{order._id}</h2>
+                            <h2>Order #{order._id}</h2>
 
-                                <span className="waiter-order-status">
-                                    {order.orderStatus}
-                                </span>
-                            </div>
+                            <select
+                                className="waiter-status-select"
+                                value={order.orderStatus}
+                                onChange={(event) =>
+                                    updateOrderStatus(order._id, event.target.value)
+                                }
+                            >
+                                <option value="pending">Pending</option>
+                                <option value="preparing">Preparing</option>
+                                <option value="served">Served</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
 
                             <div className="waiter-order-info">
                                 <p>

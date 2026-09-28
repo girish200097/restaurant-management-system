@@ -51,3 +51,16 @@
     margin-top: 15px;
     text-align: right;
 }
+.waiter-status-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.waiter-status-select:focus {
+    border-color: #999;
+}
