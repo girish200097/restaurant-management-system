@@ -96,8 +96,8 @@ const createOrder = async(req,res) => {
                     item => item.menuItem.toString() === newItem.menuItem.toString()    
                 );
 
-                if(existingItem) {
-                    existingItem.quantity += newItem.quantity;
+               if(existingItem) {
+                    existingItem.quantity = newItem.quantity;
                 }
                 else {
                     activeOrder.items.push({
