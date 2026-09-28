@@ -24,11 +24,40 @@
 .waiter-navbar-links a {
     text-decoration: none;
     color: #333;
+    font-weight: 500;
 }
 
-.waiter-navbar-links button {
+.waiter-availability {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.waiter-availability-text {
+    font-size: 14px;
+}
+
+.waiter-toggle {
+    width: 44px;
+    height: 24px;
+    padding: 2px;
+    border: none;
+    border-radius: 20px;
+    background: #ccc;
+    cursor: pointer;
+}
+
+.waiter-toggle-circle {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.waiter-logout {
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
 }

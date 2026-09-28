@@ -27,6 +27,48 @@ const updateProfile = async (req, res) => {
  })
 
 };
+
+//updateAvailability
+const updateAvailability = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        if (user.role !== "waiter") {
+            return res.status(403).json({
+                message: "Only waiters can change availability",
+            });
+        }
+
+        const { isAvailable } = req.body;
+
+        if (typeof isAvailable !== "boolean") {
+            return res.status(400).json({
+                message: "isAvailable must be true or false",
+            });
+        }
+
+        user.isAvailable = isAvailable;
+
+        await user.save();
+
+        return res.status(200).json({
+            message: "Availability updated successfully",
+            isAvailable: user.isAvailable,
+        });
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Something went wrong",
+        });
+    }
+};
 //getAllUsers
 const getAllUsers = async(req,res) => {
     try{
@@ -52,5 +94,7 @@ const getAllUsers = async(req,res) => {
 
 module.exports = {
     updateProfile,
+    updateAvailability,
     getAllUsers,
+    
 };

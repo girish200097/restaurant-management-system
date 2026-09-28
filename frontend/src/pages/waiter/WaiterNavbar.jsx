@@ -10,10 +10,20 @@ function WaiterNavbar() {
 
             <div className="waiter-navbar-links">
                 <Link to="/waiter-dashboard">
-                    Dashboard
+                    My Orders
                 </Link>
 
-                <button>
+                <div className="waiter-availability">
+                    <span className="waiter-availability-text">
+                        Unavailable
+                    </span>
+
+                    <button className="waiter-toggle">
+                        <span className="waiter-toggle-circle"></span>
+                    </button>
+                </div>
+
+                <button className="waiter-logout">
                     Logout
                 </button>
             </div>
