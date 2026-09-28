@@ -12,8 +12,8 @@ function Login() {
         const token = localStorage.getItem("token");
 
        if (token) {
-            navigate("/menu");
-        }
+        navigate("/menu");
+    }
     }, [navigate]);
 
    const handleSubmit = async (event) => {

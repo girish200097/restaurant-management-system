@@ -2,6 +2,7 @@ const Order = require("../models/orderModel");
 const Table = require("../models/tableModel");
 const Menu = require("../models/Menu");
 const mongoose = require("mongoose");
+const User = require("../models/userModel");
 
 //createOrder
 const createOrder = async(req,res) => {
@@ -120,12 +121,40 @@ const createOrder = async(req,res) => {
 
         console.log("REQ.USER:", req.user);
         console.log("USER ID:", req.user.userId);
-        const newOrder = await Order.create({
-            customer: req.user.userId,
-            table: tableId,
-            items: orderItems,
-            totalAmount,
-        })
+        
+        const availableWaiters = await User.find({
+                role: "waiter",
+                isAvailable: true,
+            });
+
+            let assignedWaiter = null;
+
+            if (availableWaiters.length > 0) {
+                let fewestOrders = Infinity;
+
+                for (const waiter of availableWaiters) {
+                    const orderCount = await Order.countDocuments({
+                        waiter: waiter._id,
+                        isActive: true,
+                        orderStatus: {
+                            $in: ["pending", "preparing", "served"],
+                        },
+                    });
+
+                    if (orderCount < fewestOrders) {
+                        fewestOrders = orderCount;
+                        assignedWaiter = waiter._id;
+                    }
+                }
+            }
+
+            const newOrder = await Order.create({
+                customer: req.user.userId,
+                table: tableId,
+                items: orderItems,
+                totalAmount,
+                waiter: assignedWaiter,
+            });
         table.status = "occupied";
         await table.save(); 
         return res.status(201).json({
