@@ -1,7 +1,50 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./WaiterNavbar.css";
 
 function WaiterNavbar() {
+    const [isAvailable, setIsAvailable] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
+
+    const toggleAvailability = async () => {
+        const newStatus = !isAvailable;
+
+        try {
+            setIsUpdating(true);
+
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/user/availability`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        isAvailable: newStatus,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            console.log("AVAILABILITY RESPONSE:", data);
+
+            if (!response.ok) {
+                alert(data.message || "Failed to update availability");
+                return;
+            }
+
+            setIsAvailable(data.isAvailable);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
     return (
         <nav className="waiter-navbar">
             <div className="waiter-navbar-logo">
@@ -15,10 +58,16 @@ function WaiterNavbar() {
 
                 <div className="waiter-availability">
                     <span className="waiter-availability-text">
-                        Unavailable
+                        {isAvailable ? "Available" : "Unavailable"}
                     </span>
 
-                    <button className="waiter-toggle">
+                    <button
+                        className={`waiter-toggle ${
+                            isAvailable ? "active" : ""
+                        }`}
+                        onClick={toggleAvailability}
+                        disabled={isUpdating}
+                    >
                         <span className="waiter-toggle-circle"></span>
                     </button>
                 </div>

@@ -38,23 +38,40 @@
 }
 
 .waiter-toggle {
-    width: 44px;
-    height: 24px;
-    padding: 2px;
+    width: 46px;
+    height: 26px;
+    padding: 3px;
     border: none;
     border-radius: 20px;
     background: #ccc;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: 0.2s;
 }
 
 .waiter-toggle-circle {
-    display: block;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background: #ffffff;
+    transition: 0.2s;
 }
 
+.waiter-toggle.active {
+    background: #28a745;
+    justify-content: flex-end;
+}
+
+.waiter-toggle:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.waiter-availability-text {
+    font-size: 14px;
+    font-weight: 500;
+}
 .waiter-logout {
     border: none;
     background: none;
