@@ -148,6 +148,17 @@ const createOrder = async(req,res) => {
                 }
             }
 
+            console.log(
+                "AVAILABLE WAITERS:",
+                availableWaiters.map((waiter) => ({
+                    id: waiter._id,
+                    name: waiter.name,
+                    isAvailable: waiter.isAvailable,
+                }))
+            );
+
+            console.log("ASSIGNED WAITER:", assignedWaiter);
+
             const newOrder = await Order.create({
                 customer: req.user.userId,
                 table: tableId,
