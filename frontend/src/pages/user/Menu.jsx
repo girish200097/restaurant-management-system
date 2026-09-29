@@ -465,10 +465,12 @@ useEffect(() => {
         }
       >
         {isCreatingOrder
-          ? "Creating Order..."
-          : paymentSuccess
-          ? "Order Completed"
-          : "Create Order"}
+        ? "Creating Order..."
+        : paymentSuccess
+        ? "Order Completed"
+        : orderId
+        ? "Update Your Order"
+        : "Create Order"}
       </button>
 
 
