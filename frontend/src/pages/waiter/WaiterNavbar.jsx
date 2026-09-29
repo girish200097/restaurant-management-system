@@ -6,6 +6,9 @@ import "./WaiterNavbar.css";
 function WaiterNavbar() {
     const [isAvailable, setIsAvailable] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [waiterName, setWaiterName] = useState("");
+
+    
 
     useEffect(() => {
             const fetchProfile = async () => {
@@ -27,8 +30,9 @@ function WaiterNavbar() {
                         console.log(data.message);
                         return;
                     }
-
+                    setWaiterName(data.user.name);
                     setIsAvailable(data.user.isAvailable);
+
                 } catch (error) {
                     console.log(error);
                 }
@@ -101,7 +105,9 @@ function WaiterNavbar() {
                         <span className="waiter-toggle-circle"></span>
                     </button>
                 </div>
-
+                  <div className="waiter-name">
+                    {waiterName}
+                </div>              
                 <button className="waiter-logout">
                     Logout
                 </button>
