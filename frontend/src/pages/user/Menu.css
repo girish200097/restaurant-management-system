@@ -554,10 +554,13 @@
         font-size: 14px;
     }
 
-    .payment-success {
-        padding: 18px;
-    }
-
+  .payment-success {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
     .payment-success h2 {
         font-size: 19px;
     }
