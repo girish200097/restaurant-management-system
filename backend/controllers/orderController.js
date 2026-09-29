@@ -3,6 +3,7 @@ const Table = require("../models/tableModel");
 const Menu = require("../models/Menu");
 const mongoose = require("mongoose");
 const User = require("../models/User");
+const { getIO } = require("../socket");
 
 //createOrder
 const createOrder = async(req,res) => {
@@ -316,6 +317,14 @@ const updateOrderStatus = async (req,res) => {
 
         order.orderStatus = orderStatus;
         await order.save();
+
+
+        const io = getIO();
+
+        io.to(`order_${order._id}`).emit("orderStatusUpdated", {
+            orderId: order._id.toString(),
+            orderStatus: order.orderStatus
+        });
 
         return res.status(200).json({
             message: "Order status updated successfully",

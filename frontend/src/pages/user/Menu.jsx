@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 import PaymentButton from "../../components/PaymentButton";
 import MenuCard from "../../components/MenuCard";
 import "./Menu.css";
 import { useSearchParams } from "react-router-dom";
-  
+
 function Menu() {
   const [searchParams] = useSearchParams();
   const [paidAmount, setPaidAmount] = useState(0);
@@ -13,6 +14,7 @@ function Menu() {
   const [tables, setTables] = useState([]);
   const [selectedTable, setSelectedTable] = useState("");
   const [orderId, setOrderId] = useState(null);
+  const [orderStatus, setOrderStatus] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -72,6 +74,30 @@ useEffect(() => {
       localStorage.setItem("selectedTable", selectedTable);
     }
   }, [selectedTable]);
+
+  useEffect(() => {
+    if (!orderId) return;
+
+    const socket = io(import.meta.env.VITE_API_URL);
+
+    socket.on("connect", () => {
+        console.log("Socket connected:", socket.id);
+
+        socket.emit("joinOrder", orderId);
+    });
+
+    socket.on("orderStatusUpdated", (data) => {
+        console.log("Order status updated:", data);
+
+        if (data.orderId === orderId) {
+            setOrderStatus(data.orderStatus);
+        }
+    });
+
+    return () => {
+        socket.disconnect();
+    };
+}, [orderId]);
 
   const addToCart = (menu) => {
     const existingItem = cart.find(
@@ -158,6 +184,7 @@ useEffect(() => {
       console.log("ORDER RESPONSE:", data);
 
       setOrderId(data.order._id);
+      setOrderStatus(response.data.order.orderStatus);
 
       alert(data.message);
     } catch (error) {
@@ -214,6 +241,27 @@ useEffect(() => {
     }
   };
 
+  const getStatusText = (status) => {
+    switch (status) {
+        case "pending":
+            return "Order Placed";
+
+        case "preparing":
+            return "Preparing";
+
+        case "served":
+            return "Food Served";
+
+        case "completed":
+            return "Completed";
+
+        case "cancelled":
+            return "Order Cancelled";
+
+        default:
+            return "";
+    }
+};
   return (
     <div className="menu-page">
 
@@ -322,6 +370,46 @@ useEffect(() => {
         </select>
 
       </div>
+
+      {orderStatus && (
+    <div className="order-status-section">
+        <h3>Order Status</h3>
+
+        <div className="order-status-bar">
+            <div className={`status-step ${orderStatus === "pending" ? "active" : ""}`}>
+                <span>1</span>
+                <p>Order Placed</p>
+            </div>
+
+            <div className={`status-line ${["preparing", "served", "completed"].includes(orderStatus) ? "active" : ""}`}></div>
+
+            <div className={`status-step ${["preparing", "served", "completed"].includes(orderStatus) ? "active" : ""}`}>
+                <span>2</span>
+                <p>Preparing</p>
+            </div>
+
+            <div className={`status-line ${["served", "completed"].includes(orderStatus) ? "active" : ""}`}></div>
+
+            <div className={`status-step ${["served", "completed"].includes(orderStatus) ? "active" : ""}`}>
+                <span>3</span>
+                <p>Food Served</p>
+            </div>
+
+            <div className={`status-line ${orderStatus === "completed" ? "active" : ""}`}></div>
+
+            <div className={`status-step ${orderStatus === "completed" ? "active" : ""}`}>
+                <span>4</span>
+                <p>Completed</p>
+            </div>
+        </div>
+
+        {orderStatus === "cancelled" && (
+            <div className="cancelled-status">
+                Order Cancelled
+            </div>
+        )}
+    </div>
+)}
 
       {/* Create Order */}
 

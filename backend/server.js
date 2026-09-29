@@ -1,6 +1,8 @@
 require("dotenv").config();
 const cors = require("cors");
 const { Server } = require("socket.io");
+const { setIO } = require("./socket");
+
 const express = require("express");
 const authRoutes = require("./routes/authRoutes");
 const dns=require("dns");
@@ -31,6 +33,8 @@ const io = new Server(server, {
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
   },
 });
+
+setIO(io);
 
 
 app.use(cors({
