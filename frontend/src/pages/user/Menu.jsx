@@ -568,7 +568,8 @@ useEffect(() => {
             Payment Successful ✅
           </h2>
 
-          <button
+          <div className="payment-success-container"> 
+                  <button
             onClick={handleGenerateReceipt}
             disabled={
               isGeneratingReceipt ||
@@ -590,6 +591,8 @@ useEffect(() => {
                   Order Again
               </button>
           )}
+            
+          </div>
 
         </div>
 
