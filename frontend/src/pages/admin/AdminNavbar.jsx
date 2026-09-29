@@ -8,7 +8,7 @@ function AdminNavbar() {
         <nav className="admin-navbar">
 
             <div className="admin-navbar-logo">
-                🍽️ Restaurant Admin
+                🍽️
             </div>
 
             <div className="admin-navbar-links">

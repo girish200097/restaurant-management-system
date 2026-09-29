@@ -95,3 +95,6 @@
         font-size: 13px;
     }
 }
+.dashboard-card {
+    cursor: pointer;
+}

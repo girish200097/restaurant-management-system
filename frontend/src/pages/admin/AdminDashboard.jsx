@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
@@ -6,6 +7,7 @@ function AdminDashboard() {
     const [users, setUsers] = useState(0);
     const [menus, setMenus] = useState(0);
     const [tables, setTables] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -55,7 +57,10 @@ function AdminDashboard() {
 
             <div className="dashboard-cards">
 
-                <div className="dashboard-card">
+                <div
+                    className="dashboard-card"
+                    onClick={() => navigate("/admin/menu")}
+                >
                     <h3>Menu</h3>
                     <p>{menus} Menu Items</p>
                 </div>
