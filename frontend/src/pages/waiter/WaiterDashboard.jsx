@@ -140,6 +140,18 @@ useEffect(() => {
         }
     };
 
+    const sortedOrders = [...orders].sort((a, b) => {
+    const aCompleted = a.orderStatus === "completed";
+    const bCompleted = b.orderStatus === "completed";
+
+    // Completed orders always go to the bottom
+    if (aCompleted && !bCompleted) return 1;
+    if (!aCompleted && bCompleted) return -1;
+
+    // Newest first
+    return new Date(b.createdAt) - new Date(a.createdAt);
+});
+
     return (
         <div>
             <WaiterNavbar />
@@ -157,7 +169,7 @@ useEffect(() => {
                 <p>No assigned orders</p>
             ) : (
                 <div className="waiter-orders">
-                    {orders.map((order) => (
+                    {sortedOrders.map((order) => (
                         <div className="waiter-order-card" key={order._id}>
 
                             <div className="waiter-order-header">

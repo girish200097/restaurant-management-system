@@ -737,53 +737,39 @@
 /* ================================
    MOBILE
 ================================ */
-
 @media (max-width: 768px) {
 
     .order-status-section {
-        padding: 15px 10px;
-        overflow-x: auto;
+        padding: 15px 8px;
+        overflow: hidden;
     }
 
     .order-status-bar {
-        min-width: 600px;
-        justify-content: flex-start;
+        width: 100%;
+        min-width: 0;
+        justify-content: space-between;
     }
 
     .status-step {
-        min-width: 90px;
-    }
-
-    .status-line {
-        width: 45px;
+        min-width: 0;
+        flex: 1;
     }
 
     .status-step span {
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
     }
 
     .status-step p {
-        font-size: 12px;
+        margin-top: 6px;
+        font-size: 10px;
+        white-space: nowrap;
     }
-}
-.order-again-button {
-  margin-top: 12px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  background-color: #333;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
 
-.order-again-button:hover {
-  background-color: #222;
-}
-
-.order-again-button:active {
-  transform: scale(0.98);
+    .status-line {
+        flex: 1;
+        width: auto;
+        height: 3px;
+    }
 }
