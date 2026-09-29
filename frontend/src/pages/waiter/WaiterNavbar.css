@@ -124,3 +124,54 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+/* ================================
+   MOBILE NAVBAR
+================================ */
+
+@media (max-width: 600px) {
+
+    .waiter-navbar {
+        height: auto;
+        min-height: 58px;
+        padding: 8px 12px;
+        gap: 10px;
+    }
+
+    .waiter-navbar-logo {
+        font-size: 18px;
+    }
+
+    .waiter-navbar-links {
+        gap: 8px;
+    }
+
+    .waiter-navbar-links a {
+        font-size: 13px;
+        padding: 6px 7px;
+    }
+
+    .waiter-availability {
+        gap: 5px;
+    }
+
+    .waiter-availability-text {
+        min-width: auto;
+        font-size: 12px;
+    }
+
+    .waiter-toggle {
+        width: 40px;
+        height: 22px;
+        padding: 2px;
+    }
+
+    .waiter-toggle-circle {
+        width: 18px;
+        height: 18px;
+    }
+
+    .waiter-logout {
+        padding: 6px 9px;
+        font-size: 12px;
+    }
+}
