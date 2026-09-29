@@ -1,6 +1,6 @@
 require("dotenv").config();
 const cors = require("cors");
-
+const { Server } = require("socket.io");
 const express = require("express");
 const authRoutes = require("./routes/authRoutes");
 const dns=require("dns");
@@ -20,6 +20,18 @@ const connectDB = require("./config/db");
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+
+const http = require("http");
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "https://restaurant-management-frontend-073k.onrender.com",
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  },
+});
+
 
 app.use(cors({
     origin: "https://restaurant-management-frontend-073k.onrender.com",
@@ -51,6 +63,19 @@ app.use("/admin", tableRoutes);
 app.use("/order", orderRoutes);
 app.use("/payment", paymentRoutes);
 
-app.listen(PORT, "0.0.0.0", () => {
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("joinOrder", (orderId) => {
+    socket.join(`order_${orderId}`);
+    console.log(`Socket ${socket.id} joined order_${orderId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
+server.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
 });
