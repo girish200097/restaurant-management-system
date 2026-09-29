@@ -32,11 +32,16 @@ function VerifyLogin() {
                     return;
                 }
 
-               localStorage.setItem(
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("role", data.role);
+
+                localStorage.setItem(
                     "profileCompleted",
                     String(data.profileCompleted)
                 );
 
+                setIsLoggedIn(true);
+                
                 if (data.role === "waiter") {
                     if (data.profileCompleted) {
                         navigate("/waiter-dashboard");
