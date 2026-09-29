@@ -582,7 +582,7 @@ useEffect(() => {
               : "Generate Receipt"}
           </button>
 
-          {receiptSent && (
+          {paymentSuccess && (
               <button
                   onClick={handleOrderAgain}
                   className="order-again-button"
