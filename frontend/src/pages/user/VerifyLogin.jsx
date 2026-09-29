@@ -32,17 +32,20 @@ function VerifyLogin() {
                     return;
                 }
 
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("role", data.role);
+               localStorage.setItem("token", data.token);
+localStorage.setItem("role", data.role);
 
-                localStorage.setItem(
-                    "profileCompleted",
-                    String(data.profileCompleted)
-                );
+localStorage.setItem(
+    "profileCompleted",
+    String(data.profileCompleted)
+);
 
-                setIsLoggedIn(true);
-                
-                if (data.role === "waiter") {
+setIsLoggedIn(true);
+
+                if (data.role === "admin") {
+                    localStorage.setItem("adminToken", data.token);
+                    navigate("/admin/dashboard");
+                } else if (data.role === "waiter") {
                     if (data.profileCompleted) {
                         navigate("/waiter-dashboard");
                     } else {
