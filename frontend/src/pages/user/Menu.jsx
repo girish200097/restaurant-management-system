@@ -76,6 +76,57 @@ useEffect(() => {
   }, [selectedTable]);
 
   useEffect(() => {
+    const fetchActiveOrder = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                return;
+            }
+
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/order/my-orders`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.log("Failed to fetch orders:", data.message);
+                return;
+            }
+
+            const orders = data.orders || [];
+
+            // Find the latest active order
+            const activeOrders = orders.filter(
+                (order) =>
+                    order.isActive &&
+                    ["pending", "preparing", "served"].includes(
+                        order.orderStatus
+                    )
+            );
+
+            if (activeOrders.length > 0) {
+                const latestOrder =
+                    activeOrders[activeOrders.length - 1];
+
+                setOrderId(latestOrder._id);
+                setOrderStatus(latestOrder.orderStatus);
+            }
+        } catch (error) {
+            console.log("Error fetching active order:", error);
+        }
+    };
+
+    fetchActiveOrder();
+}, []);
+
+  useEffect(() => {
     if (!orderId) return;
 
     const socket = io(import.meta.env.VITE_API_URL);
