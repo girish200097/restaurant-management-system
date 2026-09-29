@@ -79,6 +79,11 @@ function WaiterNavbar() {
         }
     };
 
+        const handleLogout = () => {
+            localStorage.removeItem("token");
+            window.location.href = "/";
+        };
+
     return (
         <nav className="waiter-navbar">
             <div className="waiter-navbar-logo">
@@ -108,9 +113,12 @@ function WaiterNavbar() {
                   <div className="waiter-name">
                     {waiterName}
                 </div>              
-                <button className="waiter-logout">
-                    Logout
-                </button>
+             <button
+                className="waiter-logout"
+                onClick={handleLogout}
+            >
+                Logout
+            </button>
             </div>
         </nav>
     );
