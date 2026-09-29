@@ -79,9 +79,35 @@ function WaiterNavbar() {
         }
     };
 
-        const handleLogout = () => {
-            localStorage.removeItem("token");
-            window.location.href = "/";
+        const handleLogout = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                if (isAvailable) {
+                    await fetch(
+                        `${import.meta.env.VITE_API_URL}/user/availability`,
+                        {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                                isAvailable: false,
+                            }),
+                        }
+                    );
+                }
+
+                localStorage.removeItem("token");
+                window.location.href = "/";
+            } catch (error) {
+                console.log("Logout error:", error);
+
+                // Logout even if availability update fails
+                localStorage.removeItem("token");
+                window.location.href = "/";
+            }
         };
 
     return (
