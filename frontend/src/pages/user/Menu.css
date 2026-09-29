@@ -757,3 +757,23 @@
         font-size: 12px;
     }
 }
+.order-again-button {
+  margin-top: 12px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: #333;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.order-again-button:hover {
+  background-color: #222;
+}
+
+.order-again-button:active {
+  transform: scale(0.98);
+}

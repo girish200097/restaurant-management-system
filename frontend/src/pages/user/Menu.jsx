@@ -76,55 +76,57 @@ useEffect(() => {
   }, [selectedTable]);
 
   useEffect(() => {
-    const fetchActiveOrder = async () => {
-        try {
-            const token = localStorage.getItem("token");
+        const fetchLatestOrder = async () => {
+            try {
+                const token = localStorage.getItem("token");
 
-            if (!token) {
-                return;
-            }
-
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/order/my-orders`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                if (!token) {
+                    return;
                 }
-            );
 
-            const data = await response.json();
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/order/my-orders`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
-            if (!response.ok) {
-                console.log("Failed to fetch orders:", data.message);
-                return;
-            }
+                const data = await response.json();
 
-            const orders = data.orders || [];
+                if (!response.ok) {
+                    console.log("Failed to fetch orders:", data.message);
+                    return;
+                }
 
-            // Find the latest active order
-            const activeOrders = orders.filter(
-                (order) =>
-                    order.isActive &&
-                    ["pending", "preparing", "served"].includes(
-                        order.orderStatus
-                    )
-            );
+                const orders = data.orders || [];
 
-            if (activeOrders.length > 0) {
-                const latestOrder =
-                    activeOrders[activeOrders.length - 1];
+                if (orders.length === 0) {
+                    return;
+                }
+
+                // Get the latest order
+                const latestOrder = orders[orders.length - 1];
 
                 setOrderId(latestOrder._id);
                 setOrderStatus(latestOrder.orderStatus);
-            }
-        } catch (error) {
-            console.log("Error fetching active order:", error);
-        }
-    };
 
-    fetchActiveOrder();
-}, []);
+                // Restore payment state
+                if (latestOrder.paymentStatus === "paid") {
+                    setPaymentSuccess(true);
+                    setPaidAmount(latestOrder.totalAmount);
+                } else {
+                    setPaymentSuccess(false);
+                }
+
+            } catch (error) {
+                console.log("Error fetching latest order:", error);
+            }
+        };
+
+        fetchLatestOrder();
+    }, []);
 
   useEffect(() => {
     if (!orderId) return;
@@ -291,6 +293,22 @@ useEffect(() => {
       setIsGeneratingReceipt(false);
     }
   };
+
+  const handleOrderAgain = () => {
+    setOrderId(null);
+    setOrderStatus(null);
+    setPaymentSuccess(false);
+    setPaidAmount(0);
+    setReceiptSent(false);
+    setSelectedTable("");
+
+    localStorage.removeItem("selectedTable");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+    });
+};
 
   const getStatusText = (status) => {
     switch (status) {
@@ -563,6 +581,15 @@ useEffect(() => {
               ? "Sending Receipt..."
               : "Generate Receipt"}
           </button>
+
+          {receiptSent && (
+              <button
+                  onClick={handleOrderAgain}
+                  className="order-again-button"
+              >
+                  Order Again
+              </button>
+          )}
 
         </div>
 
