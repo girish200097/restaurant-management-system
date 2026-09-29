@@ -474,7 +474,7 @@ useEffect(() => {
 
       {/* Payment */}
 
-      {orderId && !paymentSuccess && (
+      {orderId && orderStatus === "served" && !paymentSuccess && (
         <PaymentButton
           orderId={orderId}
           onPaymentSuccess={() => {

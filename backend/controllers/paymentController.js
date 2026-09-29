@@ -38,6 +38,12 @@ const createPayment = async (req, res) => {
                 message: "You can only pay for your own order",
             });
         }
+        
+        if (order.orderStatus !== "served") {
+            return res.status(400).json({
+                message: "Payment is allowed only after food is served"
+            });
+        }
 
         if (order.paymentStatus === "paid") {
             return res.status(400).json({
