@@ -297,6 +297,12 @@ const updateOrderStatus = async (req,res) => {
             });
         }
 
+        if (orderStatus === "completed") {
+            return res.status(400).json({
+                message: "Order can only be completed after payment"
+            });
+        }
+
         const order = await Order.findById(id);
         if(!order) {
             return res.status(404).json({

@@ -184,7 +184,7 @@ useEffect(() => {
       console.log("ORDER RESPONSE:", data);
 
       setOrderId(data.order._id);
-      setOrderStatus(response.data.order.orderStatus);
+      setOrderStatus(data.order.orderStatus);
 
       alert(data.message);
     } catch (error) {
@@ -371,33 +371,77 @@ useEffect(() => {
 
       </div>
 
-      {orderStatus && (
+            {/* Status bar Section */}
+     {orderId && orderStatus && (
     <div className="order-status-section">
         <h3>Order Status</h3>
 
         <div className="order-status-bar">
-            <div className={`status-step ${orderStatus === "pending" ? "active" : ""}`}>
+
+            {/* Order Placed */}
+            <div
+                className={`status-step ${
+                    ["pending", "preparing", "served", "completed"].includes(orderStatus)
+                        ? "active"
+                        : ""
+                }`}
+            >
                 <span>1</span>
                 <p>Order Placed</p>
             </div>
 
-            <div className={`status-line ${["preparing", "served", "completed"].includes(orderStatus) ? "active" : ""}`}></div>
+            <div
+                className={`status-line ${
+                    ["preparing", "served", "completed"].includes(orderStatus)
+                        ? "active"
+                        : ""
+                }`}
+            ></div>
 
-            <div className={`status-step ${["preparing", "served", "completed"].includes(orderStatus) ? "active" : ""}`}>
+            {/* Preparing */}
+            <div
+                className={`status-step ${
+                    ["preparing", "served", "completed"].includes(orderStatus)
+                        ? "active"
+                        : ""
+                }`}
+            >
                 <span>2</span>
                 <p>Preparing</p>
             </div>
 
-            <div className={`status-line ${["served", "completed"].includes(orderStatus) ? "active" : ""}`}></div>
+            <div
+                className={`status-line ${
+                    ["served", "completed"].includes(orderStatus)
+                        ? "active"
+                        : ""
+                }`}
+            ></div>
 
-            <div className={`status-step ${["served", "completed"].includes(orderStatus) ? "active" : ""}`}>
+            {/* Food Served */}
+            <div
+                className={`status-step ${
+                    ["served", "completed"].includes(orderStatus)
+                        ? "active"
+                        : ""
+                }`}
+            >
                 <span>3</span>
                 <p>Food Served</p>
             </div>
 
-            <div className={`status-line ${orderStatus === "completed" ? "active" : ""}`}></div>
+            <div
+                className={`status-line ${
+                    orderStatus === "completed" ? "active" : ""
+                }`}
+            ></div>
 
-            <div className={`status-step ${orderStatus === "completed" ? "active" : ""}`}>
+            {/* Completed */}
+            <div
+                className={`status-step ${
+                    orderStatus === "completed" ? "active" : ""
+                }`}
+            >
                 <span>4</span>
                 <p>Completed</p>
             </div>

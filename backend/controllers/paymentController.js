@@ -6,6 +6,7 @@ const razorpay = require("../config/razorpay");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const sendReceiptEmail = require("../utils/sendReceiptEmail");
+const { getIO } = require("../socket");
 
 //createPayment
 const createPayment = async (req, res) => {
@@ -194,8 +195,16 @@ const verifyPayment = async (req, res) => {
         }
 
         order.paymentStatus = "paid";
+        order.orderStatus = "completed";
 
         await order.save();
+
+        const io = getIO();
+
+        io.to(`order_${order._id}`).emit("orderStatusUpdated", {
+            orderId: order._id.toString(),
+            orderStatus: order.orderStatus
+        });
 
         return res.status(200).json({
             message: "Payment completed successfully",
@@ -309,8 +318,14 @@ const paymentWebhook = async (req, res) => {
 
             if (order) {
                 order.paymentStatus = "paid";
-
+                order.orderStatus = "completed";
+ 
                 await order.save();
+
+                 io.to(`order_${order._id}`).emit("orderStatusUpdated", {
+                    orderId: order._id.toString(),
+                    orderStatus: order.orderStatus
+                });
 
                 if (order.table) {
                     order.table.status = "available";
