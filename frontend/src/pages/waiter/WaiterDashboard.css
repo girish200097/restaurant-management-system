@@ -284,3 +284,60 @@
         font-size: 13px;
     }
 }
+/* ================================
+   ORDER FILTER
+================================ */
+
+.waiter-filter {
+    padding: 0 30px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.waiter-filter label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.waiter-filter select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.waiter-filter select:hover {
+    border-color: #aaa;
+}
+
+.waiter-filter select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .waiter-filter {
+        padding: 0 12px 15px;
+        gap: 8px;
+    }
+
+    .waiter-filter label {
+        font-size: 13px;
+    }
+
+    .waiter-filter select {
+        flex: 1;
+        min-width: 0;
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+}

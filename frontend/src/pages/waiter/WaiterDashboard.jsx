@@ -6,6 +6,7 @@ function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [orderMessage, setOrderMessage] = useState("");
+    const [orderFilter, setOrderFilter] = useState("all");
 
    useEffect(() => {
     let firstLoad = true;
@@ -140,17 +141,25 @@ useEffect(() => {
         }
     };
 
-    const sortedOrders = [...orders].sort((a, b) => {
-    const aCompleted = a.orderStatus === "completed";
-    const bCompleted = b.orderStatus === "completed";
+const filteredOrders = orders
+    .filter((order) => {
+        if (orderFilter === "all") {
+            return true;
+        }
 
-    // Completed orders always go to the bottom
-    if (aCompleted && !bCompleted) return 1;
-    if (!aCompleted && bCompleted) return -1;
+        return order.orderStatus === orderFilter;
+    })
+    .sort((a, b) => {
+        const aCompleted = a.orderStatus === "completed";
+        const bCompleted = b.orderStatus === "completed";
 
-    // Newest first
-    return new Date(b.createdAt) - new Date(a.createdAt);
-});
+        // Completed orders at the bottom
+        if (aCompleted && !bCompleted) return 1;
+        if (!aCompleted && bCompleted) return -1;
+
+        // Newest first
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    });
 
     return (
         <div>
@@ -162,6 +171,22 @@ useEffect(() => {
                 </div>
             )}
             <h1>Waiter Dashboard</h1>
+                    <div className="waiter-filter">
+            <label htmlFor="order-filter">Filter Orders</label>
+
+            <select
+                id="order-filter"
+                value={orderFilter}
+                onChange={(event) => setOrderFilter(event.target.value)}
+            >
+                <option value="all">All Orders</option>
+                <option value="pending">Pending</option>
+                <option value="preparing">Preparing</option>
+                <option value="served">Served</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </div>
 
             {loading ? (
                 <p>Loading orders...</p>
@@ -169,7 +194,7 @@ useEffect(() => {
                 <p>No assigned orders</p>
             ) : (
                 <div className="waiter-orders">
-                    {sortedOrders.map((order) => (
+                    {filteredOrders.map((order) => (
                         <div className="waiter-order-card" key={order._id}>
 
                             <div className="waiter-order-header">
