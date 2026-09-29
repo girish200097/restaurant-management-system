@@ -26,6 +26,15 @@ function AppRoutes() {
               </ProtectedRoute>
           }
       />
+
+      <Route
+        path="/home"
+        element={
+            <ProtectedRoute>
+                <Home />
+            </ProtectedRoute>
+        }
+        />
       <Route path="/login" element={<Login />} />
       <Route path="/auth/verify" element={<VerifyLogin />} />
       <Route path="/room-booking" element={<RoomBooking />} />

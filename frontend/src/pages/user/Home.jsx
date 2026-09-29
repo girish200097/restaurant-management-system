@@ -43,8 +43,14 @@ function Home() {
             }
 
            localStorage.setItem("profileCompleted", "true");
-            setProfileCompleted(true);
 
+            const role = localStorage.getItem("role");
+
+            if (role === "waiter") {
+                navigate("/waiter-dashboard");
+            } else {
+                setProfileCompleted(true);
+            }
             
 
         } catch (error) {
