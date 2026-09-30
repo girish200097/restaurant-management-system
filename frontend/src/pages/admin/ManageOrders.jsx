@@ -9,7 +9,7 @@ function ManageOrders() {
         try {
             const token = localStorage.getItem("adminToken");
 
-            const response = await fetch(`${VITE_API_URL}/order`, {
+            const response = await fetch(`${VITE_API_URL}/admin/order`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
