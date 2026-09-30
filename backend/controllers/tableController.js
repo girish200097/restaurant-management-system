@@ -6,7 +6,7 @@ const createTable =async (req,res) => {
     try {
         const {capacity,tableNumber} = req.body;
 
-        if(!capacity || !tableNumber){
+        if(!tableNumber){
             return res.status(400).json({
                 message: "All Fields are Required",
             });
@@ -22,7 +22,6 @@ const createTable =async (req,res) => {
 
         const newTable = await Table.create({
             tableNumber,
-            capacity,
 
         })
 
@@ -197,7 +196,7 @@ const updateTableAvailability = async(req,res) => {
              {status},
             {
             new: true,
-            runValidators: true,
+            runValidators: true, 
             });
 
         if(!updatedTable) {

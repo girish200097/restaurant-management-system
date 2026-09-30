@@ -13,6 +13,7 @@ import AdminLayout from "../pages/admin/AdminLayout";
 import AdminProtectedRoute from "../components/AdminProtectedRoute";
 import AdminMenu from "../pages/admin/AdminMenu";
 import WaiterDashboard from "../pages/waiter/WaiterDashboard";
+import ManageTables from "../pages/admin/ManageTables";
 
 function AppRoutes() {
   return (
@@ -40,6 +41,14 @@ function AppRoutes() {
       <Route path="/room-booking" element={<RoomBooking />} />
       <Route path="/table-reservation" element={<TableReservation />} />
       <Route path="/call-waiter" element={<CallWaiter />} />
+      <Route
+            path="tables"
+            element={
+                <AdminProtectedRoute>
+                    <ManageTables />
+                </AdminProtectedRoute>
+            }
+        />
 
       <Route
         path="/waiter-dashboard"
@@ -71,6 +80,11 @@ function AppRoutes() {
                     </AdminProtectedRoute>
                 }
             />
+            <Route path="tables" element={
+                <AdminProtectedRoute>
+                    <ManageTables />
+                </AdminProtectedRoute>
+            } />
         </Route>
     </Routes>
   );

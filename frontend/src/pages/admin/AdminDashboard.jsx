@@ -65,7 +65,10 @@ function AdminDashboard() {
                     <p>{menus} Menu Items</p>
                 </div>
 
-                <div className="dashboard-card">
+                <div
+                    className="dashboard-card"
+                    onClick={() => navigate("/admin/tables")}
+                >
                     <h3>Tables</h3>
                     <p>{tables} Tables</p>
                 </div>

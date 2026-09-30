@@ -8,7 +8,6 @@ const tableSchema = new mongoose.Schema({
     },
     capacity : {
         type: Number,
-        required : true,
         min: 1,
     },
     status : {
