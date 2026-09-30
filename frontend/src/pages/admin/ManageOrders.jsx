@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import "./ManageOrders.css";
+
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function ManageOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [expandedOrder, setExpandedOrder] = useState(null);
 
     const fetchOrders = async () => {
         try {
@@ -34,6 +36,12 @@ function ManageOrders() {
         fetchOrders();
     }, []);
 
+    const toggleOrder = (orderId) => {
+        setExpandedOrder(
+            expandedOrder === orderId ? null : orderId
+        );
+    };
+
     if (loading) {
         return (
             <div className="manage-orders">
@@ -48,7 +56,7 @@ function ManageOrders() {
             <div className="manage-orders-header">
                 <div>
                     <h1>Orders</h1>
-                    <p>View all customer orders</p>
+                    <p>Click an order to view details</p>
                 </div>
 
                 <button onClick={fetchOrders}>
@@ -64,100 +72,173 @@ function ManageOrders() {
             ) : (
                 <div className="orders-list">
 
-                    {orders.map((order) => (
-                        <div className="order-card" key={order._id}>
+                    {orders.map((order) => {
 
-                            <div className="order-card-header">
-                                <div>
-                                    <h3>
-                                        Order #{order._id.slice(-6)}
-                                    </h3>
+                        const isExpanded =
+                            expandedOrder === order._id;
 
-                                    <p>
-                                        {new Date(order.createdAt).toLocaleString()}
-                                    </p>
+                        return (
+                            <div
+                                className={`order-card ${
+                                    isExpanded ? "expanded" : ""
+                                }`}
+                                key={order._id}
+                                onClick={() => toggleOrder(order._id)}
+                            >
+
+                                {/* Summary */}
+                                <div className="order-summary">
+
+                                    <div className="order-id">
+                                        <span>Order</span>
+                                        <strong>
+                                            #{order._id.slice(-6)}
+                                        </strong>
+                                    </div>
+
+                                    <div className="order-summary-item">
+                                        <strong>Customer</strong>
+                                        <p>
+                                            {order.customer?.name || "N/A"}
+                                        </p>
+                                        <small>
+                                            {order.customer?.email || "N/A"}
+                                        </small>
+                                    </div>
+
+                                    <div className="order-summary-item">
+                                        <strong>Table</strong>
+                                        <p>
+                                            {order.table?.tableNumber
+                                                ? `Table ${order.table.tableNumber}`
+                                                : "N/A"}
+                                        </p>
+                                    </div>
+
+                                    <div className="order-summary-item">
+                                        <strong>Waiter</strong>
+                                        <p>
+                                            {order.waiter?.name ||
+                                                "Not assigned"}
+                                        </p>
+                                    </div>
+
+                                    <div className="order-summary-item">
+                                        <strong>Payment</strong>
+                                        <p className="payment-text">
+                                            {order.paymentStatus}
+                                        </p>
+                                    </div>
+
+                                    <div className="order-status">
+                                        <span
+                                            className={`status ${order.orderStatus}`}
+                                        >
+                                            {order.orderStatus}
+                                        </span>
+                                    </div>
+
+                                    <div className="expand-icon">
+                                        {isExpanded ? "▲" : "▼"}
+                                    </div>
+
                                 </div>
 
-                                <div className="order-status">
-                                    <span className={`status ${order.orderStatus}`}>
-                                        {order.orderStatus}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="order-details">
-
-                                <div>
-                                    <strong>Customer</strong>
-                                    <p>
-                                        {order.customer?.name || "N/A"}
-                                    </p>
-                                    <small>
-                                        {order.customer?.email || "N/A"}
-                                    </small>
-                                </div>
-
-                                <div>
-                                    <strong>Table</strong>
-                                    <p>
-                                        {order.table?.tableNumber
-                                            ? `Table ${order.table.tableNumber}`
-                                            : "N/A"}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <strong>Waiter</strong>
-                                    <p>
-                                        {order.waiter?.name || "Not assigned"}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <strong>Payment</strong>
-                                    <p>
-                                        {order.paymentStatus}
-                                    </p>
-                                </div>
-
-                            </div>
-
-                            <div className="order-items">
-
-                                <h4>Ordered Items</h4>
-
-                                {order.items?.map((item, index) => (
+                                {/* Details */}
+                                {isExpanded && (
                                     <div
-                                        className="order-item"
-                                        key={item.menuItem?._id || index}
+                                        className="order-details-expanded"
+                                        onClick={(event) =>
+                                            event.stopPropagation()
+                                        }
                                     >
-                                        <div>
+
+                                        <div className="details-top">
+
+                                            <div>
+                                                <strong>
+                                                    Order Date
+                                                </strong>
+                                                <p>
+                                                    {new Date(
+                                                        order.createdAt
+                                                    ).toLocaleString()}
+                                                </p>
+                                            </div>
+
+                                            <div>
+                                                <strong>
+                                                    Payment Status
+                                                </strong>
+                                                <p>
+                                                    {order.paymentStatus}
+                                                </p>
+                                            </div>
+
+                                            <div>
+                                                <strong>
+                                                    Order Status
+                                                </strong>
+                                                <p>
+                                                    {order.orderStatus}
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="order-items">
+
+                                            <h4>Ordered Items</h4>
+
+                                            {order.items?.map(
+                                                (item, index) => (
+                                                    <div
+                                                        className="order-item"
+                                                        key={
+                                                            item.menuItem?._id ||
+                                                            index
+                                                        }
+                                                    >
+                                                        <div>
+                                                            <strong>
+                                                                {item.menuItem
+                                                                    ?.name ||
+                                                                    "Unknown item"}
+                                                            </strong>
+                                                        </div>
+
+                                                        <div className="item-values">
+                                                            <span>
+                                                                Qty:{" "}
+                                                                {item.quantity}
+                                                            </span>
+
+                                                            <span>
+                                                                ₹{item.price}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            )}
+
+                                        </div>
+
+                                        <div className="order-total">
                                             <strong>
-                                                {item.menuItem?.name || "Unknown item"}
+                                                Total Amount
+                                            </strong>
+
+                                            <strong>
+                                                ₹{order.totalAmount}
                                             </strong>
                                         </div>
 
-                                        <div>
-                                            <span>
-                                                Qty: {item.quantity}
-                                            </span>
-
-                                            <span>
-                                                ₹{item.price}
-                                            </span>
-                                        </div>
                                     </div>
-                                ))}
+                                )}
 
                             </div>
-
-                            <div className="order-total">
-                                <strong>Total Amount</strong>
-                                <strong>₹{order.totalAmount}</strong>
-                            </div>
-
-                        </div>
-                    ))}
+                        );
+                    })}
 
                 </div>
             )}

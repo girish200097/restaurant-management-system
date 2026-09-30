@@ -32,7 +32,6 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.2s ease;
 }
 
 .manage-orders-header button:hover {
@@ -41,47 +40,103 @@
 
 .orders-list {
     display: grid;
-    gap: 22px;
+    gap: 16px;
 }
+
+/* Order Card */
 
 .order-card {
     background: white;
     border: 1px solid #f0ded2;
     border-radius: 14px;
-    padding: 22px;
     box-shadow: 0 5px 18px rgba(80, 50, 30, 0.08);
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
-.order-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+.order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(80, 50, 30, 0.12);
+}
+
+.order-card.expanded {
+    cursor: default;
+}
+
+/* Horizontal Summary */
+
+.order-summary {
+    min-height: 95px;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns:
+        90px
+        minmax(180px, 1.5fr)
+        110px
+        130px
+        100px
+        110px
+        25px;
+    align-items: center;
     gap: 20px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid #f0e4dc;
+    box-sizing: border-box;
 }
 
-.order-card-header h3 {
-    margin: 0;
-    color: #3f332d;
-    font-size: 20px;
+.order-id {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.order-card-header p {
-    margin: 6px 0 0;
+.order-id span {
     color: #888;
-    font-size: 13px;
+    font-size: 12px;
 }
+
+.order-id strong {
+    color: #3f332d;
+    font-size: 15px;
+}
+
+.order-summary-item strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #777;
+    font-size: 12px;
+}
+
+.order-summary-item p {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.order-summary-item small {
+    display: block;
+    margin-top: 3px;
+    color: #888;
+    font-size: 11px;
+    overflow-wrap: anywhere;
+}
+
+.payment-text {
+    text-transform: capitalize;
+}
+
+/* Status */
 
 .status {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 6px 11px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     text-transform: capitalize;
     background: #eee;
     color: #555;
+    text-align: center;
 }
 
 .status.pending {
@@ -109,31 +164,39 @@
     color: #991b1b;
 }
 
-.order-details {
+.expand-icon {
+    color: #888;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Expanded Details */
+
+.order-details-expanded {
+    border-top: 1px solid #f0e4dc;
+    padding: 20px;
+    background: #fffdfb;
+}
+
+.details-top {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 20px 0;
+    padding-bottom: 18px;
 }
 
-.order-details strong {
+.details-top strong {
     display: block;
-    margin-bottom: 6px;
-    color: #555;
-    font-size: 13px;
+    margin-bottom: 5px;
+    color: #777;
+    font-size: 12px;
 }
 
-.order-details p {
+.details-top p {
     margin: 0;
     color: #333;
+    font-size: 14px;
     font-weight: 600;
-}
-
-.order-details small {
-    display: block;
-    margin-top: 3px;
-    color: #888;
-    word-break: break-word;
 }
 
 .order-items {
@@ -150,20 +213,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    padding: 10px 0;
+    padding: 11px 0;
     border-bottom: 1px solid #f5eee9;
 }
 
 .order-item strong {
     color: #444;
+    font-size: 14px;
 }
 
-.order-item > div:last-child {
+.item-values {
     display: flex;
-    gap: 25px;
+    gap: 30px;
     color: #666;
-    white-space: nowrap;
+    font-size: 14px;
 }
 
 .order-total {
@@ -176,6 +239,8 @@
     color: #3f332d;
     font-size: 17px;
 }
+
+/* Empty / Loading */
 
 .no-orders,
 .orders-loading {
@@ -197,56 +262,122 @@
 }
 
 /* Tablet */
+
+@media (max-width: 1100px) {
+    .order-summary {
+        grid-template-columns:
+            80px
+            minmax(150px, 1.5fr)
+            100px
+            110px
+            90px
+            100px
+            20px;
+        gap: 12px;
+    }
+}
+
+/* Smaller Tablet */
+
 @media (max-width: 900px) {
     .manage-orders {
         padding: 30px 4%;
     }
 
-    .order-details {
-        grid-template-columns: repeat(2, 1fr);
+    .order-summary {
+        grid-template-columns:
+            80px
+            1.5fr
+            90px
+            100px
+            20px;
+    }
+
+    .order-summary-item:nth-child(5) {
+        display: none;
+    }
+
+    .order-status {
+        grid-column: 3;
     }
 }
 
 /* Mobile */
+
 @media (max-width: 600px) {
     .manage-orders {
         padding: 25px 4%;
     }
 
     .manage-orders-header {
-        align-items: flex-start;
-        gap: 15px;
+        margin-bottom: 20px;
     }
 
     .manage-orders-header h1 {
         font-size: 26px;
     }
 
-    .manage-orders-header button {
-        padding: 9px 14px;
+    .manage-orders-header p {
+        font-size: 13px;
     }
 
-    .order-card {
+    .manage-orders-header button {
+        padding: 9px 13px;
+        font-size: 13px;
+    }
+
+    .order-summary {
+        min-height: auto;
+        padding: 16px;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 12px;
+    }
+
+    .order-id {
+        grid-column: 1;
+    }
+
+    .expand-icon {
+        grid-column: 2;
+        grid-row: 1;
+        text-align: right;
+    }
+
+    .order-summary-item {
+        min-width: 0;
+    }
+
+    .order-summary-item p {
+        font-size: 13px;
+    }
+
+    .order-summary-item small {
+        font-size: 10px;
+    }
+
+    .order-status {
+        grid-column: 2;
+        grid-row: 2;
+        text-align: right;
+    }
+
+    .order-details-expanded {
         padding: 16px;
     }
 
-    .order-card-header {
-        flex-direction: column;
-    }
-
-    .order-details {
+    .details-top {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 14px;
     }
 
     .order-item {
-        align-items: flex-start;
+        gap: 12px;
     }
 
-    .order-item > div:last-child {
-        flex-direction: column;
-        gap: 4px;
-        text-align: right;
+    .item-values {
+        gap: 12px;
+        white-space: nowrap;
+        font-size: 13px;
     }
 
     .order-total {
