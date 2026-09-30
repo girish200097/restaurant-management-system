@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./ManageOrders.css";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 function ManageOrders() {
     const [orders, setOrders] = useState([]);
@@ -9,7 +10,7 @@ function ManageOrders() {
         try {
             const token = localStorage.getItem("adminToken");
 
-            const response = await fetch(`${VITE_API_URL}/admin/order`, {
+            const response = await fetch(`${VITE_API_URL}/order`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
