@@ -43,6 +43,50 @@ function ManageOrders() {
         );
     };
 
+    const handleDeleteOrder = async (orderId) => {
+    const confirmed = window.confirm(
+        "Are you sure you want to permanently delete this order?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const response = await fetch(
+            `${VITE_API_URL}/order/${orderId}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.log(data.message);
+            return;
+        }
+
+        // Remove deleted order from the current list
+        setOrders((currentOrders) =>
+            currentOrders.filter(
+                (order) => order._id !== orderId
+            )
+        );
+
+        // Close the expanded order
+        setExpandedOrder(null);
+
+    } catch (error) {
+        console.log("Delete order error:", error);
+    }
+};
+
     // Filter and sort orders
     const filteredOrders = orders
         .filter((order) => {
@@ -320,6 +364,16 @@ function ManageOrders() {
                                                 ₹{order.totalAmount}
                                             </strong>
 
+                                        </div>
+
+                                        <div className="order-delete-section">
+                                           <button
+                                                className="delete-order-btn"
+                                                onClick={() => handleDeleteOrder(order._id)}
+                                                title="Delete order"
+                                            >
+                                                🗑️
+                                            </button>
                                         </div>
 
                                     </div>

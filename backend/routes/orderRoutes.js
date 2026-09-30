@@ -9,6 +9,7 @@ const {createOrder,
     getMyAssignedOrders,
     cancelOrder,
     removeOrderItem,
+    deleteOrder,
 } = require("../controllers/orderController");
 const adminMiddleware = require("../middleware/adminMiddleware");
 const authMiddleware = require("../middleware/authMiddleware");
@@ -45,6 +46,13 @@ router.delete(
     authMiddleware,
     removeOrderItem
 );
+
+router.delete(
+    "/:id",
+    adminMiddleware,
+    deleteOrder
+);
+
 router.get(
     "/:id",
     authMiddleware,
