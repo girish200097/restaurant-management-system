@@ -206,7 +206,11 @@ const createOrder = async(req,res) => {
 //getAllOrders
 const getAllOrders = async (req, res) => {
     try {
-        const orders = await Order.find();
+        const orders = await Order.find()
+        .populate("customer", "name email")
+        .populate("waiter", "name email")
+        .populate("table", "tableNumber")
+        .populate("items.menuItem", "name price");
 
         if (orders.length === 0) {
             return res.status(200).json({
