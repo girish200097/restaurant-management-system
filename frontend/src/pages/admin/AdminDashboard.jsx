@@ -80,12 +80,18 @@ function AdminDashboard() {
                     <p>Manage customer orders</p>
                 </div>
 
-                <div className="dashboard-card">
-                    <h3>Users</h3>
-                    <p>{users} Customers</p>
-                </div>
+               <div
+                className="dashboard-card"
+                onClick={() => navigate("/admin/users")}
+            >
+                <h3>Users</h3>
+                <p>{users} Customers</p>
+            </div>
 
-                <div className="dashboard-card">
+                <div
+                    className="dashboard-card"
+                    onClick={() => navigate("/admin/payments")}
+                >
                     <h3>Payments</h3>
                     <p>View payments</p>
                 </div>
