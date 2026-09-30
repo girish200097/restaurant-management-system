@@ -16,6 +16,7 @@ import WaiterDashboard from "../pages/waiter/WaiterDashboard";
 import ManageTables from "../pages/admin/ManageTables";
 import ManageOrders from "../pages/admin/ManageOrders";
 import ManageUsers from "../pages/admin/ManageUsers";
+import ManagePayments from "../pages/admin/ManagePayments";
 
 function AppRoutes() {
   return (
@@ -75,7 +76,8 @@ function AppRoutes() {
                 }
             />
 
-            <Route path="tables" element={
+            <Route path="tables" 
+                element={
                 <AdminProtectedRoute>
                     <ManageTables />
                 </AdminProtectedRoute>
@@ -98,7 +100,16 @@ function AppRoutes() {
                     </AdminProtectedRoute>
                 }
             />
-            
+
+            <Route
+                path="payments"
+                element={
+                    <AdminProtectedRoute>
+                        <ManagePayments />
+                    </AdminProtectedRoute>
+                }
+            />
+
         </Route>
     </Routes>
   );

@@ -373,7 +373,68 @@ const paymentWebhook = async (req, res) => {
     }
 };
 
+//getAllPayments
+const getAllPayments = async (req, res) => {
+    try {
+        const payments = await Payment.find()
+            .populate("customer", "name email")
+            .populate({
+                path: "order",
+                select: "orderStatus paymentStatus totalAmount table",
+                populate: {
+                    path: "table",
+                    select: "tableNumber",
+                },
+            })
+            .sort({ createdAt: -1 });
 
+        return res.status(200).json({
+            message: "Payments fetched successfully",
+            payments,
+        });
+
+    } catch (error) {
+        console.log("Get all payments error:", error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+};
+
+//deletePayment
+const deletePayment = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid Payment ID",
+            });
+        }
+
+        const payment = await Payment.findById(id);
+
+        if (!payment) {
+            return res.status(404).json({
+                message: "Payment not found",
+            });
+        }
+
+        await Payment.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            message: "Payment deleted successfully",
+        });
+
+    } catch (error) {
+        console.log("Delete payment error:", error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+};
 //generateReceipt
 
 const generateReceipt = async (req, res) => {
@@ -447,10 +508,11 @@ const generateReceipt = async (req, res) => {
     }
 };
 
-
 module.exports = {
     createPayment,
     verifyPayment,
     paymentWebhook,
     generateReceipt,
+    getAllPayments,
+    deletePayment,
 };

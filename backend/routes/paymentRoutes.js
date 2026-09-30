@@ -1,13 +1,17 @@
 const express = require("express");
 
+
 const {
     createPayment,
     verifyPayment,
     paymentWebhook,
     generateReceipt,
+    getAllPayments,
+    deletePayment,
 } = require("../controllers/paymentController");
 
 const authMiddleware = require("../middleware/authMiddleware");
+const adminMiddleware = require("../middleware/adminMiddleware");
 
 const router = express.Router();
 
@@ -36,7 +40,17 @@ router.post(
     generateReceipt
 );
 
+router.get(
+    "/",
+    adminMiddleware,
+    getAllPayments
+);
 
+router.delete(
+    "/:id",
+    adminMiddleware,
+    deletePayment
+);
 
 
 
