@@ -72,7 +72,7 @@ function AppRoutes() {
                     </AdminProtectedRoute>
                 }
             />
-            <Route path="tables" element={
+            <Route path="table" element={
                 <AdminProtectedRoute>
                     <ManageTables />
                 </AdminProtectedRoute>
