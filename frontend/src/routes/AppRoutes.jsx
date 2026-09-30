@@ -15,6 +15,7 @@ import AdminMenu from "../pages/admin/AdminMenu";
 import WaiterDashboard from "../pages/waiter/WaiterDashboard";
 import ManageTables from "../pages/admin/ManageTables";
 import ManageOrders from "../pages/admin/ManageOrders";
+import ManageUsers from "../pages/admin/ManageUsers";
 
 function AppRoutes() {
   return (
@@ -73,7 +74,7 @@ function AppRoutes() {
                     </AdminProtectedRoute>
                 }
             />
-            
+
             <Route path="tables" element={
                 <AdminProtectedRoute>
                     <ManageTables />
@@ -88,6 +89,16 @@ function AppRoutes() {
                     </AdminProtectedRoute>
                 }
             />
+
+            <Route
+                path="users"
+                element={
+                    <AdminProtectedRoute>
+                        <ManageUsers />
+                    </AdminProtectedRoute>
+                }
+            />
+            
         </Route>
     </Routes>
   );

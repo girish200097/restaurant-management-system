@@ -116,10 +116,93 @@ const getAllUsers = async(req,res) => {
     }
 };
 
+//updateUserRole
+const updateUserRole = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { role } = req.body;
+
+        const allowedRoles = ["customer", "waiter"];
+
+        if (!allowedRoles.includes(role)) {
+            return res.status(400).json({
+                message: "Invalid role",
+            });
+        }
+
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        if (user.role === "admin") {
+            return res.status(403).json({
+                message: "Admin role cannot be changed",
+            });
+        }
+
+        user.role = role;
+
+        await user.save();
+
+        return res.status(200).json({
+            message: "User role updated successfully",
+            user,
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Something went wrong",
+        });
+    }
+};
+
+//deleteUser
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        // Prevent deleting an admin
+        if (user.role === "admin") {
+            return res.status(403).json({
+                message: "Admin users cannot be deleted",
+            });
+        }
+
+        await User.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            message: "User deleted successfully",
+        });
+
+    } catch (error) {
+        console.log("Delete user error:", error);
+
+        return res.status(500).json({
+            message: "Something went wrong",
+        });
+    }
+};
+
 module.exports = {
     updateProfile,
     updateAvailability,
     getProfile,
     getAllUsers,
+    updateUserRole,
+    deleteUser,
     
 };

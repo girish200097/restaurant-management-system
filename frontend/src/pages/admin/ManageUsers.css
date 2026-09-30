@@ -1,0 +1,294 @@
+.manage-users {
+    min-height: calc(100vh - 70px);
+    padding: 40px 6%;
+    background: linear-gradient(135deg, #fffaf7, #fff3eb);
+    box-sizing: border-box;
+}
+
+/* Header */
+
+.manage-users-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.manage-users-header h1 {
+    margin: 0;
+    color: #3f332d;
+    font-size: 32px;
+}
+
+.manage-users-header p {
+    margin: 6px 0 0;
+    color: #777;
+}
+
+/* Header Actions */
+
+.users-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.users-header-actions select {
+    border: 1px solid #e8d5ca;
+    background: white;
+    color: #4a3b34;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.users-header-actions select:focus {
+    border-color: #e85d24;
+}
+
+.users-header-actions button {
+    border: none;
+    background: #e85d24;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.users-header-actions button:hover {
+    background: #d94f1b;
+}
+
+/* Users List */
+
+.users-list {
+    display: grid;
+    gap: 16px;
+}
+
+/* User Card */
+
+.user-card {
+    background: white;
+    border: 1px solid #f0ded2;
+    border-radius: 14px;
+    min-height: 90px;
+    padding: 18px 20px;
+
+    display: grid;
+    grid-template-columns: minmax(250px, 1fr) minmax(130px, 180px) 40px;
+
+    align-items: center;
+    gap: 25px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 5px 18px rgba(80, 50, 30, 0.08);
+
+    transition: 0.2s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(80, 50, 30, 0.12);
+}
+
+/* User Information */
+
+.user-info {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(250px, 1.5fr);
+    gap: 30px;
+    align-items: center;
+}
+
+.user-info strong,
+.user-role strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #777;
+    font-size: 12px;
+}
+
+.user-info p {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.user-email p {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+/* Role */
+
+.user-role {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.user-role select {
+    border: 1px solid #e8d5ca;
+    background: white;
+    color: #4a3b34;
+    padding: 8px 10px;
+    border-radius: 7px;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+}
+
+.user-role select:focus {
+    border-color: #e85d24;
+}
+
+.admin-role {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: #f3e8ff;
+    color: #7e22ce;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Delete Button */
+
+.delete-user-btn {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #fee2e2;
+    color: #dc2626;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s ease;
+}
+
+.delete-user-btn:hover {
+    background: #fecaca;
+    transform: scale(1.05);
+}
+
+/* No Users */
+
+.no-users,
+.users-loading {
+    background: white;
+    border: 1px solid #f0ded2;
+    border-radius: 14px;
+    padding: 40px;
+    text-align: center;
+    color: #777;
+}
+
+.no-users h3 {
+    margin: 0 0 8px;
+    color: #3f332d;
+}
+
+.no-users p {
+    margin: 0;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+    .manage-users {
+        padding: 30px 4%;
+    }
+
+    .user-card {
+        grid-template-columns:
+            minmax(200px, 1fr)
+            130px
+            40px;
+
+        gap: 15px;
+    }
+
+    .user-info {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .manage-users {
+        padding: 25px 4%;
+    }
+
+    .manage-users-header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .manage-users-header h1 {
+        font-size: 26px;
+    }
+
+    .manage-users-header p {
+        font-size: 13px;
+    }
+
+    .users-header-actions {
+        gap: 7px;
+    }
+
+    .users-header-actions select {
+        max-width: 125px;
+        padding: 9px 8px;
+        font-size: 12px;
+    }
+
+    .users-header-actions button {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .user-card {
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        padding: 16px;
+    }
+
+    .user-info {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .user-role {
+        grid-column: 1;
+    }
+
+    .delete-user-btn {
+        width: 40px;
+        height: 40px;
+        grid-column: 2;
+        grid-row: 2;
+        align-self: end;
+    }
+}
