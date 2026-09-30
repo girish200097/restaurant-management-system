@@ -9,7 +9,6 @@ function ManagePayments() {
     const [expandedPayment, setExpandedPayment] = useState(null);
 
     const [paymentStatusFilter, setPaymentStatusFilter] = useState("all");
-    const [orderStatusFilter, setOrderStatusFilter] = useState("all");
 
     const fetchPayments = async () => {
         try {
@@ -85,11 +84,7 @@ function ManagePayments() {
             paymentStatusFilter === "all" ||
             payment.paymentStatus === paymentStatusFilter;
 
-        const orderStatusMatch =
-            orderStatusFilter === "all" ||
-            payment.order?.orderStatus === orderStatusFilter;
-
-        return paymentStatusMatch && orderStatusMatch;
+        return paymentStatusMatch;
     });
 
     const togglePayment = (paymentId) => {
@@ -125,18 +120,6 @@ function ManagePayments() {
                         <option value="pending">Pending</option>
                         <option value="paid">Paid</option>
                         <option value="failed">Failed</option>
-                    </select>
-
-                    <select
-                        value={orderStatusFilter}
-                        onChange={(e) =>
-                            setOrderStatusFilter(e.target.value)
-                        }
-                    >
-                        <option value="all">All Order Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="cancelled">Cancelled</option>
-                        <option value="completed">Completed</option>
                     </select>
                 </div>
             </div>

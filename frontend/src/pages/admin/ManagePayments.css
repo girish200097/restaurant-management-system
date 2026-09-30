@@ -130,8 +130,8 @@
 .payment-main-info span {
     color: #5f5048;
     font-size: 14px;
+    white-space: nowrap;
 }
-
 .payment-summary-right {
     display: flex;
     align-items: center;
@@ -290,10 +290,10 @@
         font-size: 17px;
     }
 
-    .payment-main-info span {
-        max-width: 180px;
-        word-break: break-word;
-    }
+  .payment-main-info span {
+    max-width: none;
+    white-space: nowrap;
+}
 
     .payment-summary-right {
         flex-shrink: 0;
