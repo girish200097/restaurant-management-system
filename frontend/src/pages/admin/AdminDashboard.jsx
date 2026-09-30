@@ -73,7 +73,9 @@ function AdminDashboard() {
                     <p>{tables} Tables</p>
                 </div>
 
-                <div className="dashboard-card">
+                <div className="dashboard-card"
+                    onClick={() => navigate("/admin/orders")}
+                >
                     <h3>Orders</h3>
                     <p>Manage customer orders</p>
                 </div>
