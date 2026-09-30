@@ -384,3 +384,23 @@
         font-size: 15px;
     }
 }
+.orders-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.orders-header-actions select {
+    border: 1px solid #e8d5ca;
+    background: white;
+    color: #4a3b34;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.orders-header-actions select:focus {
+    border-color: #e85d24;
+}

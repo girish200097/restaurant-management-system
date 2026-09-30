@@ -7,6 +7,7 @@ function ManageOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [expandedOrder, setExpandedOrder] = useState(null);
+    const [statusFilter, setStatusFilter] = useState("all");
 
     const fetchOrders = async () => {
         try {
@@ -42,6 +43,35 @@ function ManageOrders() {
         );
     };
 
+    // Filter and sort orders
+    const filteredOrders = orders
+        .filter((order) => {
+            if (statusFilter === "all") {
+                return true;
+            }
+
+            return order.orderStatus === statusFilter;
+        })
+        .sort((a, b) => {
+            // Completed orders should always come at the end
+            if (
+                a.orderStatus === "completed" &&
+                b.orderStatus !== "completed"
+            ) {
+                return 1;
+            }
+
+            if (
+                a.orderStatus !== "completed" &&
+                b.orderStatus === "completed"
+            ) {
+                return -1;
+            }
+
+            // Newest orders first within the same group
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+
     if (loading) {
         return (
             <div className="manage-orders">
@@ -54,25 +84,53 @@ function ManageOrders() {
         <div className="manage-orders">
 
             <div className="manage-orders-header">
+
                 <div>
                     <h1>Orders</h1>
                     <p>Click an order to view details</p>
                 </div>
 
-                <button onClick={fetchOrders}>
-                    Refresh
-                </button>
+                <div className="orders-header-actions">
+
+                    <select
+                        value={statusFilter}
+                        onChange={(event) =>
+                            setStatusFilter(event.target.value)
+                        }
+                        onClick={(event) =>
+                            event.stopPropagation()
+                        }
+                    >
+                        <option value="all">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="preparing">Preparing</option>
+                        <option value="served">Served</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+
+                    <button onClick={fetchOrders}>
+                        Refresh
+                    </button>
+
+                </div>
+
             </div>
 
-            {orders.length === 0 ? (
+            {filteredOrders.length === 0 ? (
                 <div className="no-orders">
                     <h3>No orders found</h3>
-                    <p>There are no customer orders yet.</p>
+
+                    <p>
+                        {statusFilter === "all"
+                            ? "There are no customer orders yet."
+                            : `There are no ${statusFilter} orders.`}
+                    </p>
                 </div>
             ) : (
                 <div className="orders-list">
 
-                    {orders.map((order) => {
+                    {filteredOrders.map((order) => {
 
                         const isExpanded =
                             expandedOrder === order._id;
@@ -83,7 +141,9 @@ function ManageOrders() {
                                     isExpanded ? "expanded" : ""
                                 }`}
                                 key={order._id}
-                                onClick={() => toggleOrder(order._id)}
+                                onClick={() =>
+                                    toggleOrder(order._id)
+                                }
                             >
 
                                 {/* Summary */}
@@ -91,55 +151,75 @@ function ManageOrders() {
 
                                     <div className="order-id">
                                         <span>Order</span>
+
                                         <strong>
                                             #{order._id.slice(-6)}
                                         </strong>
                                     </div>
 
                                     <div className="order-summary-item">
+
                                         <strong>Customer</strong>
+
                                         <p>
-                                            {order.customer?.name || "N/A"}
+                                            {order.customer?.name ||
+                                                "N/A"}
                                         </p>
+
                                         <small>
-                                            {order.customer?.email || "N/A"}
+                                            {order.customer?.email ||
+                                                "N/A"}
                                         </small>
+
                                     </div>
 
                                     <div className="order-summary-item">
+
                                         <strong>Table</strong>
+
                                         <p>
                                             {order.table?.tableNumber
                                                 ? `Table ${order.table.tableNumber}`
                                                 : "N/A"}
                                         </p>
+
                                     </div>
 
                                     <div className="order-summary-item">
+
                                         <strong>Waiter</strong>
+
                                         <p>
                                             {order.waiter?.name ||
                                                 "Not assigned"}
                                         </p>
+
                                     </div>
 
                                     <div className="order-summary-item">
+
                                         <strong>Payment</strong>
+
                                         <p className="payment-text">
                                             {order.paymentStatus}
                                         </p>
+
                                     </div>
 
                                     <div className="order-status">
+
                                         <span
                                             className={`status ${order.orderStatus}`}
                                         >
                                             {order.orderStatus}
                                         </span>
+
                                     </div>
 
                                     <div className="expand-icon">
-                                        {isExpanded ? "▲" : "▼"}
+                                        {isExpanded
+                                            ? "▲"
+                                            : "▼"}
                                     </div>
 
                                 </div>
@@ -159,6 +239,7 @@ function ManageOrders() {
                                                 <strong>
                                                     Order Date
                                                 </strong>
+
                                                 <p>
                                                     {new Date(
                                                         order.createdAt
@@ -170,6 +251,7 @@ function ManageOrders() {
                                                 <strong>
                                                     Payment Status
                                                 </strong>
+
                                                 <p>
                                                     {order.paymentStatus}
                                                 </p>
@@ -179,6 +261,7 @@ function ManageOrders() {
                                                 <strong>
                                                     Order Status
                                                 </strong>
+
                                                 <p>
                                                     {order.orderStatus}
                                                 </p>
@@ -199,6 +282,7 @@ function ManageOrders() {
                                                             index
                                                         }
                                                     >
+
                                                         <div>
                                                             <strong>
                                                                 {item.menuItem
@@ -208,6 +292,7 @@ function ManageOrders() {
                                                         </div>
 
                                                         <div className="item-values">
+
                                                             <span>
                                                                 Qty:{" "}
                                                                 {item.quantity}
@@ -216,7 +301,9 @@ function ManageOrders() {
                                                             <span>
                                                                 ₹{item.price}
                                                             </span>
+
                                                         </div>
+
                                                     </div>
                                                 )
                                             )}
@@ -224,6 +311,7 @@ function ManageOrders() {
                                         </div>
 
                                         <div className="order-total">
+
                                             <strong>
                                                 Total Amount
                                             </strong>
@@ -231,6 +319,7 @@ function ManageOrders() {
                                             <strong>
                                                 ₹{order.totalAmount}
                                             </strong>
+
                                         </div>
 
                                     </div>
