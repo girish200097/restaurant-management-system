@@ -1,0 +1,260 @@
+.manage-tables {
+    min-height: calc(100vh - 70px);
+    padding: 40px 6%;
+    background: linear-gradient(135deg, #fffaf7, #fff3eb);
+    box-sizing: border-box;
+}
+
+.manage-tables-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.manage-tables-header h1 {
+    margin: 0;
+    color: #3f332d;
+    font-size: 32px;
+}
+
+.add-table-btn {
+    border: none;
+    background: #e85d24;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.add-table-btn:hover {
+    background: #d94f19;
+    transform: translateY(-1px);
+}
+
+.tables-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.table-card {
+    background: white;
+    border: 1px solid #f0ded2;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(80, 45, 25, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.table-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(80, 45, 25, 0.12);
+}
+
+.table-info h3 {
+    margin: 0 0 18px;
+    color: #3f332d;
+    font-size: 20px;
+}
+
+.table-status {
+    margin-bottom: 18px;
+}
+
+.table-status select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    background: white;
+    color: #444;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.table-status select:focus {
+    border-color: #e85d24;
+    box-shadow: 0 0 0 2px rgba(232, 93, 36, 0.1);
+}
+
+.table-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.table-actions button {
+    flex: 1;
+    border: none;
+    padding: 9px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.edit-table-btn {
+    background: #fff1e8;
+    color: #e85d24;
+}
+
+.edit-table-btn:hover {
+    background: #ffe1d0;
+}
+
+.delete-table-btn {
+    background: #fff1f1;
+    color: #d9534f;
+}
+
+.delete-table-btn:hover {
+    background: #ffe0e0;
+}
+
+.tables-loading,
+.no-tables {
+    text-align: center;
+    color: #777;
+    font-size: 15px;
+    padding: 40px 0;
+}
+
+/* Form */
+
+.table-form-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.table-form {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-sizing: border-box;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+}
+
+.table-form h2 {
+    margin: 0 0 20px;
+    color: #3f332d;
+    font-size: 22px;
+}
+
+.table-form input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline: none;
+}
+
+.table-form input:focus {
+    border-color: #e85d24;
+    box-shadow: 0 0 0 2px rgba(232, 93, 36, 0.1);
+}
+
+.table-form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.table-form-actions button {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.save-table-btn {
+    background: #e85d24;
+    color: white;
+}
+
+.save-table-btn:hover {
+    background: #d94f19;
+}
+
+.cancel-table-btn {
+    background: #f3f3f3;
+    color: #444;
+}
+
+.cancel-table-btn:hover {
+    background: #e7e7e7;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+    .tables-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .manage-tables {
+        padding: 30px 20px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .manage-tables {
+        padding: 25px 15px;
+    }
+
+    .manage-tables-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .manage-tables-header h1 {
+        font-size: 26px;
+    }
+
+    .add-table-btn {
+        width: 100%;
+    }
+
+    .tables-list {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .table-card {
+        padding: 16px;
+    }
+
+    .table-info h3 {
+        font-size: 18px;
+    }
+
+    .table-actions button {
+        padding: 10px;
+    }
+
+    .table-form {
+        padding: 20px;
+    }
+}

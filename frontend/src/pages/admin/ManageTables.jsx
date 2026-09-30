@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import "./ManageTables.css";
+import "./ManageTables.css";
 
 function ManageTables() {
 
