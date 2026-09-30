@@ -233,20 +233,20 @@
 }
 
 /* Mobile */
-
-@media (max-width: 600px) {
-
+@media(max-width:600px) {
     .manage-users {
-        padding: 25px 4%;
+        padding: 22px 14px;
+        min-height: calc(100vh - 70px);
     }
 
     .manage-users-header {
         align-items: flex-start;
-        gap: 15px;
+        gap: 12px;
+        margin-bottom: 20px;
     }
 
     .manage-users-header h1 {
-        font-size: 26px;
+        font-size: 25px;
     }
 
     .manage-users-header p {
@@ -254,41 +254,90 @@
     }
 
     .users-header-actions {
-        gap: 7px;
+        gap: 6px;
+        flex-shrink: 0;
     }
 
     .users-header-actions select {
-        max-width: 125px;
-        padding: 9px 8px;
+        max-width: 115px;
+        padding: 8px 7px;
         font-size: 12px;
     }
 
     .users-header-actions button {
-        padding: 9px 12px;
+        padding: 8px 10px;
         font-size: 12px;
     }
 
+    /* User card */
     .user-card {
+        display: grid;
         grid-template-columns: 1fr auto;
-        gap: 18px;
-        padding: 16px;
+        gap: 16px;
+        padding: 18px;
+        min-height: auto;
+        border-radius: 14px;
+        align-items: start;
     }
 
+    /* User information */
     .user-info {
         grid-column: 1 / -1;
-        grid-template-columns: 1fr;
-        gap: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
     }
 
+    .user-info strong,
+    .user-role strong {
+        margin-bottom: 5px;
+        font-size: 12px;
+        color: #777;
+    }
+
+    .user-info p {
+        margin: 0;
+        font-size: 15px;
+        color: #333;
+        font-weight: 600;
+        text-align: left;
+        overflow-wrap: anywhere;
+    }
+
+    .user-email p {
+        font-weight: 500;
+    }
+
+    /* Role */
     .user-role {
         grid-column: 1;
+        grid-row: 2;
+        align-items: flex-start;
     }
 
+    .user-role select {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .admin-role {
+        padding: 7px 13px;
+        font-size: 13px;
+    }
+
+    /* Delete button */
     .delete-user-btn {
-        width: 40px;
-        height: 40px;
         grid-column: 2;
         grid-row: 2;
+        width: 40px;
+        height: 40px;
         align-self: end;
+        justify-self: end;
+    }
+
+    .no-users,
+    .users-loading {
+        padding: 30px 18px;
     }
 }
