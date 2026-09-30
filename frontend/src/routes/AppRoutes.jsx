@@ -41,14 +41,6 @@ function AppRoutes() {
       <Route path="/room-booking" element={<RoomBooking />} />
       <Route path="/table-reservation" element={<TableReservation />} />
       <Route path="/call-waiter" element={<CallWaiter />} />
-      <Route
-            path="tables"
-            element={
-                <AdminProtectedRoute>
-                    <ManageTables />
-                </AdminProtectedRoute>
-            }
-        />
 
       <Route
         path="/waiter-dashboard"
