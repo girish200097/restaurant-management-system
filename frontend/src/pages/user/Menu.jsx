@@ -418,9 +418,11 @@ useEffect(() => {
             Select a table
           </option>
 
-          {tables
+         {tables
             .filter(
-              (table) => table.status === "available"
+                (table) =>
+                    table.status === "available" ||
+                    table._id === selectedTable
             )
             .map((table) => (
               <option
@@ -546,6 +548,7 @@ useEffect(() => {
           onPaymentSuccess={() => {
               setPaidAmount(getCartTotal());
               setPaymentSuccess(true);
+              setOrderStatus("completed");
               setCart([]);
               setSelectedTable("");
               localStorage.removeItem("selectedTable");
