@@ -188,25 +188,19 @@
 
 .not-available {
     position: absolute;
-
-    top: 50%;
+    top: 100px;
     left: 50%;
-
     width: 150%;
     padding: 7px 0;
-
     background: #c0392b;
     color: white;
-
     font-size: 11px;
     font-weight: 700;
     text-align: center;
-
     letter-spacing: 0.5px;
-
     transform: translate(-50%, -50%) rotate(-45deg);
-
     z-index: 5;
+    pointer-events: none;
 }
 
 
@@ -263,10 +257,11 @@
     }
 
     .not-available {
-        width: 150%;
-        padding: 5px 0;
-        font-size: 8px;
-    }
+    top: 65px;
+    width: 150%;
+    padding: 5px 0;
+    font-size: 8px;
+}
 }
 
 .menu-card-unavailable {
