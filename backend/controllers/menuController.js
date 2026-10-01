@@ -5,9 +5,9 @@ const cloudinary = require("../config/cloudinary");
 //addMenu
 const addMenu = async (req, res) => {
     try {
-        const { name, description, price, category } = req.body;
+        const { name, price, category } = req.body;
 
-        if (!name || !description || !price || !category) {
+        if (!name || !price || !category) {
             return res.status(400).json({
                 message: "All Fields are required",
             });
@@ -48,7 +48,6 @@ const addMenu = async (req, res) => {
 
         const menu = new Menu({
             name,
-            description,
             price,
             category,
             image: imageUrl,
@@ -129,7 +128,7 @@ const getMenuById = async(req,res)=> {
 const updateMenu = async(req,res) => {
     try{
         const {id} = req.params;
-        const {name,description,price,category,isAvailable} = req.body;
+        const {name,price,category,isAvailable} = req.body;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
