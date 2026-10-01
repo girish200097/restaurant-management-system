@@ -369,11 +369,15 @@
     filter: grayscale(100%);
 }
 
+.admin-menu-card.menu-not-available {
+    position: relative;
+}
+
 .admin-menu-card.menu-not-available::after {
     content: "NOT AVAILABLE";
 
     position: absolute;
-    top: 50%;
+    top: 100px;
     left: 50%;
 
     transform: translate(-50%, -50%);
@@ -386,9 +390,11 @@
     white-space: nowrap;
 
     pointer-events: none;
+    z-index: 2;
 }
 @media (max-width: 600px) {
     .admin-menu-card.menu-not-available::after {
+        top: 65px;
         font-size: 13px;
         font-weight: 800;
         letter-spacing: 0.3px;
