@@ -394,3 +394,25 @@
         letter-spacing: 0.3px;
     }
 }
+@media (max-width: 600px) {
+    .menu-status-control select {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #2b211c;
+        background: #ffffff;
+        border: 1px solid #d6c4b9;
+        border-radius: 8px;
+        box-sizing: border-box;
+        outline: none;
+        appearance: auto;
+    }
+
+    .menu-status-control select option {
+        color: #2b211c;
+        background: #ffffff;
+        font-size: 14px;
+    }
+}
