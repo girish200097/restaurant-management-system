@@ -12,7 +12,9 @@ function Menu() {
   const [menus, setMenus] = useState([]);
   const [cart, setCart] = useState([]);
   const [tables, setTables] = useState([]);
-  const [selectedTable, setSelectedTable] = useState("");
+const [selectedTable, setSelectedTable] = useState(
+    () => localStorage.getItem("selectedTable") || ""
+);
   const [orderId, setOrderId] = useState(null);
   const [orderStatus, setOrderStatus] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -62,13 +64,6 @@ useEffect(() => {
   localStorage.setItem("cart", JSON.stringify(cart));
 }, [cart]);
 
-useEffect(() => {
-  const savedTable = localStorage.getItem("selectedTable");
-
-  if (savedTable) {
-    setSelectedTable(savedTable);
-  }
-}, []);
   useEffect(() => {
     if (selectedTable) {
       localStorage.setItem("selectedTable", selectedTable);
