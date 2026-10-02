@@ -175,3 +175,16 @@
         font-size: 12px;
     }
 }
+
+.waiter-order-updated {
+    margin-top: 12px;
+    padding: 10px 12px;
+
+    background: #fff3cd;
+    border: 1px solid #ffe69c;
+    border-radius: 8px;
+
+    color: #856404;
+    font-size: 13px;
+    font-weight: 600;
+}

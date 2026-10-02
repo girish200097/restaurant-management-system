@@ -30,9 +30,21 @@ const getOrderAge = (customerUpdatedAt, currentTime) => {
 function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [orderMessage, setOrderMessage] = useState("");
+    const [updatedOrderId, setUpdatedOrderId] = useState(null);
     const [orderFilter, setOrderFilter] = useState("all");
     const [currentTime, setCurrentTime] = useState(Date.now());
+   
+    const notifyWaiter = () => {
+        const audio = new Audio("/notification.mp3");
+
+        audio.play().catch((error) => {
+            console.log("Notification sound blocked:", error);
+        });
+
+        if ("vibrate" in navigator) {
+            navigator.vibrate([300, 150, 300]);
+        }
+    };
 
    useEffect(() => {
     let firstLoad = true;
@@ -71,6 +83,7 @@ function WaiterDashboard() {
 
                     if (hasNewOrder) {
                         setOrderMessage("New order received");
+                        notifyWaiter();
                     }
 
                     // Check for updated orders
@@ -90,9 +103,33 @@ function WaiterDashboard() {
                         );
                     });
 
-                    if (hasUpdatedOrder) {
-                        setOrderMessage("Order has been updated");
-                    }
+                   if (hasUpdatedOrder) {
+    const updatedOrder = newOrders.find((newOrder) => {
+        const oldOrder = currentOrders.find(
+            (order) => order._id === newOrder._id
+        );
+
+        if (!oldOrder) {
+            return false;
+        }
+
+        return (
+            newOrder.totalAmount !== oldOrder.totalAmount ||
+            JSON.stringify(newOrder.items) !==
+                JSON.stringify(oldOrder.items)
+        );
+    });
+
+            if (updatedOrder) {
+                setUpdatedOrderId(updatedOrder._id);
+
+                notifyWaiter();
+
+                setTimeout(() => {
+                    setUpdatedOrderId(null);
+                }, 4000);
+            }
+}
                 }
 
                 return newOrders;
@@ -198,12 +235,6 @@ const filteredOrders = orders
     return (
         <div>
             <WaiterNavbar />
-
-            {orderMessage && (
-                <div className="waiter-order-message">
-                    {orderMessage}
-                </div>
-            )}
             <h1>Waiter Dashboard</h1>
                     <div className="waiter-filter">
             <label htmlFor="order-filter">Filter Orders</label>
@@ -278,6 +309,12 @@ const filteredOrders = orders
                                     </div>
                                 ))}
                             </div>
+
+                            {updatedOrderId === order._id && (
+                                <div className="waiter-order-updated">
+                                    🔔 Order has been updated
+                                </div>
+                            )}
 
                             <div className="waiter-order-footer">
                             <strong>
