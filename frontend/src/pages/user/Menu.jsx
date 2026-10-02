@@ -12,7 +12,7 @@ function Menu() {
   const [menus, setMenus] = useState([]);
   const [cart, setCart] = useState([]);
   const [tables, setTables] = useState([]);
-const [selectedTable, setSelectedTable] = useState(
+  const [selectedTable, setSelectedTable] = useState(
     () => localStorage.getItem("selectedTable") || ""
 );
   const [orderId, setOrderId] = useState(null);
@@ -22,6 +22,7 @@ const [selectedTable, setSelectedTable] = useState(
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isGeneratingReceipt, setIsGeneratingReceipt] = useState(false);
   const [receiptSent, setReceiptSent] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -250,6 +251,13 @@ useEffect(() => {
     );
   };
 
+  const getCartItemCount = () => {
+    return cart.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
+};
+
   const handleGenerateReceipt = async () => {
     try {
       setIsGeneratingReceipt(true);
@@ -438,7 +446,7 @@ useEffect(() => {
       </div>
 
             {/* Status bar Section */}
-     {orderId && orderStatus && (
+    {orderId && orderStatus && cart.length > 0 && (
     <div className="order-status-section">
         <h3>Order Status</h3>
 
@@ -601,7 +609,15 @@ useEffect(() => {
           Total: ₹{paymentSuccess ? paidAmount : getCartTotal()}
       </h3>
 
+      <button
+          className="cart-button"
+          onClick={() => setIsCartOpen(true)}
+      >
+          🛒 Cart ({getCartItemCount()})
+      </button>
     </div>
+
+    
   );
 }
 

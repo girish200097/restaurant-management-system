@@ -11,6 +11,10 @@ nav {
   min-height: 80px;
   width: 100%;
   font-family: "Montserrat", sans-serif;
+
+  position: sticky;
+  top: 0;
+  z-index: 1100;
 }
 
 .navbar-container {
@@ -170,12 +174,16 @@ nav {
 
   nav {
     min-height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 1100;
   }
 
   .navbar-container {
     min-height: 70px;
     padding: 0 20px;
   }
+
 
   .logo {
     font-size: 20px;
