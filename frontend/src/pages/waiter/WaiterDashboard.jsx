@@ -2,11 +2,39 @@ import { useEffect, useState } from "react";
 import WaiterNavbar from "./WaiterNavbar";
 import "./WaiterDashboard.css";
 
+const getOrderAge = (createdAt, currentTime) => {
+    const difference = Math.max(
+        0,
+        currentTime - new Date(createdAt).getTime()
+    );
+
+    const minutes = Math.floor(difference / 60000);
+
+    if (minutes < 1) {
+        return "Just now";
+    }
+
+    if (minutes < 60) {
+        return `${minutes} min ago`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (remainingMinutes === 0) {
+        return `${hours} hr ago`;
+    }
+
+    return `${hours} hr ${remainingMinutes} min ago`;
+};
+
+
 function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [orderMessage, setOrderMessage] = useState("");
     const [orderFilter, setOrderFilter] = useState("all");
+    const [currentTime, setCurrentTime] = useState(Date.now());
 
    useEffect(() => {
     let firstLoad = true;
@@ -87,17 +115,25 @@ function WaiterDashboard() {
     return () => clearInterval(interval);
 }, []);
 
-useEffect(() => {
-    if (!orderMessage) {
-        return;
-    }
+    useEffect(() => {
+        if (!orderMessage) {
+            return;
+        }
 
-    const timer = setTimeout(() => {
-        setOrderMessage("");
-    }, 4000);
+        const timer = setTimeout(() => {
+            setOrderMessage("");
+        }, 4000);
 
-    return () => clearTimeout(timer);
-}, [orderMessage]);
+        return () => clearTimeout(timer);
+    }, [orderMessage]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(Date.now());
+        }, 60000);
+
+        return () => clearInterval(timer);
+    }, []);
 
     const updateOrderStatus = async (orderId, status) => {
         try {
@@ -249,6 +285,10 @@ const filteredOrders = orders
                                 <strong>
                                     Total: ₹{order.totalAmount}
                                 </strong>
+
+                                <span className="waiter-order-time">
+                                    {getOrderAge(order.createdAt, currentTime)}
+                                </span>
                             </div>
 
                         </div>
