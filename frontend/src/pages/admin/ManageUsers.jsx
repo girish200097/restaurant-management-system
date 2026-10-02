@@ -261,6 +261,23 @@ function ManageUsers() {
 
                             </div>
 
+                            {/* Availability Status */}
+                                {user.role === "waiter" && (
+                                    <div className="user-availability">
+                                        <strong>Status</strong>
+
+                                        {user.isAvailable ? (
+                                            <span className="available-status">
+                                                🟢 Available
+                                            </span>
+                                        ) : (
+                                            <span className="unavailable-status">
+                                                🔴 Not Available
+                                            </span>
+                                        )}
+                                    </div>
+                                )} 
+
                             {/* Delete */}
                             {user.role !== "admin" && (
 

@@ -334,3 +334,27 @@
         padding: 30px 18px;
     }
 }
+.user-availability {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.user-availability strong {
+    color: #4a3b34;
+    font-size: 14px;
+}
+
+.available-status,
+.unavailable-status {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.available-status {
+    color: #218838;
+}
+
+.unavailable-status {
+    color: #d93636;
+}
