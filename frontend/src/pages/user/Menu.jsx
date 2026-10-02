@@ -615,6 +615,76 @@ useEffect(() => {
       >
           🛒 Cart ({getCartItemCount()})
       </button>
+
+      {isCartOpen && (
+    <div className="cart-overlay">
+        <div className="cart-popup">
+
+            <div className="cart-popup-header">
+                <h2>Your Cart</h2>
+
+                <button
+                    className="cart-close-button"
+                    onClick={() => setIsCartOpen(false)}
+                >
+                    ✕
+                </button>
+            </div>
+
+            {cart.length === 0 ? (
+                <div className="empty-cart">
+                    <p>Your cart is empty</p>
+                </div>
+            ) : (
+                <>
+                    <div className="cart-items">
+                        {cart.map((item) => (
+                            <div
+                                className="cart-item"
+                                key={item._id}
+                            >
+                                <div className="cart-item-info">
+                                    <h3>{item.name}</h3>
+                                    <p>₹{item.price}</p>
+                                </div>
+
+                                <div className="cart-item-actions">
+                                    <button
+                                        onClick={() =>
+                                            updateQuantity(item._id, -1)
+                                        }
+                                    >
+                                        −
+                                    </button>
+
+                                    <span>{item.quantity}</span>
+
+                                    <button
+                                        onClick={() =>
+                                            updateQuantity(item._id, 1)
+                                        }
+                                    >
+                                        +
+                                    </button>
+                                </div>
+
+                                <strong>
+                                    ₹{item.price * item.quantity}
+                                </strong>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="cart-popup-total">
+                        <strong>Total</strong>
+                        <strong>₹{getCartTotal()}</strong>
+                    </div>
+                </>
+            )}
+
+        </div>
+    </div>
+)}
     </div>
 
     
