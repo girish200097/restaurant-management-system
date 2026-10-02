@@ -33,7 +33,7 @@ function WaiterDashboard() {
     const [updatedOrderId, setUpdatedOrderId] = useState(null);
     const [orderFilter, setOrderFilter] = useState("all");
     const [currentTime, setCurrentTime] = useState(Date.now());
-   
+    const [orderMessage, setOrderMessage] = useState("");
     const notifyWaiter = () => {
         const audio = new Audio("/notification.mp3");
 
