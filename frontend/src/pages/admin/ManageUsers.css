@@ -81,10 +81,16 @@
     padding: 18px 20px;
 
     display: grid;
-    grid-template-columns: minmax(250px, 1fr) 130px 150px 40px;
+
+    /* Name + Email | Role | Delete | Status */
+    grid-template-columns:
+        minmax(350px, 1fr)
+        130px
+        40px
+        150px;
 
     align-items: center;
-    gap: 20px;
+    gap: 25px;
 
     box-sizing: border-box;
 
@@ -92,6 +98,7 @@
 
     transition: 0.2s ease;
 }
+
 .user-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 22px rgba(80, 50, 30, 0.12);
@@ -101,13 +108,17 @@
 
 .user-info {
     display: grid;
-    grid-template-columns: minmax(180px, 1fr) minmax(250px, 1.5fr);
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(250px, 1.5fr);
+
     gap: 30px;
     align-items: center;
 }
 
 .user-info strong,
-.user-role strong {
+.user-role strong,
+.user-availability strong {
     display: block;
     margin-bottom: 5px;
     color: #777;
@@ -159,9 +170,41 @@
     font-weight: 600;
 }
 
+/* Availability Status */
+
+.user-availability {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+
+    grid-column: 4;
+}
+
+.user-availability strong {
+    margin-bottom: 0;
+}
+
+.available-status,
+.unavailable-status {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.available-status {
+    color: #218838;
+}
+
+.unavailable-status {
+    color: #d93636;
+}
+
 /* Delete Button */
 
 .delete-user-btn {
+    grid-column: 3;
+
     width: 38px;
     height: 38px;
 
@@ -208,23 +251,25 @@
     margin: 0;
 }
 
-/* Tablet */
+/* =========================================
+   Tablet
+========================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
 
     .manage-users {
         padding: 30px 4%;
     }
 
     .user-card {
-    grid-template-columns:
-        minmax(200px, 1fr)
-        120px
-        130px
-        40px;
+        grid-template-columns:
+            minmax(260px, 1fr)
+            120px
+            40px
+            130px;
 
-    gap: 15px;
-}
+        gap: 15px;
+    }
 
     .user-info {
         grid-template-columns: 1fr;
@@ -232,12 +277,18 @@
     }
 }
 
-/* Mobile */
-@media(max-width:600px) {
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 600px) {
+
     .manage-users {
         padding: 22px 14px;
         min-height: calc(100vh - 70px);
     }
+
+    /* Header */
 
     .manage-users-header {
         align-items: flex-start;
@@ -252,6 +303,8 @@
     .manage-users-header p {
         font-size: 13px;
     }
+
+    /* Header buttons */
 
     .users-header-actions {
         gap: 6px;
@@ -269,43 +322,61 @@
         font-size: 12px;
     }
 
-    /* User card */
+    /* User Card */
+
     .user-card {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    gap: 16px;
-    padding: 18px;
-    min-height: auto;
-    border-radius: 14px;
-    align-items: start;
-}
+        display: grid;
 
-    /* User information */
+        grid-template-columns: 1fr auto auto;
+
+        gap: 16px;
+
+        padding: 18px;
+
+        min-height: auto;
+
+        border-radius: 14px;
+
+        align-items: start;
+    }
+
+    /* User Information */
+
     .user-info {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
-    text-align: left;
-}
+        grid-column: 1 / -1;
 
-.user-info strong,
-.user-role strong {
-    display: block;
-    text-align: left;
-    margin-bottom: 5px;
-}
+        display: flex;
+        flex-direction: column;
 
-.user-info p {
-    margin: 0;
-    text-align: left;
-}
+        gap: 15px;
+
+        align-items: flex-start;
+
+        text-align: left;
+    }
+
+    .user-info strong,
+    .user-role strong,
+    .user-availability strong {
+        display: block;
+
+        text-align: left;
+
+        margin-bottom: 5px;
+    }
+
+    .user-info p {
+        margin: 0;
+
+        text-align: left;
+    }
 
     /* Role */
+
     .user-role {
         grid-column: 1;
         grid-row: 2;
+
         align-items: flex-start;
     }
 
@@ -319,63 +390,40 @@
         font-size: 13px;
     }
 
-    /* Delete button */
-    .delete-user-btn {
+    /* Availability */
+
+    .user-availability {
         grid-column: 2;
         grid-row: 2;
+
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+    .available-status,
+    .unavailable-status {
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    /* Delete Button */
+
+    .delete-user-btn {
+        grid-column: 3;
+        grid-row: 2;
+
         width: 40px;
         height: 40px;
+
         align-self: end;
         justify-self: end;
     }
+
+    /* Empty / Loading */
 
     .no-users,
     .users-loading {
         padding: 30px 18px;
     }
-}
-/* Availability Status */
-
-.user-availability {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-}
-
-.user-availability strong {
-    color: #777;
-    font-size: 12px;
-    margin-bottom: 0;
-}
-
-.available-status,
-.unavailable-status {
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.available-status {
-    color: #218838;
-}
-
-.unavailable-status {
-    color: #d93636;
-}
-/* Availability */
-.user-availability {
-    grid-column: 2;
-    grid-row: 2;
-    align-items: flex-start;
-}
-
-.user-availability strong {
-    font-size: 12px;
-}
-
-.available-status,
-.unavailable-status {
-    font-size: 13px;
-    white-space: nowrap;
 }
