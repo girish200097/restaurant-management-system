@@ -153,10 +153,6 @@ function ManageOrders() {
                         <option value="cancelled">Cancelled</option>
                     </select>
 
-                    <button onClick={fetchOrders}>
-                        Refresh
-                    </button>
-
                 </div>
 
             </div>

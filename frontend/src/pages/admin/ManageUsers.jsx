@@ -172,11 +172,6 @@ function ManageUsers() {
                         </option>
                     </select>
 
-                    {/* Refresh */}
-                    <button onClick={fetchUsers}>
-                        Refresh
-                    </button>
-
                 </div>
 
             </div>
