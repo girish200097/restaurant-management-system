@@ -354,3 +354,16 @@
     color: #777;
     white-space: nowrap;
 }
+.waiter-order-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.waiter-order-time {
+    margin-left: auto;
+    font-size: 13px;
+    color: #777;
+    white-space: nowrap;
+}

@@ -28,7 +28,6 @@ const getOrderAge = (createdAt, currentTime) => {
     return `${hours} hr ${remainingMinutes} min ago`;
 };
 
-
 function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -282,14 +281,14 @@ const filteredOrders = orders
                             </div>
 
                             <div className="waiter-order-footer">
-                                <strong>
-                                    Total: ₹{order.totalAmount}
-                                </strong>
+                            <strong>
+                                Total: ₹{order.totalAmount}
+                            </strong>
 
-                                <span className="waiter-order-time">
-                                    {getOrderAge(order.createdAt, currentTime)}
-                                </span>
-                            </div>
+                            <span className="waiter-order-time">
+                                {getOrderAge(order.createdAt, currentTime)}
+                            </span>
+                        </div>
 
                         </div>
                     ))}
