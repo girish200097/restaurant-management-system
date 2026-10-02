@@ -81,6 +81,7 @@ const createOrder = async(req,res) => {
     activeOrder.items = updatedOrderItems;
     activeOrder.totalAmount = totalAmount;
 
+    activeOrder.customerUpdatedAt = new Date();
     // Assign waiter only if the existing order doesn't have one
     if (!activeOrder.waiter) {
         const availableWaiters = await User.find({

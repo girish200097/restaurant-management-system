@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import WaiterNavbar from "./WaiterNavbar";
 import "./WaiterDashboard.css";
 
-const getOrderAge = (createdAt, currentTime) => {
+const getOrderAge = (customerUpdatedAt, currentTime) => {
     const difference = Math.max(
         0,
-        currentTime - new Date(createdAt).getTime()
+        currentTime - new Date(customerUpdatedAt).getTime()
     );
 
     const minutes = Math.floor(difference / 60000);
 
     if (minutes < 1) {
-        return "Just now";
+        return "00 min";
     }
 
     if (minutes < 60) {
@@ -27,7 +27,6 @@ const getOrderAge = (createdAt, currentTime) => {
 
     return `${hours} hr ${remainingMinutes} min ago`;
 };
-
 function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -286,7 +285,7 @@ const filteredOrders = orders
                             </strong>
 
                             <span className="waiter-order-time">
-                                {getOrderAge(order.createdAt, currentTime)}
+                                {getOrderAge(order.customerUpdatedAt, currentTime)}
                             </span>
                         </div>
 

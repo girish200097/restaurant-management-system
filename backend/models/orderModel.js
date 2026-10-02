@@ -47,6 +47,10 @@ const orderSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
+    customerUpdatedAt: {
+    type: Date,
+    default: Date.now,
+},
     
 },
     {
