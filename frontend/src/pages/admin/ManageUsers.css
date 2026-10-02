@@ -81,10 +81,10 @@
     padding: 18px 20px;
 
     display: grid;
-    grid-template-columns: minmax(250px, 1fr) minmax(130px, 180px) 40px;
+    grid-template-columns: minmax(250px, 1fr) 130px 150px 40px;
 
     align-items: center;
-    gap: 25px;
+    gap: 20px;
 
     box-sizing: border-box;
 
@@ -92,7 +92,6 @@
 
     transition: 0.2s ease;
 }
-
 .user-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 22px rgba(80, 50, 30, 0.12);
@@ -218,13 +217,14 @@
     }
 
     .user-card {
-        grid-template-columns:
-            minmax(200px, 1fr)
-            130px
-            40px;
+    grid-template-columns:
+        minmax(200px, 1fr)
+        120px
+        130px
+        40px;
 
-        gap: 15px;
-    }
+    gap: 15px;
+}
 
     .user-info {
         grid-template-columns: 1fr;
@@ -271,14 +271,14 @@
 
     /* User card */
     .user-card {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 16px;
-        padding: 18px;
-        min-height: auto;
-        border-radius: 14px;
-        align-items: start;
-    }
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 16px;
+    padding: 18px;
+    min-height: auto;
+    border-radius: 14px;
+    align-items: start;
+}
 
     /* User information */
     .user-info {
@@ -334,21 +334,26 @@
         padding: 30px 18px;
     }
 }
+/* Availability Status */
+
 .user-availability {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    align-items: flex-start;
+    gap: 6px;
 }
 
 .user-availability strong {
-    color: #4a3b34;
-    font-size: 14px;
+    color: #777;
+    font-size: 12px;
+    margin-bottom: 0;
 }
 
 .available-status,
 .unavailable-status {
     font-size: 14px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .available-status {
@@ -357,4 +362,20 @@
 
 .unavailable-status {
     color: #d93636;
+}
+/* Availability */
+.user-availability {
+    grid-column: 2;
+    grid-row: 2;
+    align-items: flex-start;
+}
+
+.user-availability strong {
+    font-size: 12px;
+}
+
+.available-status,
+.unavailable-status {
+    font-size: 13px;
+    white-space: nowrap;
 }
