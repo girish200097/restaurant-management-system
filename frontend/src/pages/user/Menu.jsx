@@ -105,14 +105,13 @@ useEffect(() => {
                 // Get the latest order
                 const latestOrder = orders[orders.length - 1];
 
-                setOrderId(latestOrder._id);
-                setOrderStatus(latestOrder.orderStatus);
-
                 // Restore payment state
-                if (latestOrder.paymentStatus === "paid") {
-                    setPaymentSuccess(true);
-                    setPaidAmount(latestOrder.totalAmount);
-                } else {
+                // Restore only an unfinished order
+          if (latestOrder.paymentStatus !== "paid") {
+              setOrderId(latestOrder._id);
+              setOrderStatus(latestOrder.orderStatus);
+              setPaymentSuccess(false);
+          } else {
                     setPaymentSuccess(false);
                 }
 
@@ -568,32 +567,28 @@ const handleOrderAgain = () => {
       {/* Payment Success */}
 
       {paymentSuccess && (
+            <div className="payment-success">
+                <h2>
+                    Payment Successful ✅
+                </h2>
 
-        <div className="payment-success">
-          <h2>
-            Payment Successful ✅
-          </h2>
-
-          <div className="payment-success-container"> 
-                  <button
-            onClick={handleGenerateReceipt}
-            disabled={
-              isGeneratingReceipt ||
-              receiptSent
-            }
-          >
-            {receiptSent
-              ? "Receipt Sent ✅"
-              : isGeneratingReceipt
-              ? "Sending Receipt..."
-              : "Generate Receipt"}
-          </button>
-            
-          </div>
-
-        </div>
-
-      )}
+                <div className="payment-success-container">
+                    <button
+                        onClick={handleGenerateReceipt}
+                        disabled={
+                            isGeneratingReceipt ||
+                            receiptSent
+                        }
+                    >
+                        {receiptSent
+                            ? "Receipt Sent ✅"
+                            : isGeneratingReceipt
+                            ? "Sending Receipt..."
+                            : "Generate Receipt"}
+                    </button>
+                </div>
+            </div>
+        )}
 
 
       <h3>
