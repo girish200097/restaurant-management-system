@@ -23,6 +23,7 @@ function Menu() {
   const [isGeneratingReceipt, setIsGeneratingReceipt] = useState(false);
   const [receiptSent, setReceiptSent] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isOrderingAgain, setIsOrderingAgain] = useState(false);
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -233,6 +234,7 @@ useEffect(() => {
 
       setOrderId(data.order._id);
       setOrderStatus(data.order.orderStatus);
+      setIsOrderingAgain(false);
 
       alert(data.message);
     } catch (error) {
@@ -299,6 +301,7 @@ useEffect(() => {
 const handleOrderAgain = () => {
     setOrderStatus(null);
     setReceiptSent(false);
+    setIsOrderingAgain(true);
 
     window.scrollTo({
         top: 0,
@@ -525,7 +528,7 @@ const handleOrderAgain = () => {
 
       {/* Create Order */}
 
-      {!orderId && !paymentSuccess && (
+     {(!orderId || isOrderingAgain) && !paymentSuccess && (
             <button
                 className="create-order-button"
                 onClick={createOrder}
