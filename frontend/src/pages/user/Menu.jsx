@@ -406,7 +406,8 @@ const handleOrderAgain = () => {
 
       {/* Table Selection */}
 
-      <div className="table-section">
+      {!paymentSuccess && (
+    <div className="table-section">
 
         <h2>Select Table</h2>
 
@@ -415,28 +416,29 @@ const handleOrderAgain = () => {
             onChange={(e) => setSelectedTable(e.target.value)}
             disabled={!!orderId}
         >
-          <option value="">
-            Select a table
-          </option>
+            <option value="">
+                Select a table
+            </option>
 
-         {tables
-            .filter(
-                (table) =>
-                    table.status === "available" ||
-                    table._id === selectedTable
-            )
-            .map((table) => (
-              <option
-                key={table._id}
-                value={table._id}
-              >
-                Table {table.tableNumber} -{" "}
-                {table.location}
-              </option>
-            ))}
+            {tables
+                .filter(
+                    (table) =>
+                        table.status === "available" ||
+                        table._id === selectedTable
+                )
+                .map((table) => (
+                    <option
+                        key={table._id}
+                        value={table._id}
+                    >
+                        Table {table.tableNumber} -{" "}
+                        {table.location}
+                    </option>
+                ))}
         </select>
 
-      </div>
+    </div>
+)}
 
             {/* Status bar Section */}
     {orderId && orderStatus && cart.length > 0 && (
