@@ -273,4 +273,16 @@ nav {
   .search-box button {
     padding: 0 10px;
   }
+  .search-box input {
+  background: #ffffff;
+  color: #222222;
+  -webkit-text-fill-color: #222222;
+  caret-color: #222222;
+  color-scheme: light;
+}
+
+.search-box input::placeholder {
+  color: #777777;
+  opacity: 1;
+}
 }

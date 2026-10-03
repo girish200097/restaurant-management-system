@@ -216,7 +216,7 @@
     background: #eee5df;
     color: #2b211c;
 }
-.add-menu-form select {
+..add-menu-form select {
     width: 100%;
     box-sizing: border-box;
     padding: 12px;
@@ -225,8 +225,14 @@
     border-radius: 10px;
     font-size: 15px;
     font-family: inherit;
-    background: white;
+    background: #ffffff;
+    color: #2b211c;
     cursor: pointer;
+}
+
+.add-menu-form select option {
+    background: #ffffff;
+    color: #2b211c;
 }
 .image-upload {
     margin-bottom: 20px;
