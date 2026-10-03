@@ -146,10 +146,6 @@ const updateMenu = async(req,res) => {
             updateData.price = price;
         }
 
-        if(description !== undefined) {
-            updateData.description = description;
-        }
-
         if(category !== undefined) {
             updateData.category = category;
         }

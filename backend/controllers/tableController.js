@@ -4,7 +4,7 @@ const Table = require("../models/tableModel");
 
 const createTable =async (req,res) => {
     try {
-        const {capacity,tableNumber} = req.body;
+        const {tableNumber} = req.body;
 
         if(!tableNumber){
             return res.status(400).json({
@@ -100,7 +100,7 @@ const getTableById = async(req,res) => {
 const updateTableById = async(req,res) => {
     try {
         const {id} = req.params;
-        const {capacity,tableNumber} = req.body;
+        const {tableNumber} = req.body;
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 message: "Invalid Table ID",
@@ -109,10 +109,7 @@ const updateTableById = async(req,res) => {
         const updateData= {};
         if(tableNumber) {
             updateData.tableNumber = tableNumber;
-        }
-        if(capacity) {
-            updateData.capacity = capacity;
-        }   
+        } 
         
         if(Object.keys(updateData).length === 0) { 
             return res.status(400).json({
