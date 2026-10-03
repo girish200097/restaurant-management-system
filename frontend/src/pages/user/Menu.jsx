@@ -297,15 +297,9 @@ useEffect(() => {
     }
   };
 
-  const handleOrderAgain = () => {
-    setOrderId(null);
+const handleOrderAgain = () => {
     setOrderStatus(null);
-    setPaymentSuccess(false);
-    setPaidAmount(0);
     setReceiptSent(false);
-    setSelectedTable("");
-
-    localStorage.removeItem("selectedTable");
 
     window.scrollTo({
         top: 0,
@@ -532,38 +526,49 @@ useEffect(() => {
       {/* Create Order */}
 
       <button
-        className="create-order-button"
-        onClick={createOrder}
-        disabled={
-          isCreatingOrder || paymentSuccess
-        }
+          className="create-order-button"
+          onClick={createOrder}
+          disabled={
+              isCreatingOrder ||
+              paymentSuccess ||
+              orderStatus === "served"
+          }
       >
-        {isCreatingOrder
-        ? "Creating Order..."
-        : paymentSuccess
-        ? "Order Completed"
-        : orderId
-        ? "Update Your Order"
-        : "Create Order"}
+          {isCreatingOrder
+              ? "Creating Order..."
+              : paymentSuccess
+              ? "Order Completed"
+              : "Create Order"}
       </button>
 
 
       {/* Payment */}
 
       {orderId && orderStatus === "served" && !paymentSuccess && (
-        <PaymentButton
-          orderId={orderId}
-          onPaymentSuccess={() => {
-              setPaidAmount(getCartTotal());
-              setPaymentSuccess(true);
-              setOrderStatus("completed");
-              setCart([]);
-              setSelectedTable("");
-              localStorage.removeItem("selectedTable");
-          }}
-        />
-      )}
+    <div className="served-order-actions">
 
+        <PaymentButton
+            orderId={orderId}
+            amount={getCartTotal()}
+            onPaymentSuccess={() => {
+                setPaidAmount(getCartTotal());
+                setPaymentSuccess(true);
+                setOrderStatus("completed");
+                setCart([]);
+                setSelectedTable("");
+                localStorage.removeItem("selectedTable");
+            }}
+        />
+
+        <button
+            onClick={handleOrderAgain}
+            className="order-again-button"
+        >
+            Order Again
+        </button>
+
+    </div>
+)}
 
       {/* Payment Success */}
 
@@ -588,15 +593,6 @@ useEffect(() => {
               ? "Sending Receipt..."
               : "Generate Receipt"}
           </button>
-
-          {paymentSuccess && (
-              <button
-                  onClick={handleOrderAgain}
-                  className="order-again-button"
-              >
-                  Order Again
-              </button>
-          )}
             
           </div>
 
