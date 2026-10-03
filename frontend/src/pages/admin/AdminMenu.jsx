@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./AdminMenu.css";
+import imageCompression from "browser-image-compression";
 
 function AdminMenu() {
     const [menuItems, setMenuItems] = useState([]);
@@ -10,8 +11,11 @@ function AdminMenu() {
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
     const [image, setImage] = useState(null);
+    const [originalImage, setOriginalImage] = useState(null);
+    const [compressionQuality, setCompressionQuality] = useState("medium");
+    const [isCompressing, setIsCompressing] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
-
+    
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const dragStart = useRef({ x: 0, y: 0 });
@@ -40,13 +44,71 @@ function AdminMenu() {
         fetchMenuItems();
     }, []);
 
-    const handleImageChange = (e) => {
-    const selectedImage = e.target.files[0];
+  const handleImageChange = (e) => {
+  const selectedImage = e.target.files[0];
 
-    if (selectedImage) {
-        setImage(selectedImage);
-    }
+  if (selectedImage) {
+    setOriginalImage(selectedImage);
+  }
 };
+
+useEffect(() => {
+  if (!originalImage) return;
+
+  let cancelled = false;
+
+  const compressImage = async () => {
+    setIsCompressing(true);
+
+    const compressionOptions = {
+      high: {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1600,
+        initialQuality: 0.8,
+        useWebWorker: true,
+      },
+      medium: {
+        maxSizeMB: 0.6,
+        maxWidthOrHeight: 1400,
+        initialQuality: 0.6,
+        useWebWorker: true,
+      },
+      low: {
+        maxSizeMB: 0.3,
+        maxWidthOrHeight: 1200,
+        initialQuality: 0.4,
+        useWebWorker: true,
+      },
+    };
+
+    try {
+      const compressedImage = await imageCompression(
+        originalImage,
+        compressionOptions[compressionQuality]
+      );
+
+      if (!cancelled) {
+        setImage(compressedImage);
+      }
+    } catch (error) {
+      console.error("Image compression failed:", error);
+
+      if (!cancelled) {
+        setImage(originalImage);
+      }
+    } finally {
+      if (!cancelled) {
+        setIsCompressing(false);
+      }
+    }
+  };
+
+  compressImage();
+
+  return () => {
+    cancelled = true;
+  };
+}, [originalImage, compressionQuality]);
 
 const handleAddMenu = async () => {
     try {
@@ -350,6 +412,30 @@ const handleMouseUp = () => {
                         onChange={handleImageChange}
                         hidden
                     />
+
+                    <div className="image-compression-options">
+                        <label>Image Quality</label>
+
+                        <select
+                            value={compressionQuality}
+                            onChange={(e) => setCompressionQuality(e.target.value)}
+                            disabled={!originalImage || isCompressing}
+                        >
+                            <option value="high">
+                            High Quality — Less Compression
+                            </option>
+
+                            <option value="medium">
+                            Medium Quality — More Compression
+                            </option>
+
+                            <option value="low">
+                            Low Quality — Maximum Compression
+                            </option>
+                        </select>
+
+                        {isCompressing && <p>Compressing image...</p>}
+                        </div>
 
                 </div>
 

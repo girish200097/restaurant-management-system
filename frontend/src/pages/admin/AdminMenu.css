@@ -428,3 +428,31 @@
         font-size: 14px;
     }
 }
+.image-compression-options {
+  margin-top: 10px;
+}
+
+.image-compression-options label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.image-compression-options select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.image-compression-options select:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.image-compression-options p {
+  margin-top: 6px;
+  font-size: 13px;
+}
