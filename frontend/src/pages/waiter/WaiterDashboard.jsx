@@ -221,16 +221,25 @@ const filteredOrders = orders
         return order.orderStatus === orderFilter;
     })
     .sort((a, b) => {
-        const aCompleted = a.orderStatus === "completed";
-        const bCompleted = b.orderStatus === "completed";
+            const statusPriority = {
+                pending: 1,
+                preparing: 2,
+                served: 3,
+                completed: 4,
+                cancelled: 5,
+            };
 
-        // Completed orders at the bottom
-        if (aCompleted && !bCompleted) return 1;
-        if (!aCompleted && bCompleted) return -1;
+            const aPriority = statusPriority[a.orderStatus] || 99;
+            const bPriority = statusPriority[b.orderStatus] || 99;
 
-        // Newest first
-        return new Date(b.createdAt) - new Date(a.createdAt);
-    });
+            // Status priority
+            if (aPriority !== bPriority) {
+                return aPriority - bPriority;
+            }
+
+            // Newest first within the same status
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
 
     return (
         <div>
