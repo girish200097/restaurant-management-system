@@ -547,8 +547,8 @@ const handleOrderAgain = () => {
         <PaymentButton
             orderId={orderId}
             amount={getCartTotal()}
-            onPaymentSuccess={() => {
-                setPaidAmount(getCartTotal());
+            onPaymentSuccess={(paymentData) => {
+                setPaidAmount(paymentData.payment.amount);
                 setPaymentSuccess(true);
                 setOrderStatus("completed");
                 setCart([]);
