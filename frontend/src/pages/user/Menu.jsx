@@ -411,10 +411,9 @@ const handleOrderAgain = () => {
         <h2>Select Table</h2>
 
         <select
-          value={selectedTable}
-          onChange={(e) =>
-            setSelectedTable(e.target.value)
-          }
+            value={selectedTable}
+            onChange={(e) => setSelectedTable(e.target.value)}
+            disabled={!!orderId}
         >
           <option value="">
             Select a table
