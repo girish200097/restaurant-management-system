@@ -5,6 +5,7 @@ function MenuCard({
   onAddToCart,
   quantity,
   onUpdateQuantity,
+  disabled,
 }) {
   return (
    <div
@@ -23,7 +24,7 @@ function MenuCard({
           <button
             className="add-button"
             onClick={() => onAddToCart(menu)}
-            disabled={!menu.isAvailable}
+            disabled={!menu.isAvailable || disabled}
           >
             Add
           </button>
@@ -34,16 +35,18 @@ function MenuCard({
               onClick={() =>
                 onUpdateQuantity(menu._id, -1)
               }
+              disabled={disabled}
             >
               −
             </button>
 
             <span>{quantity}</span>
 
-            <button
+           <button
               onClick={() =>
                 onUpdateQuantity(menu._id, 1)
               }
+              disabled={disabled}
             >
               +
             </button>
