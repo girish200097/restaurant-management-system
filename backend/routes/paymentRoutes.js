@@ -8,6 +8,7 @@ const {
     generateReceipt,
     getAllPayments,
     deletePayment,
+    getPaymentStatus,
 } = require("../controllers/paymentController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -38,6 +39,12 @@ router.post(
     "/receipt/:orderId",
     authMiddleware,
     generateReceipt
+);
+
+router.get(
+    "/status/:orderId",
+    authMiddleware,
+    getPaymentStatus
 );
 
 router.get(

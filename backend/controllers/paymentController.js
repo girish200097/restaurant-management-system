@@ -508,6 +508,48 @@ const generateReceipt = async (req, res) => {
     }
 };
 
+// getPaymentStatus
+const getPaymentStatus = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(orderId)) {
+            return res.status(400).json({
+                message: "Invalid Order ID",
+            });
+        }
+
+        const payment = await Payment.findOne({
+            order: orderId,
+        });
+
+        if (!payment) {
+            return res.status(404).json({
+                message: "Payment not found",
+            });
+        }
+
+        if (payment.customer.toString() !== req.user.userId.toString()) {
+            return res.status(403).json({
+                message: "You are not allowed to view this payment",
+            });
+        }
+
+        return res.status(200).json({
+            paymentStatus: payment.paymentStatus,
+            receiptSent: payment.receiptSent,
+            amount: payment.amount,
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+};
+
 module.exports = {
     createPayment,
     verifyPayment,
@@ -515,4 +557,5 @@ module.exports = {
     generateReceipt,
     getAllPayments,
     deletePayment,
+    getPaymentStatus,
 };
