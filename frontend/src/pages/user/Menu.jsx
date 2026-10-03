@@ -648,6 +648,7 @@ const handleOrderAgain = () => {
                                         onClick={() =>
                                             updateQuantity(item._id, -1)
                                         }
+                                        disabled={!!orderId && !isOrderingAgain}
                                     >
                                         −
                                     </button>
@@ -658,6 +659,7 @@ const handleOrderAgain = () => {
                                         onClick={() =>
                                             updateQuantity(item._id, 1)
                                         }
+                                            disabled={!!orderId && !isOrderingAgain}
                                     >
                                         +
                                     </button>
@@ -674,6 +676,15 @@ const handleOrderAgain = () => {
                         <strong>Total</strong>
                         <strong>₹{getCartTotal()}</strong>
                     </div>
+                    {!orderId || isOrderingAgain ? (
+                        <button
+                            className="cart-create-order-button"
+                            onClick={createOrder}
+                            disabled={isCreatingOrder || cart.length === 0}
+                        >
+                            {isCreatingOrder ? "Creating Order..." : "Create Order"}
+                        </button>
+                    ) : null}
                 </>
             )}
 
