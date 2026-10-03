@@ -45,41 +45,58 @@ const createOrder = async(req,res) => {
         let totalAmount = 0;
 
         if (activeOrder) {
-    const updatedOrderItems = [];
-    let totalAmount = 0;
+                        const existingOrderItems = activeOrder.items || [];
 
-    for (const newItem of items) {
-        if (newItem.quantity <= 0) {
-            return res.status(400).json({
-                message: "Quantity must be greater than 0",
-            });
-        }
+                    for (const newItem of items) {
+                        if (newItem.quantity <= 0) {
+                            return res.status(400).json({
+                                message: "Quantity must be greater than 0",
+                            });
+                        }
 
-        const menu = await Menu.findById(newItem.menuItem);
+                        const menu = await Menu.findById(newItem.menuItem);
 
-        if (!menu) {
-            return res.status(404).json({
-                message: "Menu item not found",
-            });
-        }
+                        if (!menu) {
+                            return res.status(404).json({
+                                message: "Menu item not found",
+                            });
+                        }
 
-        if (!menu.isAvailable) {
-            return res.status(400).json({
-                message: "Menu item is not available",
-            });
-        }
+                        if (!menu.isAvailable) {
+                            return res.status(400).json({
+                                message: "Menu item is not available",
+                            });
+                        }
 
-        totalAmount += menu.price * newItem.quantity;
+                        const existingItem = existingOrderItems.find(
+                            (item) =>
+                                item.menuItem.toString() === newItem.menuItem.toString()
+                        );
 
-        updatedOrderItems.push({
-            menuItem: newItem.menuItem,
-            quantity: newItem.quantity,
-            price: menu.price,
-        });
-    }
+                        if (existingItem) {
+                            // Same item already exists → increase quantity
+                            existingItem.quantity += newItem.quantity;
+                            existingItem.price = menu.price;
+                        } else {
+                            // New item → add it to the existing order
+                            existingOrderItems.push({
+                                menuItem: newItem.menuItem,
+                                quantity: newItem.quantity,
+                                price: menu.price,
+                            });
+                        }
+                    }
 
-    activeOrder.items = updatedOrderItems;
-    activeOrder.totalAmount = totalAmount;
+                    let totalAmount = 0;
+
+                    for (const item of existingOrderItems) {
+                        totalAmount += item.price * item.quantity;
+                    }
+
+                    activeOrder.items = existingOrderItems;
+                    activeOrder.totalAmount = totalAmount;
+
+                    activeOrder.customerUpdatedAt = new Date();
 
     activeOrder.customerUpdatedAt = new Date();
     // Assign waiter only if the existing order doesn't have one
