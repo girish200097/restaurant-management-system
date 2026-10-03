@@ -25,6 +25,7 @@ function Menu() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderingAgain, setIsOrderingAgain] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
+  const [showCompletedStatus, setShowCompletedStatus] = useState(false);
   useEffect(() => {
     const fetchMenus = async () => {
       try {
@@ -453,7 +454,7 @@ const handleOrderAgain = () => {
 )}
 
             {/* Status bar Section */}
-    {orderId && orderStatus && !paymentSuccess && (
+   {orderId && orderStatus && (!paymentSuccess || showCompletedStatus) && (
     <div className="order-status-section">
         <h3>Order Status</h3>
 
@@ -557,14 +558,19 @@ const handleOrderAgain = () => {
         <PaymentButton
             orderId={orderId}
             amount={getCartTotal()}
-            onPaymentSuccess={(paymentData) => {
-                setPaidAmount(paymentData.payment.amount);
-                setPaymentSuccess(true);
-                setOrderStatus("completed");
-                setCart([]);
-                setSelectedTable("");
-                localStorage.removeItem("selectedTable");
-            }}
+           onPaymentSuccess={(paymentData) => {
+              setPaidAmount(paymentData.payment.amount);
+              setOrderStatus("completed");
+              setShowCompletedStatus(true);
+              setPaymentSuccess(true);
+              setCart([]);
+              setSelectedTable("");
+              localStorage.removeItem("selectedTable");
+
+              setTimeout(() => {
+                  setShowCompletedStatus(false);
+              }, 5000);
+          }}
         />
 
         <button
