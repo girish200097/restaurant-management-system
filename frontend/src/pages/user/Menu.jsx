@@ -24,7 +24,7 @@ function Menu() {
   const [receiptSent, setReceiptSent] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderingAgain, setIsOrderingAgain] = useState(false);
-
+  const [orderTotal, setOrderTotal] = useState(0);
   useEffect(() => {
     const fetchMenus = async () => {
       try {
@@ -109,8 +109,9 @@ useEffect(() => {
                 // Restore payment state
                 // Restore only an unfinished order
           if (latestOrder.paymentStatus !== "paid") {
-              setOrderId(latestOrder._id);
+             setOrderId(latestOrder._id);
               setOrderStatus(latestOrder.orderStatus);
+              setOrderTotal(latestOrder.totalAmount);
               setPaymentSuccess(false);
           } else {
                     setPaymentSuccess(false);
@@ -234,7 +235,11 @@ useEffect(() => {
 
       setOrderId(data.order._id);
       setOrderStatus(data.order.orderStatus);
+      setOrderTotal(data.order.totalAmount);
       setIsOrderingAgain(false);
+
+      // Clear cart after submitting the order
+      setCart([]);
 
       alert(data.message);
     } catch (error) {
@@ -444,7 +449,7 @@ const handleOrderAgain = () => {
 )}
 
             {/* Status bar Section */}
-    {orderId && orderStatus && cart.length > 0 && (
+    {orderId && orderStatus && !paymentSuccess && (
     <div className="order-status-section">
         <h3>Order Status</h3>
 
@@ -596,7 +601,7 @@ const handleOrderAgain = () => {
 
 
       <h3>
-          Total: ₹{paymentSuccess ? paidAmount : getCartTotal()}
+          Total: ₹{paymentSuccess ? paidAmount : orderTotal}
       </h3>
 
       <button
