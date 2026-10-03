@@ -95,10 +95,9 @@ const createOrder = async(req,res) => {
 
                     activeOrder.items = existingOrderItems;
                     activeOrder.totalAmount = totalAmount;
+                    activeOrder.orderStatus = "pending";
 
                     activeOrder.customerUpdatedAt = new Date();
-
-    activeOrder.customerUpdatedAt = new Date();
     // Assign waiter only if the existing order doesn't have one
     if (!activeOrder.waiter) {
         const availableWaiters = await User.find({
@@ -137,8 +136,16 @@ const createOrder = async(req,res) => {
             activeOrder.waiter = assignedWaiter;
         }
     }
+    activeOrder.customerUpdatedAt = new Date();
 
     await activeOrder.save();
+
+    const io = getIO();
+
+    io.to(`order_${activeOrder._id}`).emit("orderStatusUpdated", {
+        orderId: activeOrder._id.toString(),
+        orderStatus: activeOrder.orderStatus,
+    });
 
     return res.status(200).json({
         message: "Order updated successfully",
