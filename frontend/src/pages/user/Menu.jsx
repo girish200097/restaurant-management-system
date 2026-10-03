@@ -399,7 +399,7 @@ const handleOrderAgain = () => {
               cart.find((item) => item._id === menu._id)?.quantity || 0
             }
             onUpdateQuantity={updateQuantity}
-            disabled={orderId && !isOrderingAgain}
+            disabled={!!orderId && !isOrderingAgain}
           />
         ))}
 
