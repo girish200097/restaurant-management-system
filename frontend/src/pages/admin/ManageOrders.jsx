@@ -35,6 +35,10 @@ function ManageOrders() {
 
     useEffect(() => {
         fetchOrders();
+
+        const interval = setInterval(fetchOrders, 2000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const toggleOrder = (orderId) => {

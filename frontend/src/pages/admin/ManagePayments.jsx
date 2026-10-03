@@ -34,8 +34,12 @@ function ManagePayments() {
         }
     };
 
-    useEffect(() => {
+   useEffect(() => {
         fetchPayments();
+
+        const interval = setInterval(fetchPayments, 2000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const handleDeletePayment = async (paymentId) => {
