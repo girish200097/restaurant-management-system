@@ -1150,3 +1150,63 @@
     font-size: 16px;
   }
 }
+
+/* Served order actions */
+.served-order-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+/* Order Again button */
+.order-again-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background: #f39c12;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.order-again-button:hover {
+    background: #d68910;
+    transform: translateY(-1px);
+}
+
+.order-again-button:active {
+    transform: translateY(0);
+}
+.served-order-actions {
+    position: sticky;
+    bottom: 15px;
+    z-index: 100;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    width: fit-content;
+    margin: 20px auto;
+    padding: 10px;
+
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+@media (max-width: 600px) {
+    .served-order-actions {
+        width: calc(100% - 20px);
+        margin: 15px auto;
+        bottom: 10px;
+    }
+
+    .served-order-actions .order-again-button {
+        flex: 1;
+    }
+}

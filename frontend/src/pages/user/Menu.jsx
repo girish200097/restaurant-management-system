@@ -525,21 +525,15 @@ const handleOrderAgain = () => {
 
       {/* Create Order */}
 
-      <button
-          className="create-order-button"
-          onClick={createOrder}
-          disabled={
-              isCreatingOrder ||
-              paymentSuccess ||
-              orderStatus === "served"
-          }
-      >
-          {isCreatingOrder
-              ? "Creating Order..."
-              : paymentSuccess
-              ? "Order Completed"
-              : "Create Order"}
-      </button>
+      {!orderId && !paymentSuccess && (
+            <button
+                className="create-order-button"
+                onClick={createOrder}
+                disabled={isCreatingOrder}
+            >
+                {isCreatingOrder ? "Creating Order..." : "Create Order"}
+            </button>
+        )}
 
 
       {/* Payment */}
