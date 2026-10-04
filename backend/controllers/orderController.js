@@ -275,7 +275,7 @@ const getOrderById = async (req, res) => {
 
         const order = await Order.findById(id)
         .populate("customer", "email")
-        .populate("table", "tableNumber capacity")
+        .populate("table", "tableNumber")
         .populate("items.menuItem", "name price");
 
         if(!order){
