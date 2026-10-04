@@ -185,7 +185,7 @@ function ManageTables() {
             const token = localStorage.getItem("adminToken");
 
             const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/admin/table/${id}/availability`,
+                `${import.meta.env.VITE_API_URL}/admin/table/${id}/status`,
                 {
                     method: "PATCH",
                     headers: {
