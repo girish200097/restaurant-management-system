@@ -205,6 +205,11 @@ const verifyPayment = async (req, res) => {
 
         await order.save();
 
+        if (order.table) {
+            order.table.status = "available";
+            await order.table.save();
+        }
+
         const io = getIO();
 
         io.to(`order_${order._id}`).emit("orderStatusUpdated", {
