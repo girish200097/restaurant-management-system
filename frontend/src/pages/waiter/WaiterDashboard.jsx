@@ -3,7 +3,6 @@ import { io } from "socket.io-client";
 import WaiterNavbar from "./WaiterNavbar";
 import "./WaiterDashboard.css";
 
-
 const getOrderAge = (customerUpdatedAt, currentTime) => {
     const difference = Math.max(
         0,
@@ -29,6 +28,7 @@ const getOrderAge = (customerUpdatedAt, currentTime) => {
 
     return `${hours} hr ${remainingMinutes} min ago`;
 };
+
 function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -36,6 +36,7 @@ function WaiterDashboard() {
     const [orderFilter, setOrderFilter] = useState("all");
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [orderMessage, setOrderMessage] = useState("");
+
     const notifyWaiter = () => {
         const audio = new Audio("/notification.mp3");
 
@@ -48,116 +49,125 @@ function WaiterDashboard() {
         }
     };
 
-   useEffect(() => {
-    let firstLoad = true;
-    const socket = io(import.meta.env.VITE_API_URL);
+    useEffect(() => {
+        let firstLoad = true;
 
-    const fetchOrders = async () => {   
-        try {
-            const token = localStorage.getItem("token");
+        const socket = io(import.meta.env.VITE_API_URL);
 
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/order/my-assigned-orders`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+        const fetchOrders = async () => {
+            try {
+                const token = localStorage.getItem("token");
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                return;
-            }
-
-            const newOrders = data.orders || [];
-
-            setOrders((currentOrders) => {
-                if (!firstLoad) {
-                    // Check for new orders
-                    const hasNewOrder = newOrders.some(
-                        (newOrder) =>
-                            !currentOrders.some(
-                                (oldOrder) =>
-                                    oldOrder._id === newOrder._id
-                            )
-                    );
-
-                    if (hasNewOrder) {
-                        setOrderMessage("New order received");
-                        notifyWaiter();
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/order/my-assigned-orders`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
+                );
 
-                    // Check for updated orders
-                    const hasUpdatedOrder = newOrders.some((newOrder) => {
-                        const oldOrder = currentOrders.find(
-                            (order) => order._id === newOrder._id
+                const data = await response.json();
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const newOrders = data.orders || [];
+
+                setOrders((currentOrders) => {
+                    if (!firstLoad) {
+
+                        // Check for new orders
+                        const hasNewOrder = newOrders.some(
+                            (newOrder) =>
+                                !currentOrders.some(
+                                    (oldOrder) =>
+                                        oldOrder._id === newOrder._id
+                                )
                         );
 
-                        if (!oldOrder) {
-                            return false;
+                        if (hasNewOrder) {
+                            setOrderMessage("New order received");
+                            notifyWaiter();
                         }
 
-                        return (
-                            newOrder.totalAmount !== oldOrder.totalAmount ||
-                            JSON.stringify(newOrder.items) !==
-                                JSON.stringify(oldOrder.items)
-                        );
-                    });
+                        // Check for updated orders
+                        const hasUpdatedOrder = newOrders.some((newOrder) => {
+                            const oldOrder = currentOrders.find(
+                                (order) => order._id === newOrder._id
+                            );
 
-                   if (hasUpdatedOrder) {
-    const updatedOrder = newOrders.find((newOrder) => {
-        const oldOrder = currentOrders.find(
-            (order) => order._id === newOrder._id
-        );
+                            if (!oldOrder) {
+                                return false;
+                            }
 
-        if (!oldOrder) {
-            return false;
-        }
+                            return (
+                                newOrder.totalAmount !== oldOrder.totalAmount ||
+                                JSON.stringify(newOrder.items) !==
+                                    JSON.stringify(oldOrder.items)
+                            );
+                        });
 
-        return (
-            newOrder.totalAmount !== oldOrder.totalAmount ||
-            JSON.stringify(newOrder.items) !==
-                JSON.stringify(oldOrder.items)
-        );
-    });
+                        if (hasUpdatedOrder) {
+                            const updatedOrder = newOrders.find((newOrder) => {
+                                const oldOrder = currentOrders.find(
+                                    (order) => order._id === newOrder._id
+                                );
 
-            if (updatedOrder) {
-                setUpdatedOrderId(updatedOrder._id);
+                                if (!oldOrder) {
+                                    return false;
+                                }
 
-                notifyWaiter();
+                                return (
+                                    newOrder.totalAmount !==
+                                        oldOrder.totalAmount ||
+                                    JSON.stringify(newOrder.items) !==
+                                        JSON.stringify(oldOrder.items)
+                                );
+                            });
 
-                setTimeout(() => {
-                    setUpdatedOrderId(null);
-                }, 4000);
+                            if (updatedOrder) {
+                                setUpdatedOrderId(updatedOrder._id);
+
+                                notifyWaiter();
+
+                                setTimeout(() => {
+                                    setUpdatedOrderId(null);
+                                }, 4000);
+                            }
+                        }
+                    }
+
+                    return newOrders;
+                });
+
+                firstLoad = false;
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
             }
-}
-                }
+        };
 
-                return newOrders;
-            });
+        socket.on("orderCancelled", (data) => {
+            console.log("Order cancelled by customer:", data);
 
-            firstLoad = false;
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+            setOrderMessage("Order cancelled by customer");
+            notifyWaiter();
 
-    socket.on("orderCancelled", (data) => {
-        console.log("Order cancelled by customer:", data);
+            fetchOrders();
+        });
 
         fetchOrders();
-    });
 
-    fetchOrders();
+        const interval = setInterval(fetchOrders, 2000);
 
-    const interval = setInterval(fetchOrders, 2000);
-
-    return () => clearInterval(interval);
-}, []);
+        return () => {
+            clearInterval(interval);
+            socket.disconnect();
+        };
+    }, []);
 
     useEffect(() => {
         if (!orderMessage) {
@@ -221,15 +231,30 @@ function WaiterDashboard() {
         }
     };
 
-const filteredOrders = orders
-    .filter((order) => {
-        if (orderFilter === "all") {
-            return true;
-        }
+    // Filter and sort orders
+    const filteredOrders = [...orders]
+        .filter((order) => {
+            if (orderFilter === "all") {
+                return true;
+            }
 
-        return order.orderStatus === orderFilter;
-    })
-    .sort((a, b) => {
+            if (orderFilter === "recent") {
+                return true;
+            }
+
+            return order.orderStatus === orderFilter;
+        })
+        .sort((a, b) => {
+            // Recent filter
+            // Newest orders first
+            if (orderFilter === "recent") {
+                return (
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                );
+            }
+
+            // Normal filter sorting
             const statusPriority = {
                 pending: 1,
                 preparing: 2,
@@ -246,29 +271,52 @@ const filteredOrders = orders
                 return aPriority - bPriority;
             }
 
-            // Newest first within the same status
-            return new Date(b.createdAt) - new Date(a.createdAt);
+            // Newest first within same status
+            return (
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            );
         });
+
+    // Show only 10 orders for Recent
+    const displayedOrders =
+        orderFilter === "recent"
+            ? filteredOrders.slice(0, 10)
+            : filteredOrders;
 
     return (
         <div>
             <WaiterNavbar />
-            <h1>Waiter Dashboard</h1>
-                    <div className="waiter-filter">
-            <label htmlFor="order-filter">Filter Orders</label>
 
-            <select
-                id="order-filter"
-                value={orderFilter}
-                onChange={(event) => setOrderFilter(event.target.value)}
-            >
-                <option value="all">All Orders</option>
-                <option value="pending">Pending</option>
-                <option value="preparing">Preparing</option>
-                <option value="served">Served</option>
-                <option value="completed">Completed</option>
-            </select>
-        </div>
+            <h1>Waiter Dashboard</h1>
+
+            <div className="waiter-filter">
+                <label htmlFor="order-filter">
+                    Filter Orders
+                </label>
+
+                <select
+                    id="order-filter"
+                    value={orderFilter}
+                    onChange={(event) =>
+                        setOrderFilter(event.target.value)
+                    }
+                >
+                    <option value="recent">Recent</option>
+                    <option value="all">All Orders</option>
+                    <option value="pending">Pending</option>
+                    <option value="preparing">Preparing</option>
+                    <option value="served">Served</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            {orderMessage && (
+                <div className="waiter-order-updated">
+                    🔔 {orderMessage}
+                </div>
+            )}
 
             {loading ? (
                 <p>Loading orders...</p>
@@ -276,35 +324,65 @@ const filteredOrders = orders
                 <p>No assigned orders</p>
             ) : (
                 <div className="waiter-orders">
-                    {filteredOrders.map((order) => (
-                        <div className="waiter-order-card" key={order._id}>
-
+                    {displayedOrders.map((order) => (
+                        <div
+                            className="waiter-order-card"
+                            key={order._id}
+                        >
                             <div className="waiter-order-header">
-                            <h2>Order #{order._id}</h2>
+                                <h2>Order #{order._id}</h2>
 
-                            <select
-                                className="waiter-status-select"
-                                value={order.orderStatus}
-                                onChange={(event) =>
-                                    updateOrderStatus(order._id, event.target.value)
-                                }
-                                disabled={order.orderStatus === "completed"}
-                            >
-                                <option value="pending">Pending</option>
-                                <option value="preparing">Preparing</option>
-                                <option value="served">Served</option>
-                                <option value="completed" disabled>Completed</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                        </div>
+                                <select
+                                    className="waiter-status-select"
+                                    value={order.orderStatus}
+                                    onChange={(event) =>
+                                        updateOrderStatus(
+                                            order._id,
+                                            event.target.value
+                                        )
+                                    }
+                                    disabled={
+                                        order.orderStatus === "completed" ||
+                                        order.orderStatus === "cancelled"
+                                    }
+                                >
+                                    <option value="pending">
+                                        Pending
+                                    </option>
+
+                                    <option value="preparing">
+                                        Preparing
+                                    </option>
+
+                                    <option value="served">
+                                        Served
+                                    </option>
+
+                                    <option
+                                        value="completed"
+                                        disabled
+                                    >
+                                        Completed
+                                    </option>
+
+                                    <option
+                                        value="cancelled"
+                                        disabled
+                                    >
+                                        Cancelled
+                                    </option>
+                                </select>
+                            </div>
 
                             <div className="waiter-order-info">
                                 <p>
-                                    Customer: {order.customer?.name}
+                                    Customer:{" "}
+                                    {order.customer?.name}
                                 </p>
 
                                 <p>
-                                    Table: {order.table?.tableNumber}
+                                    Table:{" "}
+                                    {order.table?.tableNumber}
                                 </p>
                             </div>
 
@@ -334,15 +412,17 @@ const filteredOrders = orders
                             )}
 
                             <div className="waiter-order-footer">
-                            <strong>
-                                Total: ₹{order.totalAmount}
-                            </strong>
+                                <strong>
+                                    Total: ₹{order.totalAmount}
+                                </strong>
 
-                            <span className="waiter-order-time">
-                                {getOrderAge(order.customerUpdatedAt, currentTime)}
-                            </span>
-                        </div>
-
+                                <span className="waiter-order-time">
+                                    {getOrderAge(
+                                        order.customerUpdatedAt,
+                                        currentTime
+                                    )}
+                                </span>
+                            </div>
                         </div>
                     ))}
                 </div>
