@@ -309,9 +309,21 @@ useEffect(() => {
   };
 
 const handleOrderAgain = () => {
+    setOrderId(null);
     setOrderStatus(null);
+    setOrderTotal(0);
+
+    setPaymentSuccess(false);
+    setPaidAmount(0);
     setReceiptSent(false);
+
+    setCart([]);
     setIsOrderingAgain(true);
+    setIsCartOpen(false);
+
+    // Keep the same selected table
+    // Do NOT clear selectedTable
+    // Do NOT remove it from localStorage
 
     window.scrollTo({
         top: 0,
@@ -342,38 +354,47 @@ const handleOrderAgain = () => {
 };
 
 const handleCancelOrder = async () => {
-  try {
-    const token = localStorage.getItem("token");
+    try {
+        const token = localStorage.getItem("token");
 
-    const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/order/${orderId}/cancel`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/order/${orderId}/cancel`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (!response.ok) {
-      alert(data.message || "Failed to cancel order");
-      return;
+        if (!response.ok) {
+            alert(data.message || "Failed to cancel order");
+            return;
+        }
+
+        // Show cancelled order
+        setOrderStatus("cancelled");
+
+        // Reset cart and order amount
+        setCart([]);
+        setOrderTotal(0);
+
+        // Reset payment and receipt state
+        setPaymentSuccess(false);
+        setPaidAmount(0);
+        setReceiptSent(false);
+
+        // Keep the order ID so "Order Cancelled" can still be displayed
+        // and Order Again can be clicked.
+
+        setIsOrderingAgain(false);
+
+    } catch (error) {
+        console.error("Cancel order error:", error);
+        alert("Something went wrong while cancelling the order");
     }
-
-    setOrderStatus("cancelled");
-    setOrderId(null);
-    setOrderTotal(0);
-    setCart([]);
-
-    setSelectedTable("");
-    localStorage.removeItem("selectedTable");
-
-  } catch (error) {
-    console.error("Cancel order error:", error);
-    alert("Something went wrong while cancelling the order");
-  }
 };
 
   return (
@@ -576,7 +597,14 @@ const handleCancelOrder = async () => {
 
         {orderStatus === "cancelled" && (
             <div className="cancelled-status">
-                Order Cancelled
+                <div>Order Cancelled</div>
+
+                <button
+                    onClick={handleOrderAgain}
+                    className="order-again-button"
+                >
+                    Order Again
+                </button>
             </div>
         )}
     </div>
