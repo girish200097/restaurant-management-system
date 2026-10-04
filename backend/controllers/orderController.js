@@ -508,9 +508,22 @@ const cancelOrder = async(req,res) => {
             });
         }
 
-        order.orderStatus = "cancelled";
+        order.orderStatus = "cancelled";order.orderStatus = "cancelled";
         order.isActive = false;
         await order.save();
+
+        if (order.table) {
+            order.table.status = "available";
+            await order.table.save();
+        }
+
+        const io = getIO();
+
+        io.to(`order_${order._id}`).emit("orderCancelled", {
+            orderId: order._id.toString(),
+            orderStatus: "cancelled",
+        });
+
         return res.status(200).json({
             message: "Order cancelled successfully",
             order,

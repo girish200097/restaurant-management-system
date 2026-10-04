@@ -340,6 +340,42 @@ const handleOrderAgain = () => {
             return "";
     }
 };
+
+const handleCancelOrder = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      `${API_URL}/order/${orderId}/cancel`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Failed to cancel order");
+      return;
+    }
+
+    setOrderStatus("cancelled");
+    setOrderId(null);
+    setOrderTotal(0);
+    setCart([]);
+
+    setSelectedTable("");
+    localStorage.removeItem("selectedTable");
+
+  } catch (error) {
+    console.error("Cancel order error:", error);
+    alert("Something went wrong while cancelling the order");
+  }
+};
+
   return (
     <div className="menu-page">
 
@@ -528,6 +564,15 @@ const handleOrderAgain = () => {
                 <p>Completed</p>
             </div>
         </div>
+
+        {orderStatus === "pending" && (
+          <button
+            className="cancel-order-btn"
+            onClick={handleCancelOrder}
+          >
+            Cancel Order
+          </button>
+        )}
 
         {orderStatus === "cancelled" && (
             <div className="cancelled-status">

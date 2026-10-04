@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import WaiterNavbar from "./WaiterNavbar";
 import "./WaiterDashboard.css";
+
 
 const getOrderAge = (customerUpdatedAt, currentTime) => {
     const difference = Math.max(
@@ -48,8 +50,9 @@ function WaiterDashboard() {
 
    useEffect(() => {
     let firstLoad = true;
+    const socket = io(import.meta.env.VITE_API_URL);
 
-    const fetchOrders = async () => {
+    const fetchOrders = async () => {   
         try {
             const token = localStorage.getItem("token");
 
@@ -142,6 +145,12 @@ function WaiterDashboard() {
             setLoading(false);
         }
     };
+
+    socket.on("orderCancelled", (data) => {
+        console.log("Order cancelled by customer:", data);
+
+        fetchOrders();
+    });
 
     fetchOrders();
 
@@ -258,7 +267,6 @@ const filteredOrders = orders
                 <option value="preparing">Preparing</option>
                 <option value="served">Served</option>
                 <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
             </select>
         </div>
 
