@@ -346,7 +346,7 @@ const handleCancelOrder = async () => {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `${API_URL}/order/${orderId}/cancel`,
+  `${import.meta.env.VITE_API_URL}/order/${orderId}/cancel`,
       {
         method: "PATCH",
         headers: {
