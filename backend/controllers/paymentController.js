@@ -501,12 +501,16 @@ const generateReceipt = async (req, res) => {
                 message: "You are not allowed to generate this receipt",
             });
         }
-
         await sendReceiptEmail(
             order.customer,
             order,
             payment
         );
+
+        if (order.table) {
+            order.table.status = "available";
+            await order.table.save();
+        }
 
         payment.receiptSent = true;
         await payment.save();
