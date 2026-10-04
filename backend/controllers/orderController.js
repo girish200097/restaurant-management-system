@@ -359,15 +359,6 @@ const updateOrderStatus = async (req,res) => {
         order.orderStatus = orderStatus;
         await order.save();
 
-        if (orderStatus === "completed" && order.table) {
-            const table = await Table.findById(order.table);
-
-            if (table) {
-                table.status = "available";
-                await table.save();
-            }
-        }
-
 
         const io = getIO();
 
