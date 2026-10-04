@@ -314,6 +314,14 @@ const paymentWebhook = async (req, res) => {
                 payment.webhookEventIds.push(webhookEventId);
                 await payment.save();
 
+                const order = await Order.findById(payment.order)
+                    .populate("table");
+
+                if (order && order.table) {
+                    order.table.status = "available";
+                    await order.table.save();
+                }
+
                 return res.status(200).json({
                     message: "Payment already processed",
                 });
@@ -379,7 +387,7 @@ const paymentWebhook = async (req, res) => {
             message: "Internal Server Error",
         });
     }
-};
+};      
 
 //getAllPayments
 const getAllPayments = async (req, res) => {
