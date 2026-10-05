@@ -4,6 +4,7 @@ import PaymentButton from "../../components/PaymentButton";
 import MenuCard from "../../components/MenuCard";
 import "./Menu.css";
 import { useSearchParams } from "react-router-dom";
+import { jsPDF } from "jspdf";
 
 function Menu() {
   const [searchParams] = useSearchParams();
@@ -298,13 +299,6 @@ useEffect(() => {
 
         const { order, payment } = data.receipt;
 
-        const receiptWindow = window.open("", "_blank");
-
-        if (!receiptWindow) {
-            alert("Please allow pop-ups to open the receipt");
-            return;
-        }
-
         const receiptDate = new Date(order.createdAt);
 
         const formattedDate = receiptDate.toLocaleDateString("en-IN", {
@@ -318,298 +312,210 @@ useEffect(() => {
             minute: "2-digit",
         });
 
-        const itemsHTML = order.items
-            .map((item) => {
-                const itemTotal = item.price * item.quantity;
+        // 80mm receipt width
+        const pageWidth = 80;
 
-                return `
-                    <tr>
-                        <td>${item.menuItem.name}</td>
-                        <td>${item.quantity}</td>
-                        <td>₹${item.price}</td>
-                        <td>₹${itemTotal}</td>
-                    </tr>
-                `;
-            })
-            .join("");
+        // Calculate receipt height based on number of items
+        const baseHeight = 145;
+        const itemHeight = 10;
+        const pageHeight = baseHeight + order.items.length * itemHeight;
 
-        receiptWindow.document.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Restaurant Receipt</title>
+        const doc = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: [pageWidth, pageHeight],
+        });
 
-                <style>
-                    * {
-                        box-sizing: border-box;
-                    }
+        const centerX = pageWidth / 2;
+        const left = 5;
+        const right = pageWidth - 5;
 
-                    body {
-                        margin: 0;
-                        padding: 30px;
-                        background: #f2f2f2;
-                        font-family: Arial, sans-serif;
-                        color: #222;
-                    }
+        let y = 8;
 
-                    .receipt {
-                        width: 420px;
-                        max-width: 100%;
-                        margin: 0 auto;
-                        background: white;
-                        padding: 25px;
-                        box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-                    }
+        // Restaurant name
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text("RESTAURANT", centerX, y, {
+            align: "center",
+        });
 
-                    .restaurant-header {
-                        text-align: center;
-                        border-bottom: 2px dashed #333;
-                        padding-bottom: 18px;
-                        margin-bottom: 18px;
-                    }
+        y += 6;
 
-                    .restaurant-header h1 {
-                        margin: 0;
-                        font-size: 26px;
-                    }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.text("Restaurant & Cafe", centerX, y, {
+            align: "center",
+        });
 
-                    .restaurant-header p {
-                        margin: 5px 0;
-                        font-size: 13px;
-                        color: #666;
-                    }
+        y += 6;
 
-                    .receipt-title {
-                        text-align: center;
-                        font-size: 18px;
-                        font-weight: bold;
-                        margin-bottom: 18px;
-                    }
+        doc.setLineWidth(0.3);
+        doc.line(left, y, right, y);
 
-                    .details {
-                        font-size: 13px;
-                        margin-bottom: 18px;
-                    }
+        y += 7;
 
-                    .details div {
-                        display: flex;
-                        justify-content: space-between;
-                        margin: 6px 0;
-                    }
+        // Receipt title
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text("RECEIPT", centerX, y, {
+            align: "center",
+        });
 
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        font-size: 12px;
-                    }
+        y += 7;
 
-                    th {
-                        border-bottom: 1px solid #222;
-                        padding: 8px 4px;
-                        text-align: left;
-                    }
+        // Receipt details
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
 
-                    td {
-                        padding: 8px 4px;
-                        border-bottom: 1px solid #eee;
-                    }
+        doc.text(`Receipt No: RCP-${order._id.slice(-8)}`, left, y);
+        y += 4;
 
-                    th:nth-child(2),
-                    th:nth-child(3),
-                    th:nth-child(4),
-                    td:nth-child(2),
-                    td:nth-child(3),
-                    td:nth-child(4) {
-                        text-align: right;
-                    }
+        doc.text(`Order No: ${order._id.slice(-8)}`, left, y);
+        y += 4;
 
-                    .total-section {
-                        margin-top: 18px;
-                        border-top: 2px dashed #333;
-                        padding-top: 12px;
-                    }
+        doc.text(`Date: ${formattedDate}`, left, y);
+        y += 4;
 
-                    .total-row {
-                        display: flex;
-                        justify-content: space-between;
-                        margin: 8px 0;
-                        font-size: 14px;
-                    }
+        doc.text(`Time: ${formattedTime}`, left, y);
+        y += 4;
 
-                    .grand-total {
-                        font-size: 19px;
-                        font-weight: bold;
-                        border-top: 1px solid #ddd;
-                        padding-top: 10px;
-                        margin-top: 10px;
-                    }
+        doc.text(
+            `Customer: ${order.customer?.name || "Customer"}`,
+            left,
+            y
+        );
+        y += 4;
 
-                    .payment {
-                        margin-top: 18px;
-                        padding: 12px;
-                        background: #f7f7f7;
-                        font-size: 13px;
-                    }
+        doc.text(
+            `Table: ${order.table?.tableNumber || "-"}`,
+            left,
+            y
+        );
 
-                    .payment div {
-                        display: flex;
-                        justify-content: space-between;
-                        margin: 5px 0;
-                    }
+        y += 6;
 
-                    .paid {
-                        font-weight: bold;
-                    }
+        doc.line(left, y, right, y);
 
-                    .thank-you {
-                        text-align: center;
-                        margin-top: 25px;
-                        padding-top: 15px;
-                        border-top: 2px dashed #333;
-                        font-size: 13px;
-                    }
+        y += 6;
 
-                    .print-button {
-                        display: block;
-                        margin: 25px auto 0;
-                        padding: 10px 22px;
-                        border: none;
-                        border-radius: 6px;
-                        background: #222;
-                        color: white;
-                        cursor: pointer;
-                        font-size: 14px;
-                    }
+        // Items heading
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8);
 
-                    @media print {
-                        body {
-                            background: white;
-                            padding: 0;
-                        }
+        doc.text("ITEM", left, y);
+        doc.text("QTY", 48, y, { align: "right" });
+        doc.text("TOTAL", right, y, { align: "right" });
 
-                        .receipt {
-                            width: 100%;
-                            box-shadow: none;
-                        }
+        y += 4;
 
-                        .print-button {
-                            display: none;
-                        }
-                    }
-                </style>
-            </head>
+        doc.line(left, y, right, y);
 
-            <body>
+        y += 6;
 
-                <div class="receipt">
+        // Items
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
 
-                    <div class="restaurant-header">
-                        <h1>Restaurant</h1>
-                        <p>Restaurant & Cafe</p>
-                    </div>
+        order.items.forEach((item) => {
+            const itemName = item.menuItem?.name || "Item";
+            const quantity = item.quantity;
+            const itemTotal = item.price * quantity;
 
-                    <div class="receipt-title">
-                        RECEIPT
-                    </div>
+            // Split long item names
+            const itemLines = doc.splitTextToSize(itemName, 38);
 
-                    <div class="details">
-                        <div>
-                            <span>Receipt No</span>
-                            <strong>RCP-${order._id}</strong>
-                        </div>
+            doc.text(itemLines, left, y);
 
-                        <div>
-                            <span>Order No</span>
-                            <strong>${order._id}</strong>
-                        </div>
+            doc.text(String(quantity), 48, y, {
+                align: "right",
+            });
 
-                        <div>
-                            <span>Date</span>
-                            <strong>${formattedDate}</strong>
-                        </div>
+            doc.text(`₹${itemTotal}`, right, y, {
+                align: "right",
+            });
 
-                        <div>
-                            <span>Time</span>
-                            <strong>${formattedTime}</strong>
-                        </div>
+            y += Math.max(itemLines.length * 4, 6);
+        });
 
-                        <div>
-                            <span>Customer</span>
-                            <strong>${order.customer?.name || "Customer"}</strong>
-                        </div>
+        y += 2;
 
-                        <div>
-                            <span>Table</span>
-                            <strong>${order.table?.tableNumber || "-"}</strong>
-                        </div>
-                    </div>
+        doc.line(left, y, right, y);
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
+        y += 7;
 
-                        <tbody>
-                            ${itemsHTML}
-                        </tbody>
-                    </table>
+        // Total
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
 
-                    <div class="total-section">
+        doc.text("TOTAL", left, y);
 
-                        <div class="total-row">
-                            <span>Subtotal</span>
-                            <strong>₹${order.totalAmount}</strong>
-                        </div>
+        doc.text(`₹${order.totalAmount}`, right, y, {
+            align: "right",
+        });
 
-                        <div class="total-row grand-total">
-                            <span>TOTAL</span>
-                            <strong>₹${order.totalAmount}</strong>
-                        </div>
+        y += 8;
 
-                    </div>
+        // Payment information
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
 
-                    <div class="payment">
+        doc.text("Payment Method: Razorpay", left, y);
 
-                        <div>
-                            <span>Payment Method</span>
-                            <strong>Razorpay</strong>
-                        </div>
+        y += 5;
 
-                        <div>
-                            <span>Payment Status</span>
-                            <strong class="paid">PAID ✓</strong>
-                        </div>
+        doc.setFont("helvetica", "bold");
+        doc.text("Payment Status: PAID ✓", left, y);
 
-                    </div>
+        y += 5;
 
-                    <div class="thank-you">
-                        <strong>Thank you for dining with us!</strong>
-                        <br />
-                        Please visit us again.
-                    </div>
+        if (payment.razorpayPaymentId) {
+            doc.setFont("helvetica", "normal");
+            doc.text(
+                `Payment ID: ${payment.razorpayPaymentId.slice(-12)}`,
+                left,
+                y
+            );
 
-                    <button
-                        class="print-button"
-                        onclick="window.print()"
-                    >
-                        🖨 Print / Save as PDF
-                    </button>
+            y += 6;
+        }
 
-                </div>
+        doc.line(left, y, right, y);
 
-            </body>
-            </html>
-        `);
+        y += 8;
 
-        receiptWindow.document.close();
+        // Thank you message
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+
+        doc.text(
+            "Thank you for dining with us!",
+            centerX,
+            y,
+            {
+                align: "center",
+            }
+        );
+
+        y += 5;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(7);
+
+        doc.text(
+            "Please visit us again.",
+            centerX,
+            y,
+            {
+                align: "center",
+            }
+        );
+
+        // Download PDF
+        const fileName = `Restaurant-Receipt-${order._id.slice(-8)}.pdf`;
+
+        doc.save(fileName);
 
         setReceiptSent(true);
-
     } catch (error) {
         console.log("Receipt error:", error);
         alert("Something went wrong while generating the receipt");
@@ -1032,7 +938,7 @@ const handleCallWaiter = async () => {
                         }
                     >
                         {receiptSent
-                            ? "Receipt Sent ✅"
+                            ? "Receipt Downloaded ✅"
                             : isGeneratingReceipt
                             ? "Sending Receipt..."
                             : "Generate Receipt"}
