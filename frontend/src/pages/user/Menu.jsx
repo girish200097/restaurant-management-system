@@ -464,7 +464,7 @@ useEffect(() => {
         y += 5;
 
         doc.setFont("helvetica", "bold");
-        doc.text("Payment Status: PAID ✓", left, y);
+        doc.text("Payment Status: PAID", left, y);
 
         y += 5;
 
