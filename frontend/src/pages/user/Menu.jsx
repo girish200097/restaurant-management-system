@@ -430,7 +430,7 @@ useEffect(() => {
                 align: "right",
             });
 
-            doc.text(`₹${itemTotal}`, right, y, {
+            doc.text(`${itemTotal}`, right, y, {
                 align: "right",
             });
 
