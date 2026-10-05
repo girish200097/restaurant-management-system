@@ -271,44 +271,352 @@ useEffect(() => {
     );
 };
 
-  const handleGenerateReceipt = async () => {
+ const handleGenerateReceipt = async () => {
     try {
-      setIsGeneratingReceipt(true);
+        setIsGeneratingReceipt(true);
 
-      const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/payment/receipt/${orderId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      console.log("RECEIPT RESPONSE:", data);
-
-      if (!response.ok) {
-        alert(
-          data.message || "Failed to generate receipt"
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/payment/receipt/${orderId}`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
         );
-        return;
-      }
 
-      setReceiptSent(true);
+        const data = await response.json();
 
-      alert("Receipt sent to your email ✅");
+        console.log("RECEIPT RESPONSE:", data);
+
+        if (!response.ok) {
+            alert(data.message || "Failed to generate receipt");
+            return;
+        }
+
+        const { order, payment } = data.receipt;
+
+        const receiptWindow = window.open("", "_blank");
+
+        if (!receiptWindow) {
+            alert("Please allow pop-ups to open the receipt");
+            return;
+        }
+
+        const receiptDate = new Date(order.createdAt);
+
+        const formattedDate = receiptDate.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        });
+
+        const formattedTime = receiptDate.toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+
+        const itemsHTML = order.items
+            .map((item) => {
+                const itemTotal = item.price * item.quantity;
+
+                return `
+                    <tr>
+                        <td>${item.menuItem.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>₹${item.price}</td>
+                        <td>₹${itemTotal}</td>
+                    </tr>
+                `;
+            })
+            .join("");
+
+        receiptWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Restaurant Receipt</title>
+
+                <style>
+                    * {
+                        box-sizing: border-box;
+                    }
+
+                    body {
+                        margin: 0;
+                        padding: 30px;
+                        background: #f2f2f2;
+                        font-family: Arial, sans-serif;
+                        color: #222;
+                    }
+
+                    .receipt {
+                        width: 420px;
+                        max-width: 100%;
+                        margin: 0 auto;
+                        background: white;
+                        padding: 25px;
+                        box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+                    }
+
+                    .restaurant-header {
+                        text-align: center;
+                        border-bottom: 2px dashed #333;
+                        padding-bottom: 18px;
+                        margin-bottom: 18px;
+                    }
+
+                    .restaurant-header h1 {
+                        margin: 0;
+                        font-size: 26px;
+                    }
+
+                    .restaurant-header p {
+                        margin: 5px 0;
+                        font-size: 13px;
+                        color: #666;
+                    }
+
+                    .receipt-title {
+                        text-align: center;
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin-bottom: 18px;
+                    }
+
+                    .details {
+                        font-size: 13px;
+                        margin-bottom: 18px;
+                    }
+
+                    .details div {
+                        display: flex;
+                        justify-content: space-between;
+                        margin: 6px 0;
+                    }
+
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        font-size: 12px;
+                    }
+
+                    th {
+                        border-bottom: 1px solid #222;
+                        padding: 8px 4px;
+                        text-align: left;
+                    }
+
+                    td {
+                        padding: 8px 4px;
+                        border-bottom: 1px solid #eee;
+                    }
+
+                    th:nth-child(2),
+                    th:nth-child(3),
+                    th:nth-child(4),
+                    td:nth-child(2),
+                    td:nth-child(3),
+                    td:nth-child(4) {
+                        text-align: right;
+                    }
+
+                    .total-section {
+                        margin-top: 18px;
+                        border-top: 2px dashed #333;
+                        padding-top: 12px;
+                    }
+
+                    .total-row {
+                        display: flex;
+                        justify-content: space-between;
+                        margin: 8px 0;
+                        font-size: 14px;
+                    }
+
+                    .grand-total {
+                        font-size: 19px;
+                        font-weight: bold;
+                        border-top: 1px solid #ddd;
+                        padding-top: 10px;
+                        margin-top: 10px;
+                    }
+
+                    .payment {
+                        margin-top: 18px;
+                        padding: 12px;
+                        background: #f7f7f7;
+                        font-size: 13px;
+                    }
+
+                    .payment div {
+                        display: flex;
+                        justify-content: space-between;
+                        margin: 5px 0;
+                    }
+
+                    .paid {
+                        font-weight: bold;
+                    }
+
+                    .thank-you {
+                        text-align: center;
+                        margin-top: 25px;
+                        padding-top: 15px;
+                        border-top: 2px dashed #333;
+                        font-size: 13px;
+                    }
+
+                    .print-button {
+                        display: block;
+                        margin: 25px auto 0;
+                        padding: 10px 22px;
+                        border: none;
+                        border-radius: 6px;
+                        background: #222;
+                        color: white;
+                        cursor: pointer;
+                        font-size: 14px;
+                    }
+
+                    @media print {
+                        body {
+                            background: white;
+                            padding: 0;
+                        }
+
+                        .receipt {
+                            width: 100%;
+                            box-shadow: none;
+                        }
+
+                        .print-button {
+                            display: none;
+                        }
+                    }
+                </style>
+            </head>
+
+            <body>
+
+                <div class="receipt">
+
+                    <div class="restaurant-header">
+                        <h1>Restaurant</h1>
+                        <p>Restaurant & Cafe</p>
+                    </div>
+
+                    <div class="receipt-title">
+                        RECEIPT
+                    </div>
+
+                    <div class="details">
+                        <div>
+                            <span>Receipt No</span>
+                            <strong>RCP-${order._id}</strong>
+                        </div>
+
+                        <div>
+                            <span>Order No</span>
+                            <strong>${order._id}</strong>
+                        </div>
+
+                        <div>
+                            <span>Date</span>
+                            <strong>${formattedDate}</strong>
+                        </div>
+
+                        <div>
+                            <span>Time</span>
+                            <strong>${formattedTime}</strong>
+                        </div>
+
+                        <div>
+                            <span>Customer</span>
+                            <strong>${order.customer?.name || "Customer"}</strong>
+                        </div>
+
+                        <div>
+                            <span>Table</span>
+                            <strong>${order.table?.tableNumber || "-"}</strong>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            ${itemsHTML}
+                        </tbody>
+                    </table>
+
+                    <div class="total-section">
+
+                        <div class="total-row">
+                            <span>Subtotal</span>
+                            <strong>₹${order.totalAmount}</strong>
+                        </div>
+
+                        <div class="total-row grand-total">
+                            <span>TOTAL</span>
+                            <strong>₹${order.totalAmount}</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="payment">
+
+                        <div>
+                            <span>Payment Method</span>
+                            <strong>Razorpay</strong>
+                        </div>
+
+                        <div>
+                            <span>Payment Status</span>
+                            <strong class="paid">PAID ✓</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="thank-you">
+                        <strong>Thank you for dining with us!</strong>
+                        <br />
+                        Please visit us again.
+                    </div>
+
+                    <button
+                        class="print-button"
+                        onclick="window.print()"
+                    >
+                        🖨 Print / Save as PDF
+                    </button>
+
+                </div>
+
+            </body>
+            </html>
+        `);
+
+        receiptWindow.document.close();
+
+        setReceiptSent(true);
+
     } catch (error) {
-      console.log(error);
-
-      alert("Something went wrong");
+        console.log("Receipt error:", error);
+        alert("Something went wrong while generating the receipt");
     } finally {
-      setIsGeneratingReceipt(false);
+        setIsGeneratingReceipt(false);
     }
-  };
+};
 
 const handleOrderAgain = () => {
     setOrderId(null);

@@ -459,7 +459,8 @@ const deletePayment = async (req, res) => {
         });
     }
 };
-//generateReceipt
+
+// generateReceipt
 
 const generateReceipt = async (req, res) => {
     try {
@@ -487,12 +488,6 @@ const generateReceipt = async (req, res) => {
             });
         }
 
-        if (payment.receiptSent) {
-            return res.status(400).json({
-                message: "Receipt has already been sent",
-            });
-        }
-
         const order = await Order.findById(orderId)
             .populate("customer")
             .populate("table")
@@ -509,26 +504,23 @@ const generateReceipt = async (req, res) => {
                 message: "You are not allowed to generate this receipt",
             });
         }
-        await sendReceiptEmail(
-            order.customer,
-            order,
-            payment
-        );
 
+        // Make sure the table becomes available after receipt generation
         if (order.table) {
             order.table.status = "available";
             await order.table.save();
         }
 
-        payment.receiptSent = true;
-        await payment.save();
-
         return res.status(200).json({
-            message: "Receipt generated and sent successfully",
+            message: "Receipt data generated successfully",
+            receipt: {
+                order,
+                payment,
+            },
         });
 
     } catch (error) {
-        console.log(error);
+        console.log("Generate receipt error:", error);
 
         return res.status(500).json({
             message: "Internal Server Error",
