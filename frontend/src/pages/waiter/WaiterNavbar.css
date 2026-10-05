@@ -188,3 +188,54 @@
     font-size: 13px;
     font-weight: 600;
 }
+
+.waiter-call-notification {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 12px 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    color: #664d03;
+    font-weight: 600;
+}
+
+.waiter-call-notification button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #198754;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.waiter-call-notification button:hover {
+    background: #157347;
+}
+
+.waiter-call-notification button:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+    .waiter-call-notification {
+        font-size: 14px;
+        padding: 9px 10px;
+    }
+
+    .waiter-call-notification button {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+}

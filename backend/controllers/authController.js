@@ -117,6 +117,7 @@ const jwtToken = jwt.sign(
 return res.json({
     message: "Login Successful",
     token: jwtToken,
+    userId: user._id,
     profileCompleted: user.profileCompleted,
     role: user.role,
 });

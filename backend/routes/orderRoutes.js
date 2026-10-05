@@ -10,6 +10,7 @@ const {createOrder,
     cancelOrder,
     removeOrderItem,
     deleteOrder,
+    callWaiter,
 } = require("../controllers/orderController");
 const adminMiddleware = require("../middleware/adminMiddleware");
 const authMiddleware = require("../middleware/authMiddleware");
@@ -36,6 +37,13 @@ router.get(
     waiterMiddleware,
     getMyAssignedOrders
 );
+
+router.post(
+    "/:id/call-waiter",
+    authMiddleware,
+    callWaiter
+);
+
 router.patch(
     "/:id/cancel",
     authMiddleware,

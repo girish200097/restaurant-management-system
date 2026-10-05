@@ -32,15 +32,16 @@ function VerifyLogin() {
                     return;
                 }
 
-               localStorage.setItem("token", data.token);
-localStorage.setItem("role", data.role);
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("userId", data.userId);
+                localStorage.setItem("role", data.role);
 
-localStorage.setItem(
-    "profileCompleted",
-    String(data.profileCompleted)
-);
+                localStorage.setItem(
+                    "profileCompleted",
+                    String(data.profileCompleted)
+                );
 
-setIsLoggedIn(true);
+                setIsLoggedIn(true);
 
                 if (data.role === "admin") {
                     localStorage.setItem("adminToken", data.token);

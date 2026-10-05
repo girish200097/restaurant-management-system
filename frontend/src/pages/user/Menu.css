@@ -1249,3 +1249,34 @@
 .cancel-order-btn:active {
   transform: scale(0.98);
 }
+
+.menu-call-waiter-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #dc3545;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.menu-call-waiter-button:hover {
+  background: #c82333;
+}
+
+.menu-call-waiter-button:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 600px) {
+  .menu-call-waiter-button {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}

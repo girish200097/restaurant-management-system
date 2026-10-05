@@ -36,6 +36,7 @@ function WaiterDashboard() {
     const [orderFilter, setOrderFilter] = useState("all");
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [orderMessage, setOrderMessage] = useState("");
+    const [waiterCalls, setWaiterCalls] = useState({});
 
     const notifyWaiter = () => {
         const audio = new Audio("/notification.mp3");
@@ -53,6 +54,18 @@ function WaiterDashboard() {
         let firstLoad = true;
 
         const socket = io(import.meta.env.VITE_API_URL);
+
+        const waiterId = localStorage.getItem("userId");
+
+        if (waiterId) {
+            socket.emit("joinWaiter", waiterId);
+        }
+
+        const waiterId = localStorage.getItem("userId");
+
+        if (waiterId) {
+        socket.emit("joinWaiter", waiterId);
+        }
 
         const fetchOrders = async () => {
             try {
@@ -157,6 +170,17 @@ function WaiterDashboard() {
             notifyWaiter();
 
             fetchOrders();
+        });
+
+        socket.on("waiterCall", (data) => {
+            console.log("Waiter call received:", data);
+
+            setWaiterCalls((currentCalls) => ({
+                ...currentCalls,
+                [data.orderId]: true,
+            }));
+
+            notifyWaiter();
         });
 
         fetchOrders();
@@ -408,6 +432,24 @@ function WaiterDashboard() {
                             {updatedOrderId === order._id && (
                                 <div className="waiter-order-updated">
                                     🔔 Order has been updated
+                                </div>
+                            )}
+
+                            {waiterCalls[order._id] && (
+                                <div className="waiter-call-notification">
+                                    <span>🔔 Table is calling you</span>
+
+                                    <button
+                                        onClick={() => {
+                                            setWaiterCalls((currentCalls) => {
+                                                const updatedCalls = { ...currentCalls };
+                                                delete updatedCalls[order._id];
+                                                return updatedCalls;
+                                            });
+                                        }}
+                                    >
+                                        ✓
+                                    </button>
                                 </div>
                             )}
 

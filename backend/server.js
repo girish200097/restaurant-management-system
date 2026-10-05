@@ -75,6 +75,11 @@ io.on("connection", (socket) => {
     console.log(`Socket ${socket.id} joined order_${orderId}`);
   });
 
+  socket.on("joinWaiter", (waiterId) => {
+    socket.join(`waiter_${waiterId}`);
+    console.log(`Socket ${socket.id} joined waiter_${waiterId}`);
+  });
+
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
   });

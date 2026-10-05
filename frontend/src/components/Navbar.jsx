@@ -92,11 +92,6 @@ const [searchParams] = useSearchParams();
               Menu
             </Link>
           </li>
-          <li>
-            <Link to="/call-waiter" onClick={closeMenu}>
-              Call Waiter
-            </Link>
-          </li>
 
           {isLoggedIn ? (
             <li>

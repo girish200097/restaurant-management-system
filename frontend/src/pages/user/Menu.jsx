@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import PaymentButton from "../../components/PaymentButton";
 import MenuCard from "../../components/MenuCard";
 import "./Menu.css";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 function Menu() {
   const [searchParams] = useSearchParams();
@@ -585,6 +585,12 @@ const handleCancelOrder = async () => {
                 <p>Completed</p>
             </div>
         </div>
+                <Link
+                  to="/call-waiter"
+                  className="menu-call-waiter-button"
+                >
+                  🔔 Call Waiter
+                </Link>
 
         {orderStatus === "pending" && (
           <button

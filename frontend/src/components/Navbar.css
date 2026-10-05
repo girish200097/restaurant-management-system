@@ -286,3 +286,22 @@ nav {
   opacity: 1;
 }
 }
+
+.call-waiter-button {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #dc3545;
+  color: white !important;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.call-waiter-button:hover {
+  background: #c82333;
+}
+
+.call-waiter-button:active {
+  transform: scale(0.97);
+}

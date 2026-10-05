@@ -653,6 +653,64 @@ const deleteOrder = async (req, res) => {
         });
     }
 };
+
+// callWaiter
+const callWaiter = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid order Id",
+            });
+        }
+
+        const order = await Order.findById(id)
+            .populate("table", "tableNumber")
+            .populate("waiter", "name");
+
+        if (!order) {
+            return res.status(404).json({
+                message: "Order not found",
+            });
+        }
+
+        // Make sure the customer owns this order
+        if (order.customer.toString() !== req.user.userId) {
+            return res.status(403).json({
+                message: "You can only call the waiter for your own order",
+            });
+        }
+
+        // Make sure a waiter is assigned
+        if (!order.waiter) {
+            return res.status(400).json({
+                message: "No waiter is assigned to this order",
+            });
+        }
+
+        const io = getIO();
+
+        // Send notification only to the assigned waiter
+        io.to(`waiter_${order.waiter._id}`).emit("waiterCall", {
+            orderId: order._id.toString(),
+            tableNumber: order.table?.tableNumber,
+            message: "Table is calling you",
+        });
+
+        return res.status(200).json({
+            message: "Waiter has been called",
+        });
+
+    } catch (error) {
+        console.log("Call waiter error:", error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+};
+
 module.exports = {
     createOrder,
     getAllOrders,
@@ -664,4 +722,5 @@ module.exports = {
     cancelOrder,
     removeOrderItem,
     deleteOrder,
+    callWaiter,
 }
