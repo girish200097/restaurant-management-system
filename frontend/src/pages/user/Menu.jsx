@@ -449,7 +449,7 @@ useEffect(() => {
 
         doc.text("TOTAL", left, y);
 
-        doc.text(`₹${order.totalAmount}`, right, y, {
+        doc.text(`${order.totalAmount}`, right, y, {
             align: "right",
         });
 
