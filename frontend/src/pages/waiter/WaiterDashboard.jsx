@@ -61,12 +61,6 @@ function WaiterDashboard() {
             socket.emit("joinWaiter", waiterId);
         }
 
-        const waiterId = localStorage.getItem("userId");
-
-        if (waiterId) {
-        socket.emit("joinWaiter", waiterId);
-        }
-
         const fetchOrders = async () => {
             try {
                 const token = localStorage.getItem("token");
