@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import PaymentButton from "../../components/PaymentButton";
 import MenuCard from "../../components/MenuCard";
 import "./Menu.css";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 function Menu() {
   const [searchParams] = useSearchParams();
@@ -26,6 +26,8 @@ function Menu() {
   const [isOrderingAgain, setIsOrderingAgain] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
   const [showCompletedStatus, setShowCompletedStatus] = useState(false);
+  const [callingWaiter, setCallingWaiter] = useState(false);
+
   useEffect(() => {
     const fetchMenus = async () => {
       try {
@@ -397,6 +399,48 @@ const handleCancelOrder = async () => {
     }
 };
 
+const handleCallWaiter = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
+    if (!orderId) {
+      alert("You don't have an active order");
+      return;
+    }
+
+    setCallingWaiter(true);
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/order/${orderId}/call-waiter`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Failed to call waiter");
+      return;
+    }
+
+    alert("Waiter has been called 🔔");
+
+  } catch (error) {
+    console.log("Call waiter error:", error);
+    alert("Something went wrong");
+  } finally {
+    setCallingWaiter(false);
+  }
+};
   return (
     <div className="menu-page">
 
@@ -585,12 +629,13 @@ const handleCancelOrder = async () => {
                 <p>Completed</p>
             </div>
         </div>
-                <Link
-                  to="/call-waiter"
+                <button
                   className="menu-call-waiter-button"
+                  onClick={handleCallWaiter}
+                  disabled={callingWaiter}
                 >
-                  🔔 Call Waiter
-                </Link>
+                  {callingWaiter ? "Calling Waiter..." : "🔔 Call Waiter"}
+                </button>
 
         {orderStatus === "pending" && (
           <button
