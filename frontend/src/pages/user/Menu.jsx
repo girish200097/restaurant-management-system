@@ -249,8 +249,6 @@ useEffect(() => {
 
       // Clear cart after submitting the order
       setCart([]);
-
-      alert(data.message);
     } catch (error) {
       console.log(error);
     } finally {
