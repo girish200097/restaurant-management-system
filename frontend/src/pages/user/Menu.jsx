@@ -153,6 +153,20 @@ useEffect(() => {
         }
     });
 
+    socket.on("orderCancelled", (data) => {
+    console.log("Order cancelled:", data);
+
+    if (data.orderId === orderId) {
+        setOrderStatus("cancelled");
+        setCart([]);
+        setOrderTotal(0);
+        setPaymentSuccess(false);
+        setPaidAmount(0);
+        setReceiptSent(false);
+        setIsOrderingAgain(false);
+    }
+});
+
     return () => {
         socket.disconnect();
     };
