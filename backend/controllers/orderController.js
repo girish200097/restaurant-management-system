@@ -512,10 +512,14 @@ const cancelOrder = async(req,res) => {
         order.isActive = false;
         await order.save();
 
-        if (order.table) {
-            order.table.status = "available";
-            await order.table.save();
+       if (order.table) {
+        const table = await Table.findById(order.table);
+
+        if (table) {
+            table.status = "available";
+            await table.save();
         }
+    }
 
         const io = getIO();
 
