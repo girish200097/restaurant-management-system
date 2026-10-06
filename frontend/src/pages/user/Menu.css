@@ -1515,3 +1515,145 @@
         height: 2px;
     }
 }
+
+/* =========================================
+   STICKY CUSTOMER ORDER PANEL
+   ========================================= */
+
+.sticky-order-panel {
+    position: sticky;
+    top: 70px;
+    z-index: 100;
+
+    width: min(1000px, calc(100% - 24px));
+    margin: 12px auto 20px;
+
+    padding: 10px 14px;
+
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 14px;
+
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Remove unnecessary large spacing inside sticky panel */
+
+.sticky-order-panel .table-section {
+    margin: 4px auto 10px;
+}
+
+.sticky-order-panel .order-status-section {
+    margin: 8px auto;
+}
+
+.sticky-order-panel > h3 {
+    margin: 8px auto 4px;
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 18px;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .sticky-order-panel {
+        top: 60px;
+
+        width: calc(100% - 16px);
+        margin: 8px auto 14px;
+
+        padding: 8px 10px;
+
+        border-radius: 12px;
+    }
+
+    .sticky-order-panel .table-section {
+        margin: 2px auto 8px;
+        padding: 8px 10px;
+    }
+
+    .sticky-order-panel .table-section h2 {
+        margin-bottom: 6px;
+        font-size: 17px;
+    }
+
+    .sticky-order-panel .table-section select {
+        padding: 9px 10px;
+    }
+
+    .sticky-order-panel .order-status-section {
+        margin: 6px auto;
+        padding: 8px 10px;
+    }
+
+    .sticky-order-panel .order-status-section h3 {
+        margin-bottom: 8px;
+        font-size: 17px;
+    }
+
+    .sticky-order-panel .order-status-bar {
+        gap: 0;
+    }
+
+    .sticky-order-panel .status-step span {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+    }
+
+    .sticky-order-panel .status-step p {
+        margin-top: 4px;
+        font-size: 11px;
+    }
+
+    .sticky-order-panel .status-line {
+        height: 2px;
+    }
+
+    .sticky-order-panel .menu-call-waiter-button,
+    .sticky-order-panel .cancel-order-btn {
+        margin-top: 7px;
+        padding: 8px 14px;
+    }
+
+    .sticky-order-panel > h3 {
+        margin: 6px auto 2px;
+        padding: 6px;
+        font-size: 17px;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+   ========================================= */
+
+@media (max-width: 400px) {
+
+    .sticky-order-panel {
+        top: 56px;
+        width: calc(100% - 10px);
+        padding: 6px 8px;
+    }
+
+    .sticky-order-panel .status-step p {
+        font-size: 10px;
+    }
+
+    .sticky-order-panel .status-step span {
+        width: 27px;
+        height: 27px;
+        font-size: 12px;
+    }
+
+    .sticky-order-panel > h3 {
+        font-size: 16px;
+    }
+}

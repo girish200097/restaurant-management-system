@@ -774,8 +774,8 @@ const handleCallWaiter = async () => {
       )}
 
 
+<div className="sticky-order-panel">
       {/* Table Selection */}
-
       {!paymentSuccess && (
     <div className="table-section">
 
@@ -998,6 +998,7 @@ const handleCallWaiter = async () => {
             ? previousOrderTotal + getCartTotal()
             : orderTotal || getCartTotal()}
     </h3>
+    </div>
 
       <button
           className="cart-button"
