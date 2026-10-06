@@ -172,6 +172,24 @@ useEffect(() => {
     };
 }, [orderId]);
 
+const showOrderRestrictionMessage = () => {
+  if (orderStatus === "preparing") {
+    alert(
+      "You can't modify items while the order is preparing. Click Order Again to add more items."
+    );
+  } else if (orderStatus === "served") {
+    alert("Click Order Again to add more items.");
+  } else if (orderStatus === "pending") {
+    alert(
+      "You can't modify items now. Click Order Again to add more items."
+    );
+  } else {
+    alert(
+      "You can't modify items in this order. Click Order Again to continue."
+    );
+  }
+};
+
   const addToCart = (menu) => {
     const existingItem = cart.find(
       (item) => item._id === menu._id
@@ -677,6 +695,8 @@ const handleCallWaiter = async () => {
     setCallingWaiter(false);
   }
 };
+
+
   return (
     <div className="menu-page">
 
@@ -739,15 +759,15 @@ const handleCallWaiter = async () => {
         )
         .map((menu) => (
           <MenuCard
-            key={menu._id}
             menu={menu}
             onAddToCart={addToCart}
             quantity={
-              cart.find((item) => item._id === menu._id)?.quantity || 0
+                cart.find((item) => item._id === menu._id)?.quantity || 0
             }
             onUpdateQuantity={updateQuantity}
             disabled={!!orderId && !isOrderingAgain}
-          />
+            orderStatus={orderStatus}
+            />
         ))}
 
         </div>
@@ -1020,24 +1040,34 @@ const handleCallWaiter = async () => {
 
                                 <div className="cart-item-actions">
                                     <button
-                                        onClick={() =>
-                                            updateQuantity(item._id, -1)
-                                        }
-                                        disabled={!!orderId && !isOrderingAgain}
-                                    >
+                                        onClick={() => {
+                                            if (orderId && !isOrderingAgain) {
+                                            showOrderRestrictionMessage();
+                                            return;
+                                            }
+
+                                            updateQuantity(item._id, -1);
+                                        }}
+                                        disabled={false}
+                                        >
                                         −
-                                    </button>
+                                        </button>
 
                                     <span>{item.quantity}</span>
 
                                     <button
-                                        onClick={() =>
-                                            updateQuantity(item._id, 1)
-                                        }
-                                            disabled={!!orderId && !isOrderingAgain}
-                                    >
+                                        onClick={() => {
+                                            if (orderId && !isOrderingAgain) {
+                                            showOrderRestrictionMessage();
+                                            return;
+                                            }
+
+                                            updateQuantity(item._id, 1);
+                                        }}
+                                        disabled={false}
+                                        >
                                         +
-                                    </button>
+                                        </button>
                                 </div>
 
                                 <strong>

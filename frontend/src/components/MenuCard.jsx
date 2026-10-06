@@ -6,6 +6,7 @@ function MenuCard({
   quantity,
   onUpdateQuantity,
   disabled,
+  orderStatus,
 }) {
   return (
    <div
@@ -22,9 +23,38 @@ function MenuCard({
 
         {quantity === 0 ? (
           <button
-            className="add-button"
-            onClick={() => onAddToCart(menu)}
-            disabled={!menu.isAvailable || disabled}
+            className={`add-button ${disabled ? "add-button-disabled" : ""}`}
+            onClick={() => {
+              if (!menu.isAvailable) {
+                alert("This item is currently not available.");
+                return;
+              }
+
+              if (disabled) {
+                if (orderStatus === "preparing") {
+                  alert(
+                    "You can't add items while the order is preparing. Click Order Again to add more items."
+                  );
+                } else if (orderStatus === "served") {
+                  alert(
+                    "Click Order Again to add more items."
+                  );
+                } else if (orderStatus === "pending") {
+                  alert(
+                    "You can't add items now. Click Order Again to add more items."
+                  );
+                } else {
+                  alert(
+                    "You can't add items to this order. Click Order Again to continue."
+                  );
+                }
+
+                return;
+              }
+
+              onAddToCart(menu);
+            }}
+            disabled={!menu.isAvailable}
           >
             Add
           </button>
