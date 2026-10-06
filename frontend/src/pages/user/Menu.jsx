@@ -26,6 +26,7 @@ function Menu() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderingAgain, setIsOrderingAgain] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
+  const [previousOrderTotal, setPreviousOrderTotal] = useState(0);
   const [showCompletedStatus, setShowCompletedStatus] = useState(false);
   const [callingWaiter, setCallingWaiter] = useState(false);
 
@@ -525,6 +526,15 @@ useEffect(() => {
 };
 
 const handleOrderAgain = () => {
+    // Only keep the previous amount when ordering again
+    // from a served but unpaid order.
+    if (orderStatus === "served" && !paymentSuccess) {
+        setPreviousOrderTotal(orderTotal);
+    } else {
+        // Cancelled-order Order Again keeps the old behavior.
+        setPreviousOrderTotal(0);
+    }
+
     setOrderId(null);
     setOrderStatus(null);
     setOrderTotal(0);
@@ -949,8 +959,13 @@ const handleCallWaiter = async () => {
 
 
       <h3>
-          Total: ₹{paymentSuccess ? paidAmount : orderTotal}
-      </h3>
+        Total: ₹
+        {paymentSuccess
+            ? paidAmount
+            : isOrderingAgain
+            ? previousOrderTotal + getCartTotal()
+            : orderTotal || getCartTotal()}
+    </h3>
 
       <button
           className="cart-button"
