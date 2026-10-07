@@ -1521,7 +1521,7 @@
    ========================================= */
 
 .sticky-order-panel {
-    position: fixed;
+    position: sticky;
     top: 70px;
     z-index: 100;
 
