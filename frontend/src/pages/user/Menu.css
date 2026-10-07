@@ -1504,7 +1504,7 @@
     .status-step span {
         width: 29px;
         height: 29px;
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .status-step p {
@@ -1616,7 +1616,7 @@
     width: 26px;
     height: 26px;
 
-    font-size: 11px;
+    font-size: 13px;
 }
 
 
@@ -1715,7 +1715,7 @@
 
 
     .fixed-order-panel .order-status-bar {
-        transform: scale(0.82);
+        transform: scale(0.95);
     }
 
 
@@ -1723,12 +1723,12 @@
         width: 23px;
         height: 23px;
 
-        font-size: 10px;
+        font-size: 12px;
     }
 
 
     .fixed-order-panel .status-step p {
-        font-size: 8px;
+        font-size: 13px;
 
         margin-top: 2px;
     }
@@ -1740,7 +1740,7 @@
 
         padding: 5px 9px;
 
-        font-size: 11px;
+        font-size: 13px;
     }
 
 
@@ -1749,14 +1749,14 @@
 
         padding: 4px;
 
-        font-size: 11px;
+        font-size: 13px;
     }
 
 
     .fixed-order-panel .order-again-button {
         padding: 5px 10px;
 
-        font-size: 11px;
+        font-size: 13px;
     }
 
 
@@ -1786,12 +1786,12 @@
 
 
     .fixed-order-panel .order-status-bar {
-        transform: scale(0.75);
+        transform: scale(0.9);
     }
 
 
     .fixed-order-panel .status-step p {
-        font-size: 7px;
+        font-size: 10px;
     }
 
 
