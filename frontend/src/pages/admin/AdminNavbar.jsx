@@ -1,11 +1,45 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminNavbar.css";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 function AdminNavbar() {
     const navigate = useNavigate();
     const { setIsLoggedIn } = useContext(AuthContext);
+
+    const [adminName, setAdminName] = useState("Admin");
+
+    useEffect(() => {
+        const fetchAdminProfile = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    return;
+                }
+
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/user/profile`,
+                    {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                const data = await response.json();
+
+                if (response.ok && data.user?.name) {
+                    setAdminName(data.user.name);
+                }
+            } catch (error) {
+                console.log("Failed to fetch admin profile:", error);
+            }
+        };
+
+        fetchAdminProfile();
+    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -59,7 +93,7 @@ function AdminNavbar() {
                 <button
                     onClick={() => navigate("/admin/profile")}
                 >
-                    👤 Admin
+                    👤 {adminName}
                 </button>
 
                 <button onClick={handleLogout}>
