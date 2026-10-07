@@ -1035,15 +1035,6 @@ const handleCallWaiter = async () => {
     </div>
 )}
 
-      <h3>
-        Total: ₹
-        {paymentSuccess
-            ? paidAmount
-            : isOrderingAgain
-            ? previousOrderTotal + getCartTotal()
-            : orderTotal || getCartTotal()}
-    </h3>
-
       <button
           className="cart-button"
           onClick={() => setIsCartOpen(true)}
