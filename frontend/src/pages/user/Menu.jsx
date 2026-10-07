@@ -610,6 +610,15 @@ const handleOrderAgain = () => {
 };
 
 const handleCancelOrder = async () => {
+    const handleCancelOrder = async () => {
+
+    const confirmCancel = window.confirm(
+        "Would you like to cancel your order?"
+    );
+
+    if (!confirmCancel) {
+        return;
+    }
     try {
         const token = localStorage.getItem("token");
 
