@@ -10,10 +10,17 @@ function Login() {
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
 
-       if (token) {
-        navigate("/menu");
-    }
+        if (token) {
+            if (role === "admin") {
+                navigate("/admin/dashboard");
+            } else if (role === "waiter") {
+                navigate("/waiter-dashboard");
+            } else {
+                navigate("/menu");
+            }
+        }
     }, [navigate]);
 
    const handleSubmit = async (event) => {
