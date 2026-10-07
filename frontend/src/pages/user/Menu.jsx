@@ -609,7 +609,6 @@ const handleOrderAgain = () => {
     }
 };
 
-const handleCancelOrder = async () => {
     const handleCancelOrder = async () => {
 
     const confirmCancel = window.confirm(
