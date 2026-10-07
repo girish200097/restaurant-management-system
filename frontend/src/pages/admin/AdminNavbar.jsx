@@ -90,9 +90,7 @@ function AdminNavbar() {
 
             <div className="admin-navbar-actions">
 
-                <button
-                    onClick={() => navigate("/admin/profile")}
-                >
+                <button>
                     👤 {adminName}
                 </button>
 
