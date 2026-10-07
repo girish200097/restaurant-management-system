@@ -1550,7 +1550,7 @@
 
 .fixed-order-panel {
     position: fixed;
-    top: 120px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
 
@@ -1692,7 +1692,7 @@
 @media (max-width: 768px) {
 
     .fixed-order-panel {
-        top: 115px;
+        bottom: 15px;
 
         width: calc(100% - 14px);
 
@@ -1777,7 +1777,7 @@
 @media (max-width: 400px) {
 
     .fixed-order-panel {
-        top: 110px;
+        bottom: 10px;
 
         width: calc(100% - 10px);
 
