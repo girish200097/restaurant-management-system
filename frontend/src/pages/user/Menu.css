@@ -1516,120 +1516,6 @@
     }
 }
 
-/* =========================================
-   STICKY CUSTOMER ORDER PANEL
-   ========================================= */
-
-.sticky-order-panel {
-    position: sticky;
-    top: 70px;
-    z-index: 100;
-
-    width: min(1000px, calc(100% - 24px));
-    margin: 12px auto 20px;
-
-    padding: 10px 14px;
-
-    background: rgba(255, 255, 255, 0.97);
-    border-radius: 14px;
-
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-}
-
-/* Remove unnecessary large spacing inside sticky panel */
-
-.sticky-order-panel .table-section {
-    margin: 4px auto 10px;
-}
-
-.sticky-order-panel .order-status-section {
-    margin: 8px auto;
-}
-
-.sticky-order-panel > h3 {
-    margin: 8px auto 4px;
-    padding: 8px 12px;
-    text-align: center;
-    font-size: 18px;
-}
-
-
-/* =========================================
-   MOBILE
-   ========================================= */
-
-@media (max-width: 768px) {
-
-    .sticky-order-panel {
-        top: 60px;
-
-        width: calc(100% - 16px);
-        margin: 8px auto 14px;
-
-        padding: 8px 10px;
-
-        border-radius: 12px;
-    }
-
-    .sticky-order-panel .table-section {
-        margin: 2px auto 8px;
-        padding: 8px 10px;
-    }
-
-    .sticky-order-panel .table-section h2 {
-        margin-bottom: 6px;
-        font-size: 17px;
-    }
-
-    .sticky-order-panel .table-section select {
-        padding: 9px 10px;
-    }
-
-    .sticky-order-panel .order-status-section {
-        margin: 6px auto;
-        padding: 8px 10px;
-    }
-
-    .sticky-order-panel .order-status-section h3 {
-        margin-bottom: 8px;
-        font-size: 17px;
-    }
-
-    .sticky-order-panel .order-status-bar {
-        gap: 0;
-    }
-
-    .sticky-order-panel .status-step span {
-        width: 30px;
-        height: 30px;
-        font-size: 13px;
-    }
-
-    .sticky-order-panel .status-step p {
-        margin-top: 4px;
-        font-size: 11px;
-    }
-
-    .sticky-order-panel .status-line {
-        height: 2px;
-    }
-
-    .sticky-order-panel .menu-call-waiter-button,
-    .sticky-order-panel .cancel-order-btn {
-        margin-top: 7px;
-        padding: 8px 14px;
-    }
-
-    .sticky-order-panel > h3 {
-        margin: 6px auto 2px;
-        padding: 6px;
-        font-size: 17px;
-    }
-}
-
 
 /* =========================================
    VERY SMALL PHONES
@@ -1655,5 +1541,269 @@
 
     .sticky-order-panel > h3 {
         font-size: 16px;
+    }
+}
+
+/* =========================================
+   FIXED ORDER STATUS PANEL
+   ========================================= */
+
+.fixed-order-panel {
+    position: fixed;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 1100;
+
+    width: min(700px, calc(100% - 24px));
+
+    padding: 8px 12px;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border-radius: 12px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+/* Order status inside fixed panel */
+
+.fixed-order-panel .order-status-section {
+    margin: 0;
+    padding: 6px 8px;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    border-radius: 0;
+}
+
+
+/* Order status heading */
+
+.fixed-order-panel .order-status-section h3 {
+    margin: 0 0 5px;
+
+    padding: 0;
+
+    font-size: 15px;
+
+    text-align: center;
+}
+
+
+/* Status bar */
+
+.fixed-order-panel .order-status-bar {
+    margin: 0 auto;
+
+    padding: 0;
+
+    transform: scale(0.9);
+    transform-origin: center;
+}
+
+
+/* Status circles */
+
+.fixed-order-panel .status-step span {
+    width: 26px;
+    height: 26px;
+
+    font-size: 11px;
+}
+
+
+/* Status text */
+
+.fixed-order-panel .status-step p {
+    margin: 3px 0 0;
+
+    font-size: 9px;
+}
+
+
+/* Status connecting lines */
+
+.fixed-order-panel .status-line {
+    height: 2px;
+}
+
+
+/* Call waiter and cancel buttons */
+
+.fixed-order-panel .order-status-section > .menu-call-waiter-button,
+.fixed-order-panel .order-status-section > .cancel-order-btn {
+    display: inline-block;
+
+    width: auto;
+
+    margin: 5px 3px 0;
+
+    padding: 6px 12px;
+
+    font-size: 12px;
+}
+
+
+/* Cancelled order */
+
+.fixed-order-panel .cancelled-status {
+    margin-top: 5px;
+
+    padding: 5px;
+
+    font-size: 12px;
+}
+
+
+/* Order Again button */
+
+.fixed-order-panel .order-again-button {
+    padding: 6px 12px;
+
+    font-size: 12px;
+}
+
+
+/* Fixed total */
+
+.fixed-order-panel > h3 {
+    margin: 4px 0 0;
+
+    padding: 4px 8px;
+
+    font-size: 15px;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .fixed-order-panel {
+        top: 115px;
+
+        width: calc(100% - 14px);
+
+        padding: 6px 8px;
+
+        border-radius: 10px;
+    }
+
+
+    .fixed-order-panel .order-status-section {
+        padding: 4px 5px;
+    }
+
+
+    .fixed-order-panel .order-status-section h3 {
+        font-size: 14px;
+
+        margin-bottom: 3px;
+    }
+
+
+    .fixed-order-panel .order-status-bar {
+        transform: scale(0.82);
+    }
+
+
+    .fixed-order-panel .status-step span {
+        width: 23px;
+        height: 23px;
+
+        font-size: 10px;
+    }
+
+
+    .fixed-order-panel .status-step p {
+        font-size: 8px;
+
+        margin-top: 2px;
+    }
+
+
+    .fixed-order-panel .order-status-section > .menu-call-waiter-button,
+    .fixed-order-panel .order-status-section > .cancel-order-btn {
+        margin: 4px 2px 0;
+
+        padding: 5px 9px;
+
+        font-size: 11px;
+    }
+
+
+    .fixed-order-panel .cancelled-status {
+        margin-top: 4px;
+
+        padding: 4px;
+
+        font-size: 11px;
+    }
+
+
+    .fixed-order-panel .order-again-button {
+        padding: 5px 10px;
+
+        font-size: 11px;
+    }
+
+
+    .fixed-order-panel > h3 {
+        margin-top: 3px;
+
+        padding: 3px 6px;
+
+        font-size: 14px;
+    }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 400px) {
+
+    .fixed-order-panel {
+        top: 110px;
+
+        width: calc(100% - 10px);
+
+        padding: 5px 6px;
+    }
+
+
+    .fixed-order-panel .order-status-bar {
+        transform: scale(0.75);
+    }
+
+
+    .fixed-order-panel .status-step p {
+        font-size: 7px;
+    }
+
+
+    .fixed-order-panel .order-status-section > .menu-call-waiter-button,
+    .fixed-order-panel .order-status-section > .cancel-order-btn {
+        padding: 4px 7px;
+
+        font-size: 10px;
+    }
+
+
+    .fixed-order-panel > h3 {
+        font-size: 13px;
     }
 }

@@ -773,10 +773,9 @@ const handleCallWaiter = async () => {
         </div>
       )}
 
-
-<div className="sticky-order-panel">
       {/* Table Selection */}
-      {!paymentSuccess && (
+      {/* Table Selection */}
+{!paymentSuccess && (
     <div className="table-section">
 
         <h2>Select Table</h2>
@@ -810,147 +809,183 @@ const handleCallWaiter = async () => {
     </div>
 )}
 
-            {/* Status bar Section */}
-   {orderId && orderStatus && (!paymentSuccess || showCompletedStatus) && (
-    <div className="order-status-section">
-        <h3>Order Status</h3>
+{/* Fixed Order Panel */}
+{orderId && (
+    <div className="fixed-order-panel">
 
-        <div className="order-status-bar">
+        {/* Status bar Section */}
+        {orderStatus && (!paymentSuccess || showCompletedStatus) && (
+            <div className="order-status-section">
 
-            {/* Order Placed */}
-            <div
-                className={`status-step ${
-                    ["pending", "preparing", "served", "completed"].includes(orderStatus)
-                        ? "active"
-                        : ""
-                }`}
-            >
-                <span>1</span>
-                <p>Order Placed</p>
-            </div>
+                <h3>Order Status</h3>
 
-            <div
-                className={`status-line ${
-                    ["preparing", "served", "completed"].includes(orderStatus)
-                        ? "active"
-                        : ""
-                }`}
-            ></div>
+                <div className="order-status-bar">
 
-            {/* Preparing */}
-            <div
-                className={`status-step ${
-                    ["preparing", "served", "completed"].includes(orderStatus)
-                        ? "active"
-                        : ""
-                }`}
-            >
-                <span>2</span>
-                <p>Preparing</p>
-            </div>
+                    {/* Order Placed */}
+                    <div
+                        className={`status-step ${
+                            ["pending", "preparing", "served", "completed"].includes(orderStatus)
+                                ? "active"
+                                : ""
+                        }`}
+                    >
+                        <span>1</span>
+                        <p>Order Placed</p>
+                    </div>
 
-            <div
-                className={`status-line ${
-                    ["served", "completed"].includes(orderStatus)
-                        ? "active"
-                        : ""
-                }`}
-            ></div>
+                    <div
+                        className={`status-line ${
+                            ["preparing", "served", "completed"].includes(orderStatus)
+                                ? "active"
+                                : ""
+                        }`}
+                    ></div>
 
-            {/* Food Served */}
-            <div
-                className={`status-step ${
-                    ["served", "completed"].includes(orderStatus)
-                        ? "active"
-                        : ""
-                }`}
-            >
-                <span>3</span>
-                <p>Food Served</p>
-            </div>
+                    {/* Preparing */}
+                    <div
+                        className={`status-step ${
+                            ["preparing", "served", "completed"].includes(orderStatus)
+                                ? "active"
+                                : ""
+                        }`}
+                    >
+                        <span>2</span>
+                        <p>Preparing</p>
+                    </div>
 
-            <div
-                className={`status-line ${
-                    orderStatus === "completed" ? "active" : ""
-                }`}
-            ></div>
+                    <div
+                        className={`status-line ${
+                            ["served", "completed"].includes(orderStatus)
+                                ? "active"
+                                : ""
+                        }`}
+                    ></div>
 
-            {/* Completed */}
-            <div
-                className={`status-step ${
-                    orderStatus === "completed" ? "active" : ""
-                }`}
-            >
-                <span>4</span>
-                <p>Completed</p>
-            </div>
-        </div>
-                <button
-                  className="menu-call-waiter-button"
-                  onClick={handleCallWaiter}
-                  disabled={callingWaiter}
-                >
-                  {callingWaiter ? "Calling Waiter..." : "🔔 Call Waiter"}
-                </button>
+                    {/* Food Served */}
+                    <div
+                        className={`status-step ${
+                            ["served", "completed"].includes(orderStatus)
+                                ? "active"
+                                : ""
+                        }`}
+                    >
+                        <span>3</span>
+                        <p>Food Served</p>
+                    </div>
 
-        {orderStatus === "pending" && (
-          <button
-            className="cancel-order-btn"
-            onClick={handleCancelOrder}
-          >
-            Cancel Order
-          </button>
-        )}
+                    <div
+                        className={`status-line ${
+                            orderStatus === "completed"
+                                ? "active"
+                                : ""
+                        }`}
+                    ></div>
 
-        {orderStatus === "cancelled" && (
-            <div className="cancelled-status">
-                <div>Order Cancelled</div>
+                    {/* Completed */}
+                    <div
+                        className={`status-step ${
+                            orderStatus === "completed"
+                                ? "active"
+                                : ""
+                        }`}
+                    >
+                        <span>4</span>
+                        <p>Completed</p>
+                    </div>
+
+                </div>
 
                 <button
-                    onClick={handleOrderAgain}
-                    className="order-again-button"
+                    className="menu-call-waiter-button"
+                    onClick={handleCallWaiter}
+                    disabled={callingWaiter}
                 >
-                    Order Again
+                    {callingWaiter
+                        ? "Calling Waiter..."
+                        : "🔔 Call Waiter"}
                 </button>
+
+                {orderStatus === "pending" && (
+                    <button
+                        className="cancel-order-btn"
+                        onClick={handleCancelOrder}
+                    >
+                        Cancel Order
+                    </button>
+                )}
+
+                {orderStatus === "cancelled" && (
+                    <div className="cancelled-status">
+
+                        <div>Order Cancelled</div>
+
+                        <button
+                            onClick={handleOrderAgain}
+                            className="order-again-button"
+                        >
+                            Order Again
+                        </button>
+
+                    </div>
+                )}
+
             </div>
         )}
+
+        {/* Total */}
+        <h3>
+            Total: ₹
+            {paymentSuccess
+                ? paidAmount
+                : isOrderingAgain
+                ? previousOrderTotal + getCartTotal()
+                : orderTotal || getCartTotal()}
+        </h3>
+
     </div>
 )}
 
-      {/* Create Order */}
+{/* Create Order */}
+{(!orderId || isOrderingAgain) && !paymentSuccess && (
+    <button
+        className="create-order-button"
+        onClick={createOrder}
+        disabled={isCreatingOrder}
+    >
+        {isCreatingOrder
+            ? "Creating Order..."
+            : "Create Order"}
+    </button>
+)}
 
-     {(!orderId || isOrderingAgain) && !paymentSuccess && (
-            <button
-                className="create-order-button"
-                onClick={createOrder}
-                disabled={isCreatingOrder}
-            >
-                {isCreatingOrder ? "Creating Order..." : "Create Order"}
-            </button>
-        )}
-
-
-      {/* Payment */}
-
-      {orderId && orderStatus === "served" && !paymentSuccess && (
+{/* Payment */}
+{orderId && orderStatus === "served" && !paymentSuccess && (
     <div className="served-order-actions">
 
         <PaymentButton
             orderId={orderId}
             amount={getCartTotal()}
-           onPaymentSuccess={(paymentData) => {
-              setPaidAmount(paymentData.payment.amount);
-              setOrderStatus("completed");
-              setShowCompletedStatus(true);
-              setPaymentSuccess(true);
-              setCart([]);
-              setSelectedTable("");
-              localStorage.removeItem("selectedTable");
+            onPaymentSuccess={(paymentData) => {
 
-              setTimeout(() => {
-                  setShowCompletedStatus(false);
-              }, 5000);
-          }}
+                setPaidAmount(paymentData.payment.amount);
+
+                setOrderStatus("completed");
+
+                setShowCompletedStatus(true);
+
+                setPaymentSuccess(true);
+
+                setCart([]);
+
+                setSelectedTable("");
+
+                localStorage.removeItem("selectedTable");
+
+                setTimeout(() => {
+                    setShowCompletedStatus(false);
+                }, 5000);
+
+            }}
         />
 
         <button
@@ -963,32 +998,34 @@ const handleCallWaiter = async () => {
     </div>
 )}
 
-      {/* Payment Success */}
+{/* Payment Success */}
+{paymentSuccess && (
+    <div className="payment-success">
 
-      {paymentSuccess && (
-            <div className="payment-success">
-                <h2>
-                    Payment Successful ✅
-                </h2>
+        <h2>
+            Payment Successful ✅
+        </h2>
 
-                <div className="payment-success-container">
-                    <button
-                        onClick={handleGenerateReceipt}
-                        disabled={
-                            isGeneratingReceipt ||
-                            receiptSent
-                        }
-                    >
-                        {receiptSent
-                            ? "Receipt Downloaded ✅"
-                            : isGeneratingReceipt
-                            ? "Sending Receipt..."
-                            : "Generate Receipt"}
-                    </button>
-                </div>
-            </div>
-        )}
+        <div className="payment-success-container">
 
+            <button
+                onClick={handleGenerateReceipt}
+                disabled={
+                    isGeneratingReceipt ||
+                    receiptSent
+                }
+            >
+                {receiptSent
+                    ? "Receipt Downloaded ✅"
+                    : isGeneratingReceipt
+                    ? "Sending Receipt..."
+                    : "Generate Receipt"}
+            </button>
+
+        </div>
+
+    </div>
+)}
 
       <h3>
         Total: ₹
@@ -998,7 +1035,6 @@ const handleCallWaiter = async () => {
             ? previousOrderTotal + getCartTotal()
             : orderTotal || getCartTotal()}
     </h3>
-    </div>
 
       <button
           className="cart-button"
