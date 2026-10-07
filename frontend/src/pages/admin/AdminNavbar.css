@@ -125,3 +125,45 @@
         padding: 8px 10px;
     }
 }
+
+/* Logout button */
+.admin-navbar-actions button:last-child {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+.admin-navbar-actions button:last-child:hover {
+    background: #c82333;
+}
+
+@media (max-width: 600px) {
+    .admin-navbar {
+        align-items: flex-start;
+    }
+
+    .admin-navbar-logo {
+        font-size: 18px;
+    }
+
+    .admin-navbar-links {
+        gap: 18px;
+    }
+
+    .admin-navbar-links a {
+        white-space: nowrap;
+    }
+
+    .admin-navbar-actions button {
+        padding: 8px 10px;
+    }
+
+    /* Mobile Logout button */
+    .admin-navbar-actions button:last-child {
+        background: #dc3545;
+        color: #ffffff;
+    }
+
+    .admin-navbar-actions button:last-child:hover {
+        background: #c82333;
+    }
+}

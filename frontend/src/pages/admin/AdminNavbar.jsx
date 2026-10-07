@@ -1,8 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./AdminNavbar.css";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function AdminNavbar() {
     const navigate = useNavigate();
+    const { setIsLoggedIn } = useContext(AuthContext);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("role");
+        localStorage.removeItem("profileCompleted");
+        localStorage.removeItem("adminToken");
+
+        setIsLoggedIn(false);
+
+        navigate("/login", { replace: true });
+    };
 
     return (
         <nav className="admin-navbar">
@@ -45,6 +60,10 @@ function AdminNavbar() {
                     onClick={() => navigate("/admin/profile")}
                 >
                     👤 Admin
+                </button>
+
+                <button onClick={handleLogout}>
+                    Logout
                 </button>
 
             </div>

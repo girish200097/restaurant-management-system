@@ -35,6 +35,7 @@ function VerifyLogin() {
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("userId", data.userId);
                 localStorage.setItem("role", data.role);
+                localStorage.setItem("adminToken", data.token);
 
                 localStorage.setItem(
                     "profileCompleted",
