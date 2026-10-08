@@ -589,7 +589,7 @@
     max-width: 600px;
 
     margin: 20px auto;
-    padding: 14px 24px;
+    padding: 12px 20px;
 
     border: none;
     border-radius: 10px;
@@ -597,7 +597,7 @@
     background: #e85d24;
     color: #ffffff;
 
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
 
     cursor: pointer;
@@ -639,9 +639,8 @@
 @media (max-width: 768px) {
     .pay-now-button {
         width: 100%;
-        padding: 13px 18px;
-
-        font-size: 15px;
+        padding: 11px 16px;
+        font-size: 14px;
 
         border-radius: 9px;
     }
