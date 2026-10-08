@@ -29,6 +29,7 @@ function Menu() {
   const [previousOrderTotal, setPreviousOrderTotal] = useState(0);
   const [showCompletedStatus, setShowCompletedStatus] = useState(false);
   const [callingWaiter, setCallingWaiter] = useState(false);
+  const [waiterAvailable, setWaiterAvailable] = useState(true);
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -278,6 +279,7 @@ const showOrderRestrictionMessage = () => {
       setOrderStatus(data.order.orderStatus);
       setOrderTotal(data.order.totalAmount);
       setIsOrderingAgain(false);
+      setWaiterAvailable(!!data.order.waiter);
 
       // Clear cart after submitting the order
       setCart([]);
@@ -902,6 +904,11 @@ const handleCallWaiter = async () => {
                     </div>
 
                 </div>
+                {!waiterAvailable && (
+                    <div className="no-waiter-message">
+                        ⚠️ No waiter currently available
+                    </div>
+                )}
 
                 <button
                     className="menu-call-waiter-button"
