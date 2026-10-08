@@ -940,6 +940,46 @@ const handleCallWaiter = async () => {
             </div>
         )}
 
+        {/* Payment */}
+        {orderId && orderStatus === "served" && !paymentSuccess && (
+            <div className="served-order-actions">
+
+                <PaymentButton
+                    orderId={orderId}
+                    amount={getCartTotal()}
+                    onPaymentSuccess={(paymentData) => {
+
+                        setPaidAmount(paymentData.payment.amount);
+
+                        setOrderStatus("completed");
+
+                        setShowCompletedStatus(true);
+
+                        setPaymentSuccess(true);
+
+                        setCart([]);
+
+                        setSelectedTable("");
+
+                        localStorage.removeItem("selectedTable");
+
+                        setTimeout(() => {
+                            setShowCompletedStatus(false);
+                        }, 5000);
+
+                    }}
+                />
+
+                <button
+                    onClick={handleOrderAgain}
+                    className="order-again-button"
+                >
+                    Order Again
+                </button>
+
+            </div>
+        )}
+
         {/* Total */}
         <h3>
             Total: ₹
@@ -964,46 +1004,6 @@ const handleCallWaiter = async () => {
             ? "Creating Order..."
             : "Create Order"}
     </button>
-)}
-
-{/* Payment */}
-{orderId && orderStatus === "served" && !paymentSuccess && (
-    <div className="served-order-actions">
-
-        <PaymentButton
-            orderId={orderId}
-            amount={getCartTotal()}
-            onPaymentSuccess={(paymentData) => {
-
-                setPaidAmount(paymentData.payment.amount);
-
-                setOrderStatus("completed");
-
-                setShowCompletedStatus(true);
-
-                setPaymentSuccess(true);
-
-                setCart([]);
-
-                setSelectedTable("");
-
-                localStorage.removeItem("selectedTable");
-
-                setTimeout(() => {
-                    setShowCompletedStatus(false);
-                }, 5000);
-
-            }}
-        />
-
-        <button
-            onClick={handleOrderAgain}
-            className="order-again-button"
-        >
-            Order Again
-        </button>
-
-    </div>
 )}
 
 {/* Payment Success */}
