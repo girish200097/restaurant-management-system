@@ -186,11 +186,17 @@ const createOrder = async(req,res) => {
         console.log("USER ID:", req.user.userId);
 
         const availableWaiters = await User.find({
-                role: "waiter",
-                isAvailable: true,
-            });
+            role: "waiter",
+            isAvailable: true,
+        });
 
-            let assignedWaiter = null;
+        if (availableWaiters.length === 0) {
+            return res.status(400).json({
+                message: "No waiter is currently available",
+            });
+        }
+
+        let assignedWaiter = null;
 
             if (availableWaiters.length > 0) {
                 let fewestOrders = Infinity;
