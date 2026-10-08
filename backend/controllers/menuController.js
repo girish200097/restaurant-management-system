@@ -68,28 +68,38 @@ const addMenu = async (req, res) => {
     }
 };
 
-//getAllMenu
-const getAllMenu = async(req,res) => {
-try{
-    const menus =await Menu.find()
-    if(menus.length === 0){
-        return res.status(200).json({
-    message: "Menu fetched successfully",
-    menus: [],
-});
-    }
-    return res.status(200).json({
-        message: "Menu fetched successfully",
-        menus,
-    })
-}
+// getAllMenu
+const getAllMenu = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
 
-catch(error){
-    return res.status(500).json({
-        message:"Internal Server Error"
-    })
-}
-}
+        const skip = (page - 1) * limit;
+
+        const menus = await Menu.find()
+            .skip(skip)
+            .limit(limit);
+
+        const totalItems = await Menu.countDocuments();
+        const totalPages = Math.ceil(totalItems / limit);
+
+        return res.status(200).json({
+            message: "Menu fetched successfully",
+            menus,
+            currentPage: page,
+            totalPages,
+            totalItems,
+            hasMore: page < totalPages,
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+};
 
 //getMenuById
 const getMenuById = async(req,res)=> {
