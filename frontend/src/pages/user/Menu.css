@@ -1809,7 +1809,7 @@
 }
 /* Selected table badge */
 .table-number-badge {
-    position: absolute;
+    position: sticky;
     top: 20px;
     right: 6%;
 
@@ -1828,6 +1828,7 @@
 
 @media (max-width: 600px) {
     .table-number-badge {
+        position: sticky;
         top: 12px;
         right: 4%;
         padding: 8px 12px;
