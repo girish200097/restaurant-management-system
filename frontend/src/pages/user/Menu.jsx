@@ -783,7 +783,7 @@ const handleCallWaiter = async () => {
       )}
 
 {/* Table Selection */}
-{!orderId || paymentSuccess ? (
+{!orderId && !paymentSuccess ? (
   <div className="table-section">
     <h2>Select Table</h2>
 
@@ -806,21 +806,17 @@ const handleCallWaiter = async () => {
         ))}
     </select>
   </div>
-) : (
-  selectedTable && (
-    <div className="table-number-badge">
-      {(() => {
-        const table = tables.find(
-          (table) => table._id === selectedTable
-        );
+) : !paymentSuccess && selectedTable ? (
+  <div className="table-number-badge">
+    {(() => {
+      const table = tables.find(
+        (table) => table._id === selectedTable
+      );
 
-        return table
-          ? `T${table.tableNumber}`
-          : "Table selected";
-      })()}
-    </div>
-  )
-)}
+      return table ? `T${table.tableNumber}` : "Table selected";
+    })()}
+  </div>
+) : null}
 
 {/* Fixed Order Panel */}
 {orderId && (
