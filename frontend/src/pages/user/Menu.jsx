@@ -795,7 +795,7 @@ const handleCallWaiter = async () => {
 })()}
 
 {/* Table Selection */}
-{!orderId && !paymentSuccess ? (
+{!selectedTable && !orderId && !paymentSuccess ? (
   <div className="table-section">
     <h2>Select Table</h2>
 
