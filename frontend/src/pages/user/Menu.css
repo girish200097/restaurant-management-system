@@ -35,14 +35,23 @@
 ================================ */
 
 .category-container {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    z-index: 1080;
+
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 35px;
-}
 
+    margin-bottom: 0;
+    padding: 12px 10px;
+
+    background: #fffaf5;
+}
 .category-container button {
     border: 1px solid #f0d8c7;
     background: #ffffff;
@@ -68,6 +77,12 @@
 
 .category-container button:active {
     transform: scale(0.96);
+}
+
+@media (max-width: 890px) {
+    .category-container {
+        top: 70px;
+    }
 }
 
 
