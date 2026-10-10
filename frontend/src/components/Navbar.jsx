@@ -82,7 +82,7 @@ const [searchParams] = useSearchParams();
         >
 
           <li>
-            <Link to="/" onClick={closeMenu}>
+            <Link to="/home" onClick={closeMenu}>
               Home
             </Link>
           </li>
