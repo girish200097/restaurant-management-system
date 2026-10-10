@@ -36,6 +36,7 @@ function WaiterDashboard() {
     const [orderFilter, setOrderFilter] = useState("all");
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [orderMessage, setOrderMessage] = useState("");
+    const [cancelledNotification, setCancelledNotification] = useState(null);
     const [waiterCalls, setWaiterCalls] = useState({});
 
     const notifyWaiter = () => {
@@ -157,13 +158,21 @@ function WaiterDashboard() {
             }
         };
 
+        
         socket.on("orderCancelled", (data) => {
             console.log("Order cancelled by customer:", data);
 
-            setOrderMessage("Order cancelled by customer");
-            notifyWaiter();
+            setCancelledNotification({
+                tableNumber: data.tableNumber,
+                message: "Customer cancelled an order",
+            });
 
+            notifyWaiter();
             fetchOrders();
+
+            setTimeout(() => {
+                setCancelledNotification(null);
+            }, 5000);
         });
 
         socket.on("waiterCall", (data) => {
@@ -305,6 +314,24 @@ function WaiterDashboard() {
     return (
         <div>
             <WaiterNavbar />
+        
+            {cancelledNotification && (
+                <div
+                    style={{
+                        backgroundColor: "#dc2626",
+                        color: "white",
+                        padding: "14px 20px",
+                        margin: "12px",
+                        borderRadius: "8px",
+                        fontWeight: "bold",
+                        textAlign: "center",
+                    }}
+                >
+                    🔔 {cancelledNotification.message}
+                    {cancelledNotification.tableNumber != null &&
+                        ` — Table ${cancelledNotification.tableNumber}`}
+                </div>
+            )}
 
             <h1>Waiter Dashboard</h1>
 

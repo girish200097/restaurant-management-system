@@ -527,12 +527,28 @@ const cancelOrder = async(req,res) => {
         }
     }
 
+        
         const io = getIO();
 
-        io.to(`order_${order._id}`).emit("orderCancelled", {
+        const table = await Table.findById(order.table);
+
+        const cancellationData = {
             orderId: order._id.toString(),
             orderStatus: "cancelled",
-        });
+            tableNumber: table?.tableNumber,
+        };
+
+        io.to(`order_${order._id}`).emit(
+            "orderCancelled",
+            cancellationData
+        );
+
+        if (order.waiter) {
+            io.to(`waiter_${order.waiter.toString()}`).emit(
+                "orderCancelled",
+                cancellationData
+            );
+        }
 
         return res.status(200).json({
             message: "Order cancelled successfully",
