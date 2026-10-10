@@ -115,14 +115,25 @@ useEffect(() => {
                 // Get the latest order
                 const latestOrder = orders[orders.length - 1];
 
-                // Restore payment state
-                // Restore only an unfinished order
-          if (latestOrder.paymentStatus !== "paid") {
-             setOrderId(latestOrder._id);
-              setOrderStatus(latestOrder.orderStatus);
-              setOrderTotal(latestOrder.totalAmount);
-              setPaymentSuccess(false);
-          } else {
+                const isOrderingAgainAfterCancel =
+                    localStorage.getItem("orderingAgainAfterCancel") === "true";
+
+                // If the customer started a new cart after cancelling,
+                // don't restore the previous cancelled order.
+                if (
+                    isOrderingAgainAfterCancel &&
+                    latestOrder.orderStatus === "cancelled"
+                ) {
+                    return;
+                }
+
+                // Restore only an unfinished order.
+                if (latestOrder.paymentStatus !== "paid") {
+                    setOrderId(latestOrder._id);
+                    setOrderStatus(latestOrder.orderStatus);
+                    setOrderTotal(latestOrder.totalAmount);
+                    setPaymentSuccess(false);
+                } else {
                     setPaymentSuccess(false);
                 }
 
@@ -281,7 +292,11 @@ const showOrderRestrictionMessage = () => {
       setWaiterAvailable(!!data.order.waiter);
 
       // Clear cart after submitting the order
-      setCart([]);
+      // Clear cart after submitting the order
+    setCart([]);
+
+    localStorage.removeItem("orderingAgainAfterCancel");
+
     } catch (error) {
       console.log(error);
     } finally {
@@ -575,6 +590,11 @@ const handleOrderAgain = () => {
     setReceiptSent(false);
 
     setCart([]);
+
+    if (orderStatus === "cancelled") {
+        localStorage.setItem("orderingAgainAfterCancel", "true");
+    }
+
     setIsOrderingAgain(true);
     setIsCartOpen(false);
 
