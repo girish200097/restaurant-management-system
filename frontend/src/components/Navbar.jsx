@@ -38,6 +38,7 @@ const [searchParams] = useSearchParams();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("selectedTable");
     setIsLoggedIn(false);
     setIsMenuOpen(false);
     navigate("/");
