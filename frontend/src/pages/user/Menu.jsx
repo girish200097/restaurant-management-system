@@ -782,40 +782,44 @@ const handleCallWaiter = async () => {
         </div>
       )}
 
-      {/* Table Selection */}
-      {/* Table Selection */}
-{!paymentSuccess && (
-    <div className="table-section">
+{/* Table Selection */}
+{!orderId || paymentSuccess ? (
+  <div className="table-section">
+    <h2>Select Table</h2>
 
-        <h2>Select Table</h2>
+    <select
+      value={selectedTable}
+      onChange={(e) => setSelectedTable(e.target.value)}
+    >
+      <option value="">Select a table</option>
 
-        <select
-            value={selectedTable}
-            onChange={(e) => setSelectedTable(e.target.value)}
-            disabled={!!orderId}
-        >
-            <option value="">
-                Select a table
-            </option>
+      {tables
+        .filter(
+          (table) =>
+            table.status === "available" ||
+            table._id === selectedTable
+        )
+        .map((table) => (
+          <option key={table._id} value={table._id}>
+            Table {table.tableNumber} - {table.location}
+          </option>
+        ))}
+    </select>
+  </div>
+) : (
+  selectedTable && (
+    <div className="table-number-badge">
+      {(() => {
+        const table = tables.find(
+          (table) => table._id === selectedTable
+        );
 
-            {tables
-                .filter(
-                    (table) =>
-                        table.status === "available" ||
-                        table._id === selectedTable
-                )
-                .map((table) => (
-                    <option
-                        key={table._id}
-                        value={table._id}
-                    >
-                        Table {table.tableNumber} -{" "}
-                        {table.location}
-                    </option>
-                ))}
-        </select>
-
+        return table
+          ? `T${table.tableNumber}`
+          : "Table selected";
+      })()}
     </div>
+  )
 )}
 
 {/* Fixed Order Panel */}
