@@ -1834,3 +1834,11 @@
         font-size: 14px;
     }
 }
+
+.no-menu-items {
+  text-align: center;
+  padding: 50px 20px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #5c4a40;
+}

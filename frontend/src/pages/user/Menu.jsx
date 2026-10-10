@@ -752,35 +752,47 @@ const handleCallWaiter = async () => {
 
       {/* Menu */}
 
-            {!paymentSuccess && (
-              <div className="menu-container">
+            {/* Menu */}
+{!paymentSuccess && (() => {
+  const filteredMenus = menus
+    .filter(
+      (menu) =>
+        selectedCategory === "All" ||
+        menu.category === selectedCategory
+    )
+    .filter((menu) =>
+      menu.name
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
 
-              {menus
-        .filter(
-          (menu) =>
-            selectedCategory === "All" ||
-            menu.category === selectedCategory
-        )
-        .filter((menu) =>
-          menu.name
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
-        )
-        .map((menu) => (
-          <MenuCard
-            menu={menu}
-            onAddToCart={addToCart}
-            quantity={
-                cart.find((item) => item._id === menu._id)?.quantity || 0
-            }
-            onUpdateQuantity={updateQuantity}
-            disabled={!!orderId && !isOrderingAgain}
-            orderStatus={orderStatus}
+  return (
+    <>
+      {filteredMenus.length === 0 ? (
+        <div className="no-menu-items">
+          There are no items
+        </div>
+      ) : (
+        <div className="menu-container">
+          {filteredMenus.map((menu) => (
+            <MenuCard
+              key={menu._id}
+              menu={menu}
+              onAddToCart={addToCart}
+              quantity={
+                cart.find((item) => item._id === menu._id)
+                  ?.quantity || 0
+              }
+              onUpdateQuantity={updateQuantity}
+              disabled={!!orderId && !isOrderingAgain}
+              orderStatus={orderStatus}
             />
-        ))}
-
+          ))}
         </div>
       )}
+    </>
+  );
+})()}
 
 {/* Table Selection */}
 {!orderId && !paymentSuccess ? (
