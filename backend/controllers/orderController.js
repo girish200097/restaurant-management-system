@@ -368,10 +368,27 @@ const updateOrderStatus = async (req,res) => {
 
         const io = getIO();
 
-        io.to(`order_${order._id}`).emit("orderStatusUpdated", {
+        const table = await Table.findById(order.table);
+
+        const cancellationData = {
             orderId: order._id.toString(),
-            orderStatus: order.orderStatus
-        });
+            orderStatus: "cancelled",
+            tableNumber: table?.tableNumber,
+        };
+
+        // Notify the customer who is viewing this order
+        io.to(`order_${order._id}`).emit(
+            "orderCancelled",
+            cancellationData
+        );
+
+        // Notify only the waiter assigned to this order
+        if (order.waiter) {
+            io.to(`waiter_${order.waiter.toString()}`).emit(
+                "orderCancelled",
+                cancellationData
+            );
+        }
 
         return res.status(200).json({
             message: "Order status updated successfully",
@@ -527,17 +544,31 @@ const cancelOrder = async(req,res) => {
         }
     }
 
-        const io = getIO();
+        
+const io = getIO();
 
-        io.to(`order_${order._id}`).emit("orderCancelled", {
-            orderId: order._id.toString(),
-            orderStatus: "cancelled",
-        });
+const table = await Table.findById(order.table);
 
-        return res.status(200).json({
-            message: "Order cancelled successfully",
-            order,
-        });
+    const cancellationData = {
+        orderId: order._id.toString(),
+        orderStatus: "cancelled",
+        tableNumber: table?.tableNumber,
+        message: "Order cancelled by customer",
+    };
+
+    // Notify the customer
+    io.to(`order_${order._id}`).emit(
+        "orderCancelled",
+        cancellationData
+    );
+
+    // Notify only the assigned waiter
+    if (order.waiter) {
+        io.to(`waiter_${order.waiter.toString()}`).emit(
+            "orderCancelled",
+            cancellationData
+        );
+    }
 
     }
 
