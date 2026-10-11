@@ -17,6 +17,7 @@ import ManageTables from "../pages/admin/ManageTables";
 import ManageOrders from "../pages/admin/ManageOrders";
 import ManageUsers from "../pages/admin/ManageUsers";
 import ManagePayments from "../pages/admin/ManagePayments";
+import DineOut from "../pages/user/DineOut";
 
 function AppRoutes() {
   return (
@@ -74,6 +75,15 @@ function AppRoutes() {
                         <AdminMenu />
                     </AdminProtectedRoute>
                 }
+            />
+
+            <Route
+            path="/dineout"
+            element={
+                <ProtectedRoute>
+                <DineOut />
+                </ProtectedRoute>
+            }
             />
 
             <Route path="tables" 

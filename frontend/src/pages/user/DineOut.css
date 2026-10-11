@@ -1,0 +1,118 @@
+
+.dineout-page {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dineout-page h1 {
+  margin-bottom: 8px;
+}
+
+.dineout-subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.dineout-fulfillment,
+.dineout-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.dineout-fulfillment button,
+.dineout-categories button {
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.dineout-fulfillment button.selected,
+.dineout-categories button.selected {
+  background: #0082e6;
+  border-color: #0082e6;
+  color: white;
+}
+
+.dineout-address {
+  max-width: 500px;
+  margin-bottom: 24px;
+}
+
+.dineout-address label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.dineout-address textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font: inherit;
+  resize: vertical;
+}
+
+.dineout-menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.dineout-empty {
+  padding: 24px 0;
+}
+
+.dineout-cart {
+  margin-top: 35px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.dineout-cart h2 {
+  margin-bottom: 16px;
+}
+
+.dineout-cart-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.dineout-cart h3 {
+  margin-top: 16px;
+}
+
+.dineout-checkout-button {
+  margin-top: 16px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #0082e6;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.dineout-checkout-button:hover {
+  background: #006ac0;
+}
+
+@media (max-width: 600px) {
+  .dineout-page {
+    padding: 18px;
+  }
+
+  .dineout-menu-container {
+    grid-template-columns: 1fr;
+  }
+}
