@@ -806,6 +806,9 @@ const createDineOutOrder = async (req, res) => {
       totalAmount += menu.price * quantity;
     }
 
+    console.log("Database:", Order.db.name);
+    console.log("Orders collection:", Order.collection.name);
+
     const order = await Order.create({
       customer: req.user.userId,
       orderType: "dine-out",
@@ -816,6 +819,13 @@ const createDineOutOrder = async (req, res) => {
       items: orderItems,
       totalAmount,
     });
+
+    console.log("Database:", Order.db.name);
+    console.log("Collection:", Order.collection.name);
+    console.log("Saved order ID:", order._id);
+
+    const savedOrder = await Order.findById(order._id);
+    console.log("Found in database:", !!savedOrder);
 
     return res.status(201).json({
       message: "Dine-Out order created successfully",
