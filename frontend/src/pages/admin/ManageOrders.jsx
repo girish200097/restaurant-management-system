@@ -229,6 +229,17 @@ function ManageOrders() {
 
                                     </div>
 
+                                    {/* New block */}
+                                    <div className="order-summary-item">
+                                        <strong>Order Type</strong>
+
+                                        <p>
+                                            {order.orderType === "dine-out"
+                                                ? `Dine-Out (${order.fulfillmentType || "N/A"})`
+                                                : "Dine-In"}
+                                        </p>
+                                    </div>
+
                                     <div className="order-summary-item">
 
                                         <strong>Waiter</strong>
@@ -312,6 +323,16 @@ function ManageOrders() {
                                             </div>
 
                                         </div>
+
+                                        {order.orderType === "dine-out" &&
+                                            order.fulfillmentType === "delivery" && (
+                                                <div>
+                                                    <strong>Delivery Address</strong>
+                                                    <p>
+                                                        {order.deliveryAddress || "Address not provided"}
+                                                    </p>
+                                                </div>
+                                            )}
 
                                         <div className="order-items">
 
