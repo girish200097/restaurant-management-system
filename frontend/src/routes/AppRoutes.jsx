@@ -22,6 +22,15 @@ import DineOut from "../pages/user/DineOut";
 function AppRoutes() {
   return (
     <Routes>
+        <Route
+            path="/dineout"
+            element={
+                <ProtectedRoute>
+                <DineOut />
+                </ProtectedRoute>
+            }
+            />
+
       <Route path="/" element={<Login />} />
       <Route
           path="/menu"
@@ -77,15 +86,6 @@ function AppRoutes() {
                 }
             />
 
-            <Route
-            path="/dineout"
-            element={
-                <ProtectedRoute>
-                <DineOut />
-                </ProtectedRoute>
-            }
-            />
-
             <Route path="tables" 
                 element={
                 <AdminProtectedRoute>
@@ -121,6 +121,7 @@ function AppRoutes() {
             />
 
         </Route>
+        
     </Routes>
   );
 }
