@@ -183,7 +183,10 @@ function DineOut() {
           </>
         )}
 
-           <div className="dineout-fulfillment">
+           
+      </div>
+
+      <div className="dineout-fulfillment">
         <button
           className={fulfillment === "delivery" ? "selected" : ""}
           onClick={() => setFulfillment("delivery")}
@@ -211,7 +214,6 @@ function DineOut() {
           />
         </div>
       )}
-      </div>
     </div>
   );
 }
