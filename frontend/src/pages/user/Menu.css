@@ -1900,3 +1900,30 @@
         font-size: 13px;
     }
 }
+
+
+/* Fix menu heading and order toggle spacing */
+
+.menu-page > h1 {
+    position: relative;
+    margin: 20px 0 24px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.order-mode-toggle {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    margin: 20px auto 28px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.category-container {
+    position: relative;
+    margin-top: 20px;
+}

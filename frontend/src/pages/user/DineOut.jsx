@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import MenuCard from "../../components/MenuCard";
 import "./DineOut.css";
+import { useNavigate } from "react-router-dom";
 
 
 function DineOut() {
@@ -10,6 +11,7 @@ function DineOut() {
   const searchText = searchParams.get("search") || "";
   const [menus, setMenus] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
   const [cart, setCart] = useState(() => {
   try {
     return JSON.parse(localStorage.getItem("dineoutCart")) || [];
@@ -169,7 +171,21 @@ useEffect(() => {
   return (
     <div className="dineout-page">
       <h1>DineOut</h1>
+      <div className="order-mode-toggle">
+        <button
+          className="order-mode-inactive"
+          onClick={() => navigate("/menu")}
+        >
+          Dine-In
+        </button>
 
+        <button
+          className="order-mode-active"
+          onClick={() => navigate("/dineout")}
+        >
+          Dine-Out
+        </button>
+      </div>
       <div className="dineout-fulfillment">
         <button
           className={fulfillment === "delivery" ? "selected" : ""}
