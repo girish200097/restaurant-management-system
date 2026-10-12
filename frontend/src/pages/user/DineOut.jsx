@@ -85,38 +85,6 @@ function DineOut() {
   return (
     <div className="dineout-page">
       <h1>DineOut</h1>
-      <p className="dineout-subtitle">
-        Order your favourite food for delivery or takeaway.
-      </p>
-
-      <div className="dineout-fulfillment">
-        <button
-          className={fulfillment === "delivery" ? "selected" : ""}
-          onClick={() => setFulfillment("delivery")}
-        >
-          Home Delivery
-        </button>
-
-        <button
-          className={fulfillment === "takeaway" ? "selected" : ""}
-          onClick={() => setFulfillment("takeaway")}
-        >
-          Takeaway
-        </button>
-      </div>
-
-      {orderType === "delivery" && (
-        <div className="dineout-address">
-          <label htmlFor="delivery-address">Delivery address</label>
-          <input
-            id="delivery-address"
-            type="text"
-            placeholder="Enter your delivery address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
-      )}
       
   <div className="dineout-search">
     <input
@@ -214,6 +182,35 @@ function DineOut() {
             </button>
           </>
         )}
+
+           <div className="dineout-fulfillment">
+        <button
+          className={fulfillment === "delivery" ? "selected" : ""}
+          onClick={() => setFulfillment("delivery")}
+        >
+          Home Delivery
+        </button>
+
+        <button
+          className={fulfillment === "takeaway" ? "selected" : ""}
+          onClick={() => setFulfillment("takeaway")}
+        >
+          Takeaway
+        </button>
+      </div>
+
+      {orderType === "delivery" && (
+        <div className="dineout-address">
+          <label htmlFor="delivery-address">Delivery address</label>
+          <input
+            id="delivery-address"
+            type="text"
+            placeholder="Enter your delivery address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+      )}
       </div>
     </div>
   );
