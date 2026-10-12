@@ -1857,3 +1857,46 @@
   font-weight: 600;
   color: #5c4a40;
 }
+
+/* Dine-In / Dine-Out Toggle */
+
+.order-mode-toggle {
+    display: flex;
+    width: fit-content;
+    gap: 4px;
+    padding: 5px;
+    margin: 20px 0 25px;
+    background: #f1e7e0;
+    border-radius: 30px;
+}
+
+.order-mode-toggle button {
+    border: none;
+    padding: 11px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.order-mode-active {
+    background: #e85d24;
+    color: white;
+}
+
+.order-mode-inactive {
+    background: transparent;
+    color: #5b463b;
+}
+
+.order-mode-inactive:hover {
+    background: #fff;
+}
+
+@media (max-width: 600px) {
+    .order-mode-toggle button {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}

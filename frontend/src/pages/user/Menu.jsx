@@ -3,10 +3,11 @@ import { io } from "socket.io-client";
 import PaymentButton from "../../components/PaymentButton";
 import MenuCard from "../../components/MenuCard";
 import "./Menu.css";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { jsPDF } from "jspdf";
 
 function Menu() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [paidAmount, setPaidAmount] = useState(0);
   const searchText = searchParams.get("search") || "";
@@ -730,6 +731,22 @@ const handleCallWaiter = async () => {
     <div className="menu-page">
 
       <h1>Menu Page</h1>
+
+  <div className="order-mode-toggle">
+    <button
+      className="order-mode-active"
+      onClick={() => navigate("/menu")}
+    >
+      Dine-In
+    </button>
+
+    <button
+      className="order-mode-inactive"
+      onClick={() => navigate("/dineout")}
+    >
+      Dine-Out
+    </button>
+  </div>
 
       {/* Categories */}
 
