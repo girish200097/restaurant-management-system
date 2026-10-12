@@ -1922,4 +1922,5 @@
 .category-container {
     position: relative;
     margin-top: 20px;
+    top: auto;
 }
