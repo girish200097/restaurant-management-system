@@ -251,3 +251,13 @@
     font-size: 20px;
   }
 }
+@media (max-width: 600px) {
+  .dineout-menu-container img {
+    height: 90px;
+    object-fit: cover;
+  }
+
+  .dineout-menu-container > * {
+    min-height: 0;
+  }
+}
