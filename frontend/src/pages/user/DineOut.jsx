@@ -117,6 +117,30 @@ function DineOut() {
           />
         </div>
       )}
+      
+  <div className="dineout-search">
+    <input
+      type="text"
+      placeholder="Search for dishes..."
+      value={searchText}
+      onChange={(e) => {
+        const value = e.target.value;
+        const params = new URLSearchParams(searchParams);
+
+        if (value) {
+          params.set("search", value);
+        } else {
+          params.delete("search");
+        }
+
+        window.history.replaceState(
+          null,
+          "",
+          `${window.location.pathname}?${params.toString()}`
+        );
+      }}
+    />
+  </div>
 
       <div className="dineout-categories">
         {["All", "Starter", "Main Course", "Dessert", "Beverage"].map(
