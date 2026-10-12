@@ -22,14 +22,7 @@ import DineOut from "../pages/user/DineOut";
 function AppRoutes() {
   return (
     <Routes>
-        <Route
-            path="/dineout"
-            element={
-                <ProtectedRoute>
-                <DineOut />
-                </ProtectedRoute>
-            }
-            />
+        
 
       <Route path="/" element={<Login />} />
       <Route
@@ -49,6 +42,7 @@ function AppRoutes() {
             </ProtectedRoute>
         }
         />
+        
       <Route path="/login" element={<Login />} />
       <Route path="/auth/verify" element={<VerifyLogin />} />
       <Route path="/room-booking" element={<RoomBooking />} />
@@ -63,6 +57,14 @@ function AppRoutes() {
             </ProtectedRoute>
         }
         />
+        <Route
+            path="/dineout"
+            element={
+                <ProtectedRoute>
+                <DineOut />
+                </ProtectedRoute>
+            }
+            />
       <Route path="/admin" element={<AdminLayout />}>
         <Route
                 path="login"

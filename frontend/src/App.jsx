@@ -13,13 +13,11 @@ function AppContent() {
 
   return (
     <>
-    {isDineOutPage ? (
+      {isDineOutPage ? (
         <DineOutNavbar />
       ) : (
         !isAdminPage && !isWaiterPage && <Navbar />
       )}
-
-      {!isAdminPage && !isWaiterPage && <Navbar />}
 
       <AppRoutes />
     </>
