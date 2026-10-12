@@ -6,9 +6,8 @@ import "./DineOut.css";
 
 
 function DineOut() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const searchText = searchParams.get("search") || "";
-
   const [menus, setMenus] = useState([]);
   const [cart, setCart] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -102,29 +101,32 @@ function DineOut() {
         </button>
       </div>
       
-  <div className="dineout-search">
-    <input
-      type="text"
-      placeholder="Search for dishes..."
-      value={searchText}
-      onChange={(e) => {
-        const value = e.target.value;
-        const params = new URLSearchParams(searchParams);
+<div className="dineout-search">
+  <input
+    type="search"
+    placeholder="Search for dishes..."
+    aria-label="Search for dishes"
+    value={searchText}
+    onChange={(e) => {
+      const value = e.target.value;
 
-        if (value) {
-          params.set("search", value);
-        } else {
-          params.delete("search");
-        }
+      setSearchParams(
+        (currentParams) => {
+          const params = new URLSearchParams(currentParams);
 
-        window.history.replaceState(
-          null,
-          "",
-          `${window.location.pathname}?${params.toString()}`
-        );
-      }}
-    />
-  </div>
+          if (value) {
+            params.set("search", value);
+          } else {
+            params.delete("search");
+          }
+
+          return params;
+        },
+        { replace: true }
+      );
+    }}
+  />
+</div>
 
       <div className="dineout-categories">
         {["All", "Starter", "Main Course", "Dessert", "Beverage"].map(
