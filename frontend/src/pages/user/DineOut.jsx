@@ -85,6 +85,22 @@ function DineOut() {
   return (
     <div className="dineout-page">
       <h1>DineOut</h1>
+
+      <div className="dineout-fulfillment">
+        <button
+          className={fulfillment === "delivery" ? "selected" : ""}
+          onClick={() => setFulfillment("delivery")}
+        >
+          Home Delivery
+        </button>
+
+        <button
+          className={fulfillment === "takeaway" ? "selected" : ""}
+          onClick={() => setFulfillment("takeaway")}
+        >
+          Takeaway
+        </button>
+      </div>
       
   <div className="dineout-search">
     <input
@@ -184,22 +200,6 @@ function DineOut() {
         )}
 
            
-      </div>
-
-      <div className="dineout-fulfillment">
-        <button
-          className={fulfillment === "delivery" ? "selected" : ""}
-          onClick={() => setFulfillment("delivery")}
-        >
-          Home Delivery
-        </button>
-
-        <button
-          className={fulfillment === "takeaway" ? "selected" : ""}
-          onClick={() => setFulfillment("takeaway")}
-        >
-          Takeaway
-        </button>
       </div>
 
       {orderType === "delivery" && (
