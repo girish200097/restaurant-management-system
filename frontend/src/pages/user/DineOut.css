@@ -108,10 +108,9 @@
 /* Food menu grid */
 .dineout-menu-container {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-  gap: 24px;
-  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-bottom: 45px;
 }
 
 .dineout-empty {
@@ -180,13 +179,19 @@
 }
 
 /* Medium screens */
-@media (max-width: 1000px) {
+
+@media (max-width: 768px) {
   .dineout-menu-container {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 12px;
   }
 }
 
+@media (max-width: 400px) {
+  .dineout-menu-container {
+    gap: 10px;
+  }
+}
 /* Mobile screens */
 @media (max-width: 600px) {
   .dineout-page {
@@ -234,14 +239,6 @@
     flex: 0 0 auto;
     padding: 10px 15px;
   }
-
- @media (max-width: 600px) {
-  .dineout-menu-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-}
-
   .dineout-cart {
     margin-top: 28px;
     padding: 18px 14px;
@@ -252,12 +249,8 @@
   }
 }
 @media (max-width: 600px) {
-  .dineout-menu-container img {
-    height: 90px;
-    object-fit: cover;
-  }
-
-  .dineout-menu-container > * {
-    min-height: 0;
+  .dineout-menu-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 }
