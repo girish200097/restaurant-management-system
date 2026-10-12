@@ -63,41 +63,25 @@
 }
 
 /* Delivery address */
-.dineout-address {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto 28px;
-}
-
-.dineout-address label {
-  display: block;
-  margin-bottom: 10px;
-  color: #292929;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.dineout-address textarea {
+.dineout-address input {
   display: block;
   width: 100%;
-  min-height: 85px;
-  padding: 13px 15px;
+  min-height: 48px;
+  padding: 12px 15px;
   border: 1px solid #d8d8d8;
   border-radius: 10px;
   background: #fff;
   color: #333;
   font: inherit;
   font-size: 14px;
-  line-height: 1.5;
-  resize: vertical;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.dineout-address textarea::placeholder {
+.dineout-address input::placeholder {
   color: #999;
 }
 
-.dineout-address textarea:focus {
+.dineout-address input:focus {
   outline: none;
   border-color: #0082e6;
   box-shadow: 0 0 0 3px rgba(0, 130, 230, 0.1);

@@ -14,6 +14,7 @@ function DineOut() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [fulfillment, setFulfillment] = useState("delivery");
   const [address, setAddress] = useState("");
+  const [orderType, setOrderType] = useState("delivery");
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -104,17 +105,15 @@ function DineOut() {
         </button>
       </div>
 
-      {fulfillment === "delivery" && (
+      {orderType === "delivery" && (
         <div className="dineout-address">
-          <label htmlFor="delivery-address">
-            Delivery Address
-          </label>
-          <textarea
+          <label htmlFor="delivery-address">Delivery address</label>
+          <input
             id="delivery-address"
+            type="text"
+            placeholder="Enter your delivery address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-           placeholder="House/Flat No., Street, Area, City, PIN Code"
-            rows={3}
           />
         </div>
       )}
