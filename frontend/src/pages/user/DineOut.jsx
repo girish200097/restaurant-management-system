@@ -9,11 +9,22 @@ function DineOut() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchText = searchParams.get("search") || "";
   const [menus, setMenus] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+  try {
+    return JSON.parse(localStorage.getItem("dineoutCart")) || [];
+  } catch {
+    return [];
+  }
+});
+
+const [fulfillment, setFulfillment] = useState(
+  () => localStorage.getItem("dineoutFulfillment") || "delivery"
+);
+
+const [address, setAddress] = useState(
+  () => localStorage.getItem("dineoutAddress") || ""
+);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [fulfillment, setFulfillment] = useState("delivery");
-  const [address, setAddress] = useState("");
-  const [orderType, setOrderType] = useState("delivery");
 
   useEffect(() => {
     const fetchMenus = async () => {
@@ -34,6 +45,18 @@ function DineOut() {
 
     fetchMenus();
   }, []);
+
+  useEffect(() => {
+  localStorage.setItem("dineoutCart", JSON.stringify(cart));
+}, [cart]);
+
+useEffect(() => {
+  localStorage.setItem("dineoutFulfillment", fulfillment);
+}, [fulfillment]);
+
+useEffect(() => {
+  localStorage.setItem("dineoutAddress", address);
+}, [address]); 
 
   const addToCart = (menu) => {
     setCart((currentCart) => {
