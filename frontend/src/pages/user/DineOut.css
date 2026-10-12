@@ -63,22 +63,36 @@
 }
 
 /* Delivery address */
+.dineout-address {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto 28px;
+}
+
+.dineout-address label {
+  display: block;
+  margin-bottom: 10px;
+  color: #292929;
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .dineout-address input {
   display: block;
   width: 100%;
-  min-height: 48px;
-  padding: 12px 15px;
+  height: 56px;
+  padding: 14px 18px;
   border: 1px solid #d8d8d8;
   border-radius: 10px;
   background: #fff;
   color: #333;
-  font: inherit;
-  font-size: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 .dineout-address input::placeholder {
-  color: #999;
+  color: #888;
 }
 
 .dineout-address input:focus {
@@ -86,7 +100,6 @@
   border-color: #0082e6;
   box-shadow: 0 0 0 3px rgba(0, 130, 230, 0.1);
 }
-
 /* Food categories */
 .dineout-categories {
   display: flex;
@@ -210,10 +223,6 @@
 
   .dineout-address {
     margin-bottom: 24px;
-  }
-
-  .dineout-address textarea {
-    min-height: 90px;
   }
 
   .dineout-categories {
