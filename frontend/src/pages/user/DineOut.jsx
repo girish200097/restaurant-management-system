@@ -113,7 +113,7 @@ function DineOut() {
             id="delivery-address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter your complete delivery address"
+           placeholder="House/Flat No., Street, Area, City, PIN Code"
             rows={3}
           />
         </div>

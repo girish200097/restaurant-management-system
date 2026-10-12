@@ -66,34 +66,41 @@
 .dineout-address {
   width: 100%;
   max-width: 600px;
-  margin: 0 auto 30px;
+  margin: 0 auto 28px;
 }
 
 .dineout-address label {
   display: block;
   margin-bottom: 10px;
-  font-size: 16px;
+  color: #292929;
+  font-size: 15px;
   font-weight: 600;
 }
 
 .dineout-address textarea {
   display: block;
   width: 100%;
-  min-height: 100px;
-  padding: 14px;
-  border: 1px solid #d5d5d5;
+  min-height: 85px;
+  padding: 13px 15px;
+  border: 1px solid #d8d8d8;
   border-radius: 10px;
   background: #fff;
-  color: #222;
+  color: #333;
   font: inherit;
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.5;
   resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dineout-address textarea::placeholder {
+  color: #999;
 }
 
 .dineout-address textarea:focus {
-  outline: 2px solid #0082e6;
-  outline-offset: 1px;
-  border-color: transparent;
+  outline: none;
+  border-color: #0082e6;
+  box-shadow: 0 0 0 3px rgba(0, 130, 230, 0.1);
 }
 
 /* Food categories */
