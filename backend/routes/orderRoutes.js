@@ -11,11 +11,14 @@ const {createOrder,
     removeOrderItem,
     deleteOrder,
     callWaiter,
+    createDineOutOrder,
 } = require("../controllers/orderController");
 const adminMiddleware = require("../middleware/adminMiddleware");
 const authMiddleware = require("../middleware/authMiddleware");
 const waiterMiddleware = require("../middleware/waiterMiddleware");
 const router = express.Router();
+
+router.post("/dineout", authMiddleware, createDineOutOrder);
 
 router.post(
     "/:tableId",

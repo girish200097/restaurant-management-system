@@ -13,6 +13,23 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Table"
     },
+
+        orderType: {
+        type: String,
+        enum: ["dine-in", "dine-out"],
+        required: true,
+        default: "dine-in",
+        },
+
+        fulfillmentType: {
+        type: String,
+        enum: ["delivery", "takeaway"],
+        },
+
+        deliveryAddress: {
+        type: String,
+        trim: true,
+        },
     items: [
         {
             menuItem: {

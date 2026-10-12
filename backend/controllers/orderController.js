@@ -737,6 +737,99 @@ const callWaiter = async (req, res) => {
     }
 };
 
+//createDineOutOrder
+const createDineOutOrder = async (req, res) => {
+  try {
+    const { items, orderType, fulfillmentType, deliveryAddress } = req.body;
+
+    // Only Dine-Out orders are accepted here
+    if (orderType !== "dine-out") {
+      return res.status(400).json({
+        message: "Order type must be dine-out",
+      });
+    }
+
+    // Validate delivery or takeaway
+    if (!["delivery", "takeaway"].includes(fulfillmentType)) {
+      return res.status(400).json({
+        message: "Choose delivery or takeaway",
+      });
+    }
+
+    if (
+      fulfillmentType === "delivery" &&
+      (!deliveryAddress || !deliveryAddress.trim())
+    ) {
+      return res.status(400).json({
+        message: "Delivery address is required",
+      });
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        message: "Please add items to your cart",
+      });
+    }
+
+    const orderItems = [];
+    let totalAmount = 0;
+
+    for (const item of items) {
+      if (!mongoose.Types.ObjectId.isValid(item.menuItem)) {
+        return res.status(400).json({
+          message: "Invalid menu item",
+        });
+      }
+
+      const quantity = Number(item.quantity);
+
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        return res.status(400).json({
+          message: "Quantity must be a positive integer",
+        });
+      }
+
+      const menu = await Menu.findById(item.menuItem);
+
+      if (!menu || !menu.isAvailable) {
+        return res.status(400).json({
+          message: "A selected menu item is unavailable",
+        });
+      }
+
+      orderItems.push({
+        menuItem: menu._id,
+        quantity,
+        price: menu.price,
+      });
+
+      totalAmount += menu.price * quantity;
+    }
+
+    const order = await Order.create({
+      customer: req.user.userId,
+      orderType: "dine-out",
+      fulfillmentType,
+      ...(fulfillmentType === "delivery"
+        ? { deliveryAddress: deliveryAddress.trim() }
+        : {}),
+      items: orderItems,
+      totalAmount,
+    });
+
+    return res.status(201).json({
+      message: "Dine-Out order created successfully",
+      order,
+    });
+  } catch (error) {
+    console.error("Create Dine-Out Order Error:", error);
+
+    return res.status(500).json({
+      message: "Failed to create Dine-Out order",
+    });
+  }
+};
+
 module.exports = {
     createOrder,
     getAllOrders,
@@ -749,4 +842,5 @@ module.exports = {
     removeOrderItem,
     deleteOrder,
     callWaiter,
+    createDineOutOrder,
 }

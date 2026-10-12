@@ -9,6 +9,7 @@ function DineOut() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchText = searchParams.get("search") || "";
   const [menus, setMenus] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [cart, setCart] = useState(() => {
   try {
     return JSON.parse(localStorage.getItem("dineoutCart")) || [];
@@ -93,6 +94,67 @@ useEffect(() => {
       (total, item) => total + item.price * item.quantity,
       0
     );
+
+    const handleCheckout = async () => {
+      if (cart.length === 0) {
+        alert("Please add items to your cart.");
+        return;
+      }
+
+      if (fulfillment === "delivery" && !address.trim()) {
+        alert("Please enter your delivery address.");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("Please log in to place your order.");
+        return;
+      }
+
+      try {
+        setIsSubmitting(true);
+
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/order/dineout`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              orderType: "dine-out",
+              fulfillmentType: fulfillment,
+              deliveryAddress:
+                fulfillment === "delivery" ? address.trim() : undefined,
+              items: cart.map((item) => ({
+                menuItem: item._id,
+                quantity: item.quantity,
+              })),
+            }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to place order.");
+        }
+
+        setCart([]);
+        localStorage.removeItem("dineoutCart");
+
+        alert(
+          `Order placed successfully! Order ID: ${data.order._id}`
+        );
+      } catch (error) {
+        alert(error.message || "Something went wrong. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
 
   const filteredMenus = menus
     .filter(
@@ -212,14 +274,11 @@ useEffect(() => {
             <h3>Total: ₹{getCartTotal()}</h3>
 
             <button
-              className="dineout-checkout-button"
-              onClick={() =>
-                alert(
-                  "Your cart is ready. Order submission will be connected next."
-                )
-              }
+            className="dineout-checkout-button"
+            onClick={handleCheckout}
+            disabled={isSubmitting}
             >
-              Continue
+            {isSubmitting ? "Placing Order..." : "Continue"}
             </button>
           </>
         )}
