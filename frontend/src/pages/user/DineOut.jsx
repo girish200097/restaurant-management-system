@@ -204,18 +204,18 @@ function DineOut() {
            
       </div>
 
-      {orderType === "delivery" && (
-        <div className="dineout-address">
-          <label htmlFor="delivery-address">Delivery address</label>
-          <input
-            id="delivery-address"
-            type="text"
-            placeholder="Enter your delivery address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
-      )}
+     {fulfillment === "delivery" && (
+  <div className="dineout-address">
+    <label htmlFor="delivery-address">Delivery address</label>
+    <input
+      id="delivery-address"
+      type="text"
+      placeholder="Enter your delivery address"
+      value={address}
+      onChange={(e) => setAddress(e.target.value)}
+    />
+  </div>
+)}
     </div>
   );
 }
