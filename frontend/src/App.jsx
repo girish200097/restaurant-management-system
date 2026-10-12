@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
 import AuthProvider from "./context/AuthContext";
 import { useLocation } from "react-router-dom";
-import DineOutNavbar from "./components/DineOutNavbar";
+import DineOutNavbar from "./pages/user/DineOutNavbar";
 
 function AppContent() {
   const location = useLocation();
@@ -18,7 +18,7 @@ function AppContent() {
       ) : (
         !isAdminPage && !isWaiterPage && <Navbar />
       )}
-      
+
       {!isAdminPage && !isWaiterPage && <Navbar />}
 
       <AppRoutes />
