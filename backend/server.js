@@ -2,6 +2,7 @@ require("dotenv").config();
 const cors = require("cors");
 const { Server } = require("socket.io");
 const { setIO } = require("./socket");
+const cleanupOldRecords = require("./jobs/cleanupOldRecords");
 
 const express = require("express");
 const authRoutes = require("./routes/authRoutes");
@@ -50,8 +51,14 @@ app.use(express.json());
 
 
 
-connectDB();  
-
+connectDB()
+    .then(() => {
+        cleanupOldRecords();
+    })
+    .catch((error) => {
+        console.error("Database connection failed:", error);
+        process.exit(1);
+    });
 
 app.get("/", (req, res) => {
   res.send("Restaurant Backend Running");
