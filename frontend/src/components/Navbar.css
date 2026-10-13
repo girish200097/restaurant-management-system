@@ -255,12 +255,16 @@ nav {
   margin: auto;
 }
 
-.profile-dropdown {
-  position: relative;
-  top: auto;
-  right: auto;
-  width: min(280px, calc(100vw - 40px));
-  margin: 12px auto;
+@media (max-width: 890px) {
+  .profile-dropdown {
+    position: relative;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(350px, calc(100vw - 40px));
+    box-sizing: border-box;
+    margin: 12px 0;
+  }
 }
 }
 
@@ -405,17 +409,4 @@ nav {
 
 .profile-dropdown .logout-button:hover {
   background: #c82333;
-}
-
-
-@media (max-width: 890px) {
-  .profile-dropdown {
-    position: relative;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: min(350px, calc(100vw - 40px));
-    box-sizing: border-box;
-    margin: 12px 0;
-  }
 }
