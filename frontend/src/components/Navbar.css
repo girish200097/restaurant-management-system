@@ -408,3 +408,14 @@ nav {
 }
 
 
+@media (max-width: 890px) {
+  .profile-dropdown {
+    position: relative;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(350px, calc(100vw - 40px));
+    box-sizing: border-box;
+    margin: 12px 0;
+  }
+}
