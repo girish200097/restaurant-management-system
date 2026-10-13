@@ -96,13 +96,13 @@ function AdminDashboard() {
                     <p>View payments</p>
                 </div>
 
-                <div
+                {/* <div
                     className="dashboard-card"
                     onClick={() => navigate("/admin/dineout-orders")}
                 >
                     <h3>Dine-Out Orders</h3>
                     <p>Manage delivery and takeaway orders</p>
-                </div>
+                </div> */}
 
             </div>
 
