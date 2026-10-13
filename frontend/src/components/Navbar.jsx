@@ -5,12 +5,45 @@ import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-const [searchParams] = useSearchParams();
-
+  const [searchParams] = useSearchParams();
+  const [customer, setCustomer] = useState(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+  const fetchCustomerProfile = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!isLoggedIn || !token) {
+      setCustomer(null);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setCustomer(data.user);
+      }
+    } catch (error) {
+      console.error("Failed to fetch customer profile:", error);
+    }
+  };
+
+  fetchCustomerProfile();
+}, [isLoggedIn]);
 
   // Keep input synchronized with URL
   useEffect(() => {
@@ -36,13 +69,15 @@ const [searchParams] = useSearchParams();
   }
 };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("selectedTable");
-    setIsLoggedIn(false);
-    setIsMenuOpen(false);
-    navigate("/");
-  };
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("selectedTable");
+  setCustomer(null);
+  setIsProfileOpen(false);
+  setIsLoggedIn(false);
+  setIsMenuOpen(false);
+  navigate("/");
+};
 
   return (
     <nav>
@@ -95,13 +130,37 @@ const [searchParams] = useSearchParams();
           </li>
 
           {isLoggedIn ? (
-            <li>
+            <li className="profile-menu">
               <button
-                className="logout-button"
-                onClick={handleLogout}
+                className="profile-trigger"
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
               >
-                Logout
+                {customer?.name || "My Profile"}
+                <span>{isProfileOpen ? "▲" : "▼"}</span>
               </button>
+
+              {isProfileOpen && (
+                <div className="profile-dropdown">
+                  <h3>{customer?.name || "Customer"}</h3>
+
+                  <div className="profile-detail">
+                    <span>Email</span>
+                    <p>{customer?.email || "Not available"}</p>
+                  </div>
+
+                  <div className="profile-detail">
+                    <span>Phone</span>
+                    <p>{customer?.phone || "Not available"}</p>
+                  </div>
+
+                  <button
+                    className="logout-button"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </li>
           ) : (
             <li>
