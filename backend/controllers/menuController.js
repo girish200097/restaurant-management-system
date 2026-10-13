@@ -69,18 +69,27 @@ const addMenu = async (req, res) => {
 };
 
 // getAllMenu
+
 const getAllMenu = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 20;
+        const category = req.query.category;
 
         const skip = (page - 1) * limit;
 
-        const menus = await Menu.find()
+        // Filter by category only when one is selected
+        const filter = {};
+
+        if (category && category !== "All") {
+            filter.category = category;
+        }
+
+        const menus = await Menu.find(filter)
             .skip(skip)
             .limit(limit);
 
-        const totalItems = await Menu.countDocuments();
+        const totalItems = await Menu.countDocuments(filter);
         const totalPages = Math.ceil(totalItems / limit);
 
         return res.status(200).json({
@@ -100,6 +109,7 @@ const getAllMenu = async (req, res) => {
         });
     }
 };
+
 
 //getMenuById
 const getMenuById = async(req,res)=> {

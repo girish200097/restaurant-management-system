@@ -31,34 +31,56 @@ function Menu() {
   const [showCompletedStatus, setShowCompletedStatus] = useState(false);
   const [callingWaiter, setCallingWaiter] = useState(false);
 
-  useEffect(() => {
+  
+useEffect(() => {
     const fetchMenus = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/menu`
-        );
+        try {
+            const url = new URL(
+                `${import.meta.env.VITE_API_URL}/menu`
+            );
 
-        const data = await response.json();
+            if (selectedCategory !== "All") {
+                url.searchParams.set("category", selectedCategory);
+            }
 
-        console.log("MENU RESPONSE:", data);
+            const response = await fetch(url);
+            const data = await response.json();
 
-        setMenus(data.menus);
-
-        const tableResponse = await fetch(
-          `${import.meta.env.VITE_API_URL}/admin/table`
-        );
-
-        const tableData = await tableResponse.json();
-
-        console.log("TABLE RESPONSE:", tableData);
-
-        setTables(tableData.tables);
-      } catch (error) {
-        console.log(error);
-      }
+            if (response.ok) {
+                setMenus(data.menus || []);
+            }
+        } catch (error) {
+            console.log("Failed to fetch menu:", error);
+        }
     };
 
-   fetchMenus();
+    fetchMenus();
+
+    const interval = setInterval(fetchMenus, 2000);
+
+    return () => clearInterval(interval);
+}, [selectedCategory]);
+
+useEffect(() => {
+    const fetchTables = async () => {
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/admin/table`
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setTables(data.tables || []);
+            }
+        } catch (error) {
+            console.log("Failed to fetch tables:", error);
+        }
+    };
+
+    fetchTables();
+}, []);
+
 
 const interval = setInterval(fetchMenus, 2000);
 
@@ -791,17 +813,11 @@ const handleCallWaiter = async () => {
 
             {/* Menu */}
 {!paymentSuccess && (() => {
-  const filteredMenus = menus
-    .filter(
-      (menu) =>
-        selectedCategory === "All" ||
-        menu.category === selectedCategory
-    )
-    .filter((menu) =>
-      menu.name
+const filteredMenus = menus.filter((menu) =>
+    menu.name
         .toLowerCase()
         .includes(searchText.toLowerCase())
-    );
+);
 
   return (
     <>
