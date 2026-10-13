@@ -732,7 +732,7 @@ const handleCallWaiter = async () => {
 
       <h1>Menu Page</h1>
 
-  <div className="order-mode-toggle">
+  {/* <div className="order-mode-toggle">
     <button
       className="order-mode-active"
       onClick={() => navigate("/menu")}
@@ -746,7 +746,7 @@ const handleCallWaiter = async () => {
     >
       Dine-Out
     </button>
-  </div>
+  </div> */}
 
       {/* Categories */}
 
