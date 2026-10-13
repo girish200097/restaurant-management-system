@@ -56,9 +56,9 @@ function AdminNavbar() {
     return (
         <nav className="admin-navbar">
 
-            <div className="admin-navbar-logo">
+            <Link to="/admin/dashboard" className="admin-navbar-logo">
                 🍽️
-            </div>
+            </Link>
 
             <div className="admin-navbar-links">
 

@@ -25,6 +25,8 @@
     font-weight: 700;
 
     white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .admin-navbar-links {
