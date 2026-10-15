@@ -32,14 +32,18 @@ function Menu() {
   const [callingWaiter, setCallingWaiter] = useState(false);
 
   
-
 useEffect(() => {
     const fetchMenus = async () => {
         try {
-            const response = await fetch(
+            const url = new URL(
                 `${import.meta.env.VITE_API_URL}/menu`
             );
 
+            if (selectedCategory !== "All") {
+                url.searchParams.set("category", selectedCategory);
+            }
+
+            const response = await fetch(url);
             const data = await response.json();
 
             if (response.ok) {
@@ -55,7 +59,7 @@ useEffect(() => {
     const interval = setInterval(fetchMenus, 2000);
 
     return () => clearInterval(interval);
-}, []);
+}, [selectedCategory]);
 
 useEffect(() => {
     const fetchTables = async () => {
@@ -803,11 +807,23 @@ const handleCallWaiter = async () => {
 
             {/* Menu */}
 {!paymentSuccess && (() => {
-const filteredMenus = menus.filter((menu) =>
-    menu.name
+const filteredMenus = menus.filter((menu) => {
+    const matchesSearch = menu.name
         .toLowerCase()
-        .includes(searchText.toLowerCase())
-);
+        .includes(searchText.toLowerCase());
+
+    const matchesCategory =
+        selectedCategory === "All" ||
+        menu.category === selectedCategory;
+
+    // Search works across every category
+    if (searchText.trim() !== "") {
+        return matchesSearch;
+    }
+
+    // When search is empty, apply the category filter
+    return matchesCategory;
+});
 
   return (
     <>
