@@ -365,6 +365,19 @@ const handleMouseUp = () => {
                 + Add Menu Item
             </button>
 
+            
+        {selectionMode && selectedMenuIds.length > 0 && (
+            <button
+                className="delete-menu-btn"
+                onClick={() => {
+                    alert("Bulk delete will be implemented next.");
+                }}
+            >
+                Delete Selected ({selectedMenuIds.length})
+            </button>
+        )}
+
+
             {showForm && (
     <div
         className="add-menu-form"
