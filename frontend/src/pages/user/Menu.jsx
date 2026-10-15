@@ -817,7 +817,7 @@ const filteredMenus = menus.filter((menu) =>
     <>
       {filteredMenus.length === 0 ? (
         <div className="no-menu-items">
-          There are no items
+          <p>🍽️ No items available</p>
         </div>
       ) : (
         <div className="menu-container">
