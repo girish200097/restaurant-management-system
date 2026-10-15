@@ -1924,3 +1924,17 @@
     margin-top: 20px;
     top: auto;
 }
+
+.cart-item-image {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

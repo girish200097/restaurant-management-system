@@ -1130,9 +1130,14 @@ const filteredMenus = menus.filter((menu) =>
                                 key={item._id}
                             >
                                 <div className="cart-item-info">
-                                    <h3>{item.name}</h3>
-                                    <p>₹{item.price}</p>
-                                </div>
+                                <img
+                                    src={item.image || "/placeholder-food.png"}
+                                    alt={item.name}
+                                    className="cart-item-image"
+                                />
+                                <h3>{item.name}</h3>
+                                <p>₹{item.price}</p>
+                            </div>
 
                                 <div className="cart-item-actions">
                                     <button
