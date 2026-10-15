@@ -288,6 +288,55 @@ const handleDeleteMenu = async (id) => {
     }
 };
 
+
+const handleBulkDeleteMenu = async () => {
+    if (selectedMenuIds.length === 0) return;
+
+    const confirmDelete = window.confirm(
+        `Are you sure you want to delete ${selectedMenuIds.length} menu items?`
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const results = await Promise.all(
+            selectedMenuIds.map((id) =>
+                fetch(`${import.meta.env.VITE_API_URL}/menu/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+            )
+        );
+
+        const failed = results.filter((response) => !response.ok);
+
+        const deletedIds = selectedMenuIds.filter(
+            (_, index) => results[index].ok
+        );
+
+        setMenuItems((previousItems) =>
+            previousItems.filter((item) => !deletedIds.includes(item._id))
+        );
+
+        setSelectedMenuIds([]);
+        setSelectionMode(false);
+
+        if (failed.length > 0) {
+            alert(`${deletedIds.length} items deleted. ${failed.length} items failed.`);
+        } else {
+            alert(`${deletedIds.length} menu items deleted successfully.`);
+        }
+    } catch (error) {
+        console.error("Bulk delete error:", error);
+        alert("Something went wrong while deleting menu items.");
+    }
+};
+
+
 const handleAvailabilityChange = async (id, value) => {
     try {
         const token = localStorage.getItem("adminToken");
@@ -366,14 +415,13 @@ const handleMouseUp = () => {
             </button>
 
             
+        
         {selectionMode && selectedMenuIds.length > 0 && (
             <button
-                className="delete-menu-btn"
-                onClick={() => {
-                    alert("Bulk delete will be implemented next.");
-                }}
+                className="bulk-delete-floating-btn"
+                onClick={handleBulkDeleteMenu}
             >
-                Delete Selected ({selectedMenuIds.length})
+                🗑️ Delete Selected ({selectedMenuIds.length})
             </button>
         )}
 
