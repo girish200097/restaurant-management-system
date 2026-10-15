@@ -32,18 +32,14 @@ function Menu() {
   const [callingWaiter, setCallingWaiter] = useState(false);
 
   
+
 useEffect(() => {
     const fetchMenus = async () => {
         try {
-            const url = new URL(
+            const response = await fetch(
                 `${import.meta.env.VITE_API_URL}/menu`
             );
 
-            if (selectedCategory !== "All") {
-                url.searchParams.set("category", selectedCategory);
-            }
-
-            const response = await fetch(url);
             const data = await response.json();
 
             if (response.ok) {
@@ -59,7 +55,7 @@ useEffect(() => {
     const interval = setInterval(fetchMenus, 2000);
 
     return () => clearInterval(interval);
-}, [selectedCategory]);
+}, []);
 
 useEffect(() => {
     const fetchTables = async () => {
