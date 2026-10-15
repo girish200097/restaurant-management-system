@@ -81,12 +81,6 @@ useEffect(() => {
     fetchTables();
 }, []);
 
-
-const interval = setInterval(fetchMenus, 2000);
-
-return () => clearInterval(interval);
-}, []);
-
   useEffect(() => {
   const savedCart = localStorage.getItem("cart");
 
