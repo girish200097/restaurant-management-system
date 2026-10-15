@@ -456,3 +456,8 @@
   margin-top: 6px;
   font-size: 13px;
 }
+
+.admin-menu-card.menu-selected {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+}

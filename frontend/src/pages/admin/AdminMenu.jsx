@@ -16,6 +16,10 @@ function AdminMenu() {
     const [isCompressing, setIsCompressing] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
     
+    const [selectedMenuIds, setSelectedMenuIds] = useState([]);
+    const [selectionMode, setSelectionMode] = useState(false);
+    const longPressTimer = useRef(null);
+
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const dragStart = useRef({ x: 0, y: 0 });
@@ -221,6 +225,26 @@ const handleEditMenu = async () => {
         alert("Something went wrong");
     }
 };
+
+//handleMenuSelection
+const handleMenuSelection = (id) => {
+    setSelectedMenuIds((previousIds) => {
+        if (previousIds.includes(id)) {
+            const updatedIds = previousIds.filter(
+                (selectedId) => selectedId !== id
+            );
+
+            if (updatedIds.length === 0) {
+                setSelectionMode(false);
+            }
+
+            return updatedIds;
+        }
+
+        return [...previousIds, id];
+    });
+};
+
 
 const handleDeleteMenu = async (id) => {
     const confirmDelete = window.confirm(
@@ -474,11 +498,25 @@ const handleMouseUp = () => {
                 <div className="admin-menu-grid">
                                     {menuItems.map((item) => (
                                         <div
-                    className={`admin-menu-card ${
-                        !item.isAvailable ? "menu-not-available" : ""
-                    }`}
-                    key={item._id}
-                >
+                                            className={`admin-menu-card ${
+                                                !item.isAvailable ? "menu-not-available" : ""
+                                            } ${selectedMenuIds.includes(item._id) ? "menu-selected" : ""}`}
+                                            key={item._id}
+                                            onClick={(e) => {
+                                                if (e.ctrlKey || e.metaKey || selectionMode) {
+                                                    e.preventDefault();
+                                                    handleMenuSelection(item._id);
+                                                }
+                                            }}
+                                            onTouchStart={() => {
+                                                longPressTimer.current = setTimeout(() => {
+                                                    setSelectionMode(true);
+                                                    handleMenuSelection(item._id);
+                                                }, 500);
+                                            }}
+                                            onTouchEnd={() => clearTimeout(longPressTimer.current)}
+                                            onTouchMove={() => clearTimeout(longPressTimer.current)}
+                                        >
                             {item.image && (
                                 <img
                                     src={item.image}
