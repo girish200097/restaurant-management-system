@@ -107,7 +107,7 @@ const createOrder = async(req,res) => {
 
         if (availableWaiters.length === 0) {
             return res.status(400).json({
-                message: "No waiter is currently available",
+                message: "No waiters are available at the moment. Please try again later.",
             });
         }
 
@@ -192,7 +192,7 @@ const createOrder = async(req,res) => {
 
         if (availableWaiters.length === 0) {
             return res.status(400).json({
-                message: "No waiter is currently available",
+                message: "No waiters are available at the moment. Please try again later.",
             });
         }
 
