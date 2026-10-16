@@ -1068,6 +1068,20 @@ const filteredMenus = menus.filter((menu) => {
                     </button>
                 )}
 
+                {orderStatus === "pending" &&
+                    isCartModified &&
+                    !isOrderingAgain &&
+                    !paymentSuccess && (
+                        <button
+                            className="create-order-button"
+                            onClick={updateOrder}
+                            disabled={isCreatingOrder || cart.length === 0}
+                        >
+                            {isCreatingOrder ? "Updating Order..." : "Update Order"}
+                        </button>
+                )}
+
+
                 {orderStatus === "cancelled" && (
                     <div className="cancelled-status">
 
@@ -1148,21 +1162,6 @@ const filteredMenus = menus.filter((menu) => {
     >
         {isCreatingOrder ? "Creating Order..." : "Create Order"}
     </button>
-)}
-
-{/* Update Order */}
-{orderId &&
-    orderStatus === "pending" &&
-    isCartModified &&
-    !isOrderingAgain &&
-    !paymentSuccess && (
-        <button
-            className="create-order-button"
-            onClick={updateOrder}
-            disabled={isCreatingOrder || cart.length === 0}
-        >
-            {isCreatingOrder ? "Updating Order..." : "Update Order"}
-        </button>
 )}
 
 {/* Payment Success */}
