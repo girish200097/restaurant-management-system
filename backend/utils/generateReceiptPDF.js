@@ -28,7 +28,7 @@ const generateReceiptPDF = (customer, order, payment) => {
             doc.fontSize(12);
             doc.text(`Customer: ${customer.name || "Customer"}`);
             doc.text(`Email: ${customer.email}`);
-            doc.text(`Order ID: ${order._id}`);
+            doc.text(`Order ID: ${order._id.toString().slice(-6)}`);
             doc.text(`Table: ${order.table.tableNumber}`);
             doc.text(`Date: ${order.createdAt}`);
 
