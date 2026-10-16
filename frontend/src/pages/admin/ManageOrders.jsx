@@ -158,7 +158,7 @@ const filteredOrders = orders
     return (
         <div className="manage-orders">
 
-            <<div className="manage-orders-header">
+    <div className="manage-orders-header">
     <div className="orders-search-wrapper">
         <div className="orders-search">
             <span className="orders-search-icon">⌕</span>
