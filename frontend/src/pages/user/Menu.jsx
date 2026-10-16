@@ -26,6 +26,7 @@ function Menu() {
   const [receiptSent, setReceiptSent] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderingAgain, setIsOrderingAgain] = useState(false);
+  const [isCartModified, setIsCartModified] = useState(false);
   const [orderTotal, setOrderTotal] = useState(0);
   const [previousOrderTotal, setPreviousOrderTotal] = useState(0);
   const [showCompletedStatus, setShowCompletedStatus] = useState(false);
@@ -126,7 +127,7 @@ useEffect(() => {
                 }
 
                 // Get the latest order
-                const latestOrder = orders[orders.length - 1];
+                const latestOrder = orders[0];
 
                 const isOrderingAgainAfterCancel =
                     localStorage.getItem("orderingAgainAfterCancel") === "true";
@@ -146,8 +147,22 @@ useEffect(() => {
                     setOrderStatus(latestOrder.orderStatus);
                     setOrderTotal(latestOrder.totalAmount);
                     setPaymentSuccess(false);
-                } else {
-                    setPaymentSuccess(false);
+
+                    if (
+                            latestOrder.orderStatus === "pending" &&
+                            latestOrder.paymentStatus !== "paid"
+                        ) {
+                            setCart(
+                                latestOrder.items.map((item) => ({
+                                    _id: item.menuItem._id,
+                                    name: item.menuItem.name,
+                                    price: item.price,
+                                    image: item.menuItem.image,
+                                    quantity: item.quantity,
+                                }))
+                            );
+                            setIsCartModified(false);
+                        }
                 }
 
             } catch (error) {
@@ -214,7 +229,9 @@ const showOrderRestrictionMessage = () => {
   }
 };
 
+
   const addToCart = (menu) => {
+    setIsCartModified(true);
     const existingItem = cart.find(
       (item) => item._id === menu._id
     );
@@ -241,7 +258,9 @@ const showOrderRestrictionMessage = () => {
     }
   };
 
+  
   const updateQuantity = (menuId, change) => {
+    setIsCartModified(true);
     setCart(
       cart
         .map((item) =>
@@ -316,6 +335,61 @@ const showOrderRestrictionMessage = () => {
       setIsCreatingOrder(false);
     }
   };
+
+  const updateOrder = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!orderId) {
+      alert("No order found to update");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+
+    setIsCreatingOrder(true);
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/order/${orderId}/items`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          items: cart.map((item) => ({
+            menuItem: item._id,
+            quantity: item.quantity,
+          })),
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Failed to update order");
+      return;
+    }
+
+    setOrderId(data.order._id);
+    setOrderStatus(data.order.orderStatus);
+    setOrderTotal(data.order.totalAmount);
+    setCart([]);
+    setIsCartModified(false);
+
+    alert("Order updated successfully");
+  } catch (error) {
+    console.error("Update order error:", error);
+    alert("Something went wrong while updating the order");
+  } finally {
+    setIsCreatingOrder(false);
+  }
+};
 
   const getCartTotal = () => {
     return cart.reduce(
@@ -839,7 +913,11 @@ const filteredMenus = menus.filter((menu) => {
                   ?.quantity || 0
               }
               onUpdateQuantity={updateQuantity}
-              disabled={!!orderId && !isOrderingAgain}
+             disabled={
+            !!orderId &&
+            orderStatus !== "pending" &&
+            !isOrderingAgain
+            }
               orderStatus={orderStatus}
             />
           ))}
@@ -1066,12 +1144,25 @@ const filteredMenus = menus.filter((menu) => {
     <button
         className="create-order-button"
         onClick={createOrder}
-        disabled={isCreatingOrder}
+        disabled={isCreatingOrder || cart.length === 0}
     >
-        {isCreatingOrder
-            ? "Creating Order..."
-            : "Create Order"}
+        {isCreatingOrder ? "Creating Order..." : "Create Order"}
     </button>
+)}
+
+{/* Update Order */}
+{orderId &&
+    orderStatus === "pending" &&
+    isCartModified &&
+    !isOrderingAgain &&
+    !paymentSuccess && (
+        <button
+            className="create-order-button"
+            onClick={updateOrder}
+            disabled={isCreatingOrder || cart.length === 0}
+        >
+            {isCreatingOrder ? "Updating Order..." : "Update Order"}
+        </button>
 )}
 
 {/* Payment Success */}
@@ -1150,10 +1241,14 @@ const filteredMenus = menus.filter((menu) => {
                                 <div className="cart-item-actions">
                                     <button
                                         onClick={() => {
-                                            if (orderId && !isOrderingAgain) {
-                                            showOrderRestrictionMessage();
-                                            return;
-                                            }
+                                            if (
+                                                    orderId &&
+                                                    orderStatus !== "pending" &&
+                                                    !isOrderingAgain
+                                                ) {
+                                                    showOrderRestrictionMessage();
+                                                    return;
+                                                }
 
                                             updateQuantity(item._id, -1);
                                         }}
@@ -1166,9 +1261,13 @@ const filteredMenus = menus.filter((menu) => {
 
                                     <button
                                         onClick={() => {
-                                            if (orderId && !isOrderingAgain) {
-                                            showOrderRestrictionMessage();
-                                            return;
+                                           if (
+                                                orderId &&
+                                                orderStatus !== "pending" &&
+                                                !isOrderingAgain
+                                            ) {
+                                                showOrderRestrictionMessage();
+                                                return;
                                             }
 
                                             updateQuantity(item._id, 1);
@@ -1190,7 +1289,7 @@ const filteredMenus = menus.filter((menu) => {
                         <strong>Total</strong>
                         <strong>₹{getCartTotal()}</strong>
                     </div>
-                    {!orderId || isOrderingAgain ? (
+                    {(!orderId || isOrderingAgain) && (
                         <button
                             className="cart-create-order-button"
                             onClick={createOrder}
@@ -1198,7 +1297,20 @@ const filteredMenus = menus.filter((menu) => {
                         >
                             {isCreatingOrder ? "Creating Order..." : "Create Order"}
                         </button>
-                    ) : null}
+                    )}
+
+                    {orderId &&
+                        orderStatus === "pending" &&
+                        isCartModified &&
+                        !isOrderingAgain && (
+                            <button
+                                className="cart-create-order-button"
+                                onClick={updateOrder}
+                                disabled={isCreatingOrder || cart.length === 0}
+                            >
+                                {isCreatingOrder ? "Updating Order..." : "Update Order"}
+                            </button>
+                    )}
                 </>
             )}
 

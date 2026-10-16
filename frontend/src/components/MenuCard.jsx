@@ -40,9 +40,8 @@ function MenuCard({
                     "Click Order Again to add more items."
                   );
                 } else if (orderStatus === "pending") {
-                  alert(
-                    "You can't add items now. Click Order Again to add more items."
-                  );
+                  onAddToCart(menu);
+                  return;
                 } else {
                   alert(
                     "You can't add items to this order. Click Order Again to continue."

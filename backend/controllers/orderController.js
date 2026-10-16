@@ -34,13 +34,24 @@ const createOrder = async(req,res) => {
             });
         }
 
-        const activeOrder = await Order.findOne({
+        const existingActiveOrder = await Order.findOne({
+        table: tableId,
+        customer: req.user.userId,
+        paymentStatus: { $ne: "paid" },
+        orderStatus: { $in: ["preparing", "served"] },
+        });
+
+        if (existingActiveOrder) {
+        return res.status(400).json({
+            message: "You can only update an order while its status is pending.",
+        });
+        }
+
+       const activeOrder = await Order.findOne({
             table: tableId,
             customer: req.user.userId,
             paymentStatus: { $ne: "paid" },
-            orderStatus: {
-                $in: ["pending", "preparing", "served"],
-            },
+            orderStatus: "pending",
         });
         let totalAmount = 0;
 
@@ -95,8 +106,6 @@ const createOrder = async(req,res) => {
 
                     activeOrder.items = existingOrderItems;
                     activeOrder.totalAmount = totalAmount;
-                    activeOrder.orderStatus = "pending";
-
                     activeOrder.customerUpdatedAt = new Date();
     // Assign waiter only if the existing order doesn't have one
     if (!activeOrder.waiter) {
@@ -824,8 +833,89 @@ const createDineOutOrder = async (req, res) => {
   }
 };
 
+//updateOrderItems
+const updateOrderItems = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { items } = req.body;
+
+        if (!Array.isArray(items) || items.length === 0) {
+            return res.status(400).json({
+                message: "Order items are required",
+            });
+        }
+
+        const order = await Order.findOne({
+            _id: id,
+            customer: req.user.userId,
+        });
+
+        if (!order) {
+            return res.status(404).json({
+                message: "Order not found",
+            });
+        }
+
+        if (order.orderStatus !== "pending") {
+            return res.status(400).json({
+                message: "Only pending orders can be updated",
+            });
+        }
+
+        if (order.paymentStatus === "paid") {
+            return res.status(400).json({
+                message: "Paid orders cannot be updated",
+            });
+        }
+
+        let totalAmount = 0;
+        const updatedItems = [];
+
+        for (const item of items) {
+            if (!item.menuItem || !Number.isInteger(item.quantity) || item.quantity <= 0) {
+                return res.status(400).json({
+                    message: "Invalid menu item or quantity",
+                });
+            }
+
+            const menu = await Menu.findById(item.menuItem);
+
+            if (!menu || !menu.isAvailable) {
+                return res.status(400).json({
+                    message: "A menu item is unavailable",
+                });
+            }
+
+            updatedItems.push({
+                menuItem: menu._id,
+                quantity: item.quantity,
+                price: menu.price,
+            });
+
+            totalAmount += menu.price * item.quantity;
+        }
+
+        order.items = updatedItems;
+        order.totalAmount = totalAmount;
+
+        await order.save();
+
+        return res.status(200).json({
+            message: "Order updated successfully",
+            order,
+        });
+    } catch (error) {
+        console.error("Update order items error:", error);
+
+        return res.status(500).json({
+            message: "Failed to update order items",
+        });
+    }
+};
+
 module.exports = {
     createOrder,
+    updateOrderItems,
     getAllOrders,
     getOrderById,
     updateOrderStatus,

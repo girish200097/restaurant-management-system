@@ -12,6 +12,7 @@ const {createOrder,
     deleteOrder,
     callWaiter,
     createDineOutOrder,
+    updateOrderItems,
 } = require("../controllers/orderController");
 const adminMiddleware = require("../middleware/adminMiddleware");
 const authMiddleware = require("../middleware/authMiddleware");
@@ -25,6 +26,12 @@ router.post(
      authMiddleware,
      createOrder
 );
+
+router.patch(
+    "/:id/items",
+    authMiddleware,
+    updateOrderItems);
+
 router.get(
     "/",
     adminMiddleware,
