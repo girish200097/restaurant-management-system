@@ -205,3 +205,62 @@
         white-space: normal;
     }
 }
+@media (max-width: 480px) {
+    .admin-navbar {
+        width: 100%;
+        padding: 10px 12px;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .admin-navbar-logo {
+        font-size: 16px;
+        white-space: normal;
+        min-width: 0;
+    }
+
+    .admin-mobile-menu-btn {
+        display: block;
+        margin: 5px 0;
+        padding: 8px 12px;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .admin-navbar-links {
+        display: none;
+        flex: 0 0 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        gap: 0;
+        overflow: visible;
+        box-sizing: border-box;
+    }
+
+    .admin-navbar-links.mobile-menu-open {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-navbar-links a {
+        width: 100%;
+        padding: 12px;
+        box-sizing: border-box;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        text-align: left;
+    }
+
+    .admin-navbar-actions {
+        margin-left: auto;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .admin-navbar-actions button {
+        padding: 7px 9px;
+        font-size: 12px;
+    }
+}
