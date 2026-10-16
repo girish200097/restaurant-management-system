@@ -117,9 +117,6 @@ function WaiterNavbar() {
             </div>
 
             <div className="waiter-navbar-links">
-                <Link to="/waiter-dashboard">
-                    My Orders
-                </Link>
 
                 <div className="waiter-availability">
                     <span className="waiter-availability-text">
