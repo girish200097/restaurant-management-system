@@ -285,3 +285,76 @@
 .menu-card-unavailable .menu-card-content {
     opacity: 0.65;
 }
+
+/* Custom Alert Overlay */
+.custom-alert-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+/* Custom Alert Box */
+.custom-alert {
+    width: 100%;
+    max-width: 380px;
+    padding: 25px;
+
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+    text-align: center;
+    animation: alertAppear 0.2s ease-out;
+}
+
+.custom-alert h3 {
+    margin: 0 0 12px;
+    color: #2b211c;
+    font-size: 20px;
+}
+
+.custom-alert p {
+    margin: 0 0 22px;
+    color: #5f5f5f;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.custom-alert button {
+    min-width: 100px;
+    padding: 11px 24px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #e85d24;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.custom-alert button:hover {
+    background: #d94f19;
+}
+
+@keyframes alertAppear {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

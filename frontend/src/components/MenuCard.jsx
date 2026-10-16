@@ -7,6 +7,7 @@ function MenuCard({
   onUpdateQuantity,
   disabled,
   orderStatus,
+  showMessage,
 }) {
   return (
    <div
@@ -26,24 +27,22 @@ function MenuCard({
             className={`add-button ${disabled ? "add-button-disabled" : ""}`}
             onClick={() => {
               if (!menu.isAvailable) {
-                alert("This item is currently not available.");
+                showMessage("This item is currently not available.");
                 return;
               }
 
               if (disabled) {
                 if (orderStatus === "preparing") {
-                  alert(
-                    "You can't add items while the order is preparing. Click Order Again to add more items."
-                  );
+                  showMessage(
+                  "You can't add items while the order is preparing. Click Order Again to add more items."
+                );
                 } else if (orderStatus === "served") {
-                  alert(
-                    "Click Order Again to add more items."
-                  );
+                 showMessage("Click Order Again to add more items.");
                 } else if (orderStatus === "pending") {
                   onAddToCart(menu);
                   return;
                 } else {
-                  alert(
+                  showMessage(
                     "You can't add items to this order. Click Order Again to continue."
                   );
                 }
