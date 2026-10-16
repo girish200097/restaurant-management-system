@@ -9,7 +9,9 @@ function ManageOrders() {
     const [expandedOrder, setExpandedOrder] = useState(null);
     const [statusFilter, setStatusFilter] = useState("all");
     const [searchOrderId, setSearchOrderId] = useState("");
-
+    const [searchOrder, setSearchOrder] = useState("");
+    const [searchType, setSearchType] = useState("all");
+    const [showSearchFilters, setShowSearchFilters] = useState(false);
     const fetchOrders = async () => {
         try {
             const token = localStorage.getItem("adminToken");
@@ -92,22 +94,43 @@ function ManageOrders() {
     }
 };
 
-    // Filter and sort orders
+
     // Filter and sort orders
 const filteredOrders = orders
     .filter((order) => {
+        const query = searchOrder.trim().toLowerCase();
+
+        const orderId = order._id?.toLowerCase() || "";
+        const tableNumber = String(
+            order.table?.tableNumber ?? ""
+        ).toLowerCase();
+        const customerName = order.customer?.name?.toLowerCase() || "";
+        const waiterName = order.waiter?.name?.toLowerCase() || "";
+
+        const matchesSearch = !query || (
+            searchType === "orderId"
+                ? orderId.includes(query)
+                : searchType === "table"
+                ? tableNumber.includes(query) ||
+                  `t${tableNumber}`.includes(query)
+                : searchType === "customer"
+                ? customerName.includes(query)
+                : searchType === "waiter"
+                ? waiterName.includes(query)
+                : orderId.includes(query) ||
+                  tableNumber.includes(query) ||
+                  `t${tableNumber}`.includes(query) ||
+                  customerName.includes(query) ||
+                  waiterName.includes(query)
+        );
+
         const matchesStatus =
             statusFilter === "all" ||
             order.orderStatus === statusFilter;
 
-        const matchesSearch = order._id
-            .toLowerCase()
-            .includes(searchOrderId.trim().toLowerCase());
-
-        return matchesStatus && matchesSearch;
+        return matchesSearch && matchesStatus;
     })
     .sort((a, b) => {
-        // Completed orders should always come at the end
         if (
             a.orderStatus === "completed" &&
             b.orderStatus !== "completed"
@@ -122,7 +145,6 @@ const filteredOrders = orders
             return -1;
         }
 
-        // Newest orders first within the same group
         return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
@@ -137,38 +159,84 @@ const filteredOrders = orders
     return (
         <div className="manage-orders">
 
-            <div className="manage-orders-header">
-    <div className="orders-search">
-        <span className="orders-search-icon">⌕</span>
+            <<div className="manage-orders-header">
+    <div className="orders-search-wrapper">
+        <div className="orders-search">
+            <span className="orders-search-icon">⌕</span>
 
-        <input
-            type="text"
-            placeholder="Search by Order ID..."
-            value={searchOrderId}
-            onChange={(event) =>
-                setSearchOrderId(event.target.value)
-            }
-            aria-label="Search orders by ID"
-        />
+            <input
+                type="text"
+                value={searchOrder}
+                onChange={(event) => setSearchOrder(event.target.value)}
+                placeholder={
+                    searchType === "orderId"
+                        ? "Search order ID..."
+                        : searchType === "table"
+                        ? "Search table (T1, T2...)"
+                        : searchType === "customer"
+                        ? "Search customer..."
+                        : searchType === "waiter"
+                        ? "Search waiter..."
+                        : "Search orders..."
+                }
+                aria-label="Search orders"
+            />
 
-        {searchOrderId && (
+            {searchOrder && (
+                <button
+                    type="button"
+                    className="clear-order-search"
+                    onClick={() => setSearchOrder("")}
+                    aria-label="Clear search"
+                >
+                    ✕
+                </button>
+            )}
+
             <button
                 type="button"
-                className="clear-order-search"
-                onClick={() => setSearchOrderId("")}
-                aria-label="Clear order search"
+                className="search-filter-btn"
+                onClick={() => setShowSearchFilters((open) => !open)}
+                aria-label="Choose search field"
+                aria-expanded={showSearchFilters}
+                title="Choose search field"
             >
-                ✕
+                ☷
             </button>
+        </div>
+
+        {showSearchFilters && (
+            <div className="search-filter-dropdown">
+                {[
+                    { value: "all", label: "All fields" },
+                    { value: "orderId", label: "Order ID" },
+                    { value: "table", label: "Table number" },
+                    { value: "customer", label: "Customer name" },
+                    { value: "waiter", label: "Waiter name" },
+                ].map((option) => (
+                    <button
+                        type="button"
+                        key={option.value}
+                        className={
+                            searchType === option.value ? "active" : ""
+                        }
+                        onClick={() => {
+                            setSearchType(option.value);
+                            setShowSearchFilters(false);
+                        }}
+                    >
+                        {option.label}
+                        {searchType === option.value && " ✓"}
+                    </button>
+                ))}
+            </div>
         )}
     </div>
 
     <div className="orders-header-actions">
         <select
             value={statusFilter}
-            onChange={(event) =>
-                setStatusFilter(event.target.value)
-            }
+            onChange={(event) => setStatusFilter(event.target.value)}
             aria-label="Filter orders by status"
         >
             <option value="all">All Orders</option>
