@@ -1564,23 +1564,27 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-
     z-index: 1100;
 
     width: min(700px, calc(100% - 24px));
-
     padding: 8px 12px;
-
     box-sizing: border-box;
 
-    background: rgba(255, 255, 255, 0.97);
-
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 12px;
 
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    pointer-events: none;
+}
+
+.fixed-order-panel .order-status-section,
+.fixed-order-panel .served-order-actions,
+.fixed-order-panel > h3 {
+    pointer-events: auto;
 }
 
 
