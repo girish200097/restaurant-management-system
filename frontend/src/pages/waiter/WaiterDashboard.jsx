@@ -33,7 +33,7 @@ function WaiterDashboard() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updatedOrderId, setUpdatedOrderId] = useState(null);
-    const [orderFilter, setOrderFilter] = useState("all");
+    const [orderFilter, setOrderFilter] = useState("recent");
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [orderMessage, setOrderMessage] = useState("");
     const [cancelledNotification, setCancelledNotification] = useState(null);
