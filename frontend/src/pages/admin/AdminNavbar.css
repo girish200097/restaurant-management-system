@@ -330,3 +330,15 @@
 .admin-back-button:hover {
     color: #c74716;
 }
+
+/* Hide mobile menu button on desktop */
+.admin-mobile-menu-btn {
+    display: none;
+}
+
+/* Show it only on mobile and tablet */
+@media (max-width: 768px) {
+    .admin-mobile-menu-btn {
+        display: block;
+    }
+}
