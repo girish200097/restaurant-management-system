@@ -214,22 +214,23 @@ useEffect(() => {
 
 const showOrderRestrictionMessage = () => {
   if (orderStatus === "preparing") {
-    alert(
+    setCustomMessage(
       "You can't modify items while the order is preparing. Click Order Again to add more items."
     );
   } else if (orderStatus === "served") {
-    alert("Click Order Again to add more items.");
+    setCustomMessage(
+      "Click Order Again to add more items."
+    );
   } else if (orderStatus === "pending") {
-    alert(
+    setCustomMessage(
       "You can't modify items now. Click Order Again to add more items."
     );
   } else {
-    alert(
+    setCustomMessage(
       "You can't modify items in this order. Click Order Again to continue."
     );
   }
 };
-
 
   const addToCart = (menu) => {
     setIsCartModified(true);
@@ -1315,6 +1316,14 @@ const filteredMenus = menus.filter((menu) => {
                                 {isCreatingOrder ? "Updating Order..." : "Update Order"}
                             </button>
                     )}
+                    
+                </>
+            )}
+
+        </div>
+    </div>
+)}
+
                     {customMessage && (
                     <div className="custom-alert-overlay">
                         <div className="custom-alert" role="alertdialog" aria-modal="true">
@@ -1326,12 +1335,6 @@ const filteredMenus = menus.filter((menu) => {
                         </div>
                     </div>
                     )}
-                </>
-            )}
-
-        </div>
-    </div>
-)}
     </div>
 
     
