@@ -8,6 +8,7 @@ function ManageOrders() {
     const [loading, setLoading] = useState(true);
     const [expandedOrder, setExpandedOrder] = useState(null);
     const [statusFilter, setStatusFilter] = useState("all");
+    const [searchOrderId, setSearchOrderId] = useState("");
 
     const fetchOrders = async () => {
         try {
@@ -92,33 +93,38 @@ function ManageOrders() {
 };
 
     // Filter and sort orders
-    const filteredOrders = orders
-        .filter((order) => {
-            if (statusFilter === "all") {
-                return true;
-            }
+    // Filter and sort orders
+const filteredOrders = orders
+    .filter((order) => {
+        const matchesStatus =
+            statusFilter === "all" ||
+            order.orderStatus === statusFilter;
 
-            return order.orderStatus === statusFilter;
-        })
-        .sort((a, b) => {
-            // Completed orders should always come at the end
-            if (
-                a.orderStatus === "completed" &&
-                b.orderStatus !== "completed"
-            ) {
-                return 1;
-            }
+        const matchesSearch = order._id
+            .toLowerCase()
+            .includes(searchOrderId.trim().toLowerCase());
 
-            if (
-                a.orderStatus !== "completed" &&
-                b.orderStatus === "completed"
-            ) {
-                return -1;
-            }
+        return matchesStatus && matchesSearch;
+    })
+    .sort((a, b) => {
+        // Completed orders should always come at the end
+        if (
+            a.orderStatus === "completed" &&
+            b.orderStatus !== "completed"
+        ) {
+            return 1;
+        }
 
-            // Newest orders first within the same group
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
+        if (
+            a.orderStatus !== "completed" &&
+            b.orderStatus === "completed"
+        ) {
+            return -1;
+        }
+
+        // Newest orders first within the same group
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    });
 
     if (loading) {
         return (
@@ -132,34 +138,48 @@ function ManageOrders() {
         <div className="manage-orders">
 
             <div className="manage-orders-header">
+    <div className="orders-search">
+        <span className="orders-search-icon">⌕</span>
 
-                <div>
-                    <h1>Orders</h1>
-                    <p>Click an order to view details</p>
-                </div>
+        <input
+            type="text"
+            placeholder="Search by Order ID..."
+            value={searchOrderId}
+            onChange={(event) =>
+                setSearchOrderId(event.target.value)
+            }
+            aria-label="Search orders by ID"
+        />
 
-                <div className="orders-header-actions">
+        {searchOrderId && (
+            <button
+                type="button"
+                className="clear-order-search"
+                onClick={() => setSearchOrderId("")}
+                aria-label="Clear order search"
+            >
+                ✕
+            </button>
+        )}
+    </div>
 
-                    <select
-                        value={statusFilter}
-                        onChange={(event) =>
-                            setStatusFilter(event.target.value)
-                        }
-                        onClick={(event) =>
-                            event.stopPropagation()
-                        }
-                    >
-                        <option value="all">All Orders</option>
-                        <option value="pending">Pending</option>
-                        <option value="preparing">Preparing</option>
-                        <option value="served">Served</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-
-                </div>
-
-            </div>
+    <div className="orders-header-actions">
+        <select
+            value={statusFilter}
+            onChange={(event) =>
+                setStatusFilter(event.target.value)
+            }
+            aria-label="Filter orders by status"
+        >
+            <option value="all">All Orders</option>
+            <option value="pending">Pending</option>
+            <option value="preparing">Preparing</option>
+            <option value="served">Served</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+        </select>
+    </div>
+</div>
 
             {filteredOrders.length === 0 ? (
                 <div className="no-orders">
