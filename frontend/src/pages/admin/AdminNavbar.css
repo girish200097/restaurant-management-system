@@ -296,3 +296,21 @@
     outline: 2px solid #e85d24;
     outline-offset: 3px;
 }
+
+@media (max-width: 480px) {
+    .admin-mobile-menu-btn {
+        padding: 7px 10px;
+        margin: 0 8px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 8px;
+        line-height: 1.4;
+        white-space: nowrap;
+    }
+
+    .admin-navbar-actions button {
+        padding: 7px 9px;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+}
