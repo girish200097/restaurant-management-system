@@ -2,11 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import "./AdminNavbar.css";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminNavbar() {
     const navigate = useNavigate();
     const { setIsLoggedIn } = useContext(AuthContext);
-
+    const location = useLocation();
+    const isDashboard = location.pathname === "/admin/dashboard";
     const [adminName, setAdminName] = useState("Admin");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -57,9 +59,15 @@ function AdminNavbar() {
     return (
         <nav className="admin-navbar">
 
-            <Link to="/admin/dashboard" className="admin-navbar-logo">
-                🍽️
-            </Link>
+           {!isDashboard && (
+                <button
+                    className="admin-back-button"
+                    onClick={() => navigate("/admin/dashboard")}
+                    aria-label="Back to Admin Dashboard"
+                >
+                    ←
+                </button>
+            )}
 
             <button
     className="admin-mobile-menu-btn"

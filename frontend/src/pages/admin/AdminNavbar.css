@@ -314,3 +314,19 @@
         line-height: 1.4;
     }
 }
+
+.admin-back-button {
+    border: none;
+    background: transparent;
+    color: #e85d24;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.admin-back-button:hover {
+    color: #c74716;
+}
