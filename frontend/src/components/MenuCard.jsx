@@ -58,27 +58,53 @@ function MenuCard({
           </button>
         ) : (
           <div className="quantity-controls">
-
             <button
-              onClick={() =>
-                onUpdateQuantity(menu._id, -1)
-              }
-              disabled={disabled}
+              onClick={() => {
+                if (disabled) {
+                  if (orderStatus === "preparing") {
+                    showMessage(
+                      "You can't modify items while the order is preparing. Click Order Again to add more items."
+                    );
+                  } else if (orderStatus === "served") {
+                    showMessage("Click Order Again to add more items.");
+                  } else {
+                    showMessage(
+                      "You can't modify items in this order. Click Order Again to continue."
+                    );
+                  }
+                  return;
+                }
+
+                onUpdateQuantity(menu._id, -1);
+              }}
             >
               −
             </button>
 
             <span>{quantity}</span>
 
-           <button
-              onClick={() =>
-                onUpdateQuantity(menu._id, 1)
-              }
-              disabled={disabled}
+            <button
+              onClick={() => {
+                if (disabled) {
+                  if (orderStatus === "preparing") {
+                    showMessage(
+                      "You can't modify items while the order is preparing. Click Order Again to add more items."
+                    );
+                  } else if (orderStatus === "served") {
+                    showMessage("Click Order Again to add more items.");
+                  } else {
+                    showMessage(
+                      "You can't modify items in this order. Click Order Again to continue."
+                    );
+                  }
+                  return;
+                }
+
+                onUpdateQuantity(menu._id, 1);
+              }}
             >
               +
             </button>
-
           </div>
         )}
 
