@@ -7,7 +7,7 @@ const cleanupOldRecords = () => {
     cron.schedule("0 0 * * *", async () => {
         try {
             const cutoffDate = new Date();
-            cutoffDate.setDate(cutoffDate.getDate() - 7);
+            cutoffDate.setDate(cutoffDate.getDate() - 31);
 
             // Find orders older than 7 days
             const oldOrders = await Order.find({
