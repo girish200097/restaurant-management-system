@@ -326,6 +326,7 @@ const showOrderRestrictionMessage = () => {
       // Clear cart after submitting the order
       // Clear cart after submitting the order
     setCart([]);
+    setIsCartModified(false);
 
     localStorage.removeItem("orderingAgainAfterCancel");
 
@@ -677,6 +678,7 @@ const handleOrderAgain = () => {
     setReceiptSent(false);
 
     setCart([]);
+    setIsCartModified(false);
 
     if (orderStatus === "cancelled") {
         localStorage.setItem("orderingAgainAfterCancel", "true");
@@ -751,6 +753,7 @@ const handleOrderAgain = () => {
 
         // Reset cart and order amount
         setCart([]);
+        setIsCartModified(false);
         setOrderTotal(0);
 
         // Reset payment and receipt state
@@ -1069,17 +1072,17 @@ const filteredMenus = menus.filter((menu) => {
                 )}
 
                 {orderStatus === "pending" &&
-                    isCartModified &&
-                    !isOrderingAgain &&
-                    !paymentSuccess && (
-                        <button
-                            className="create-order-button"
-                            onClick={updateOrder}
-                            disabled={isCreatingOrder || cart.length === 0}
-                        >
-                            {isCreatingOrder ? "Updating Order..." : "Update Order"}
-                        </button>
-                )}
+                        isCartModified &&
+                        !isOrderingAgain &&
+                        !paymentSuccess && (
+                            <button
+                                className="create-order-button"
+                                onClick={updateOrder}
+                                disabled={isCreatingOrder || cart.length === 0}
+                            >
+                                {isCreatingOrder ? "Updating Order..." : "Update Order"}
+                            </button>
+                    )}
 
 
                 {orderStatus === "cancelled" && (
