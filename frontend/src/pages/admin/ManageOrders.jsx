@@ -8,7 +8,6 @@ function ManageOrders() {
     const [loading, setLoading] = useState(true);
     const [expandedOrder, setExpandedOrder] = useState(null);
     const [statusFilter, setStatusFilter] = useState("all");
-    const [searchOrderId, setSearchOrderId] = useState("");
     const [searchOrder, setSearchOrder] = useState("");
     const [searchType, setSearchType] = useState("all");
     const [showSearchFilters, setShowSearchFilters] = useState(false);
