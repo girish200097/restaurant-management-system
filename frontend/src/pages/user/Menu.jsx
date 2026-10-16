@@ -14,6 +14,7 @@ function Menu() {
   const [menus, setMenus] = useState([]);
   const [cart, setCart] = useState([]);
   const [tables, setTables] = useState([]);
+  const [customMessage, setCustomMessage] = useState("");
   const [selectedTable, setSelectedTable] = useState(
     () => localStorage.getItem("selectedTable") || ""
 );
@@ -922,6 +923,7 @@ const filteredMenus = menus.filter((menu) => {
             !isOrderingAgain
             }
               orderStatus={orderStatus}
+              showMessage={(message) => setCustomMessage(message)}
             />
           ))}
         </div>
@@ -1312,6 +1314,17 @@ const filteredMenus = menus.filter((menu) => {
                             >
                                 {isCreatingOrder ? "Updating Order..." : "Update Order"}
                             </button>
+                    )}
+                    {customMessage && (
+                    <div className="custom-alert-overlay">
+                        <div className="custom-alert" role="alertdialog" aria-modal="true">
+                        <h3>Order Notice</h3>
+                        <p>{customMessage}</p>
+                        <button onClick={() => setCustomMessage("")}>
+                            OK
+                        </button>
+                        </div>
+                    </div>
                     )}
                 </>
             )}
