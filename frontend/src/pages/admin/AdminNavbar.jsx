@@ -8,6 +8,7 @@ function AdminNavbar() {
     const { setIsLoggedIn } = useContext(AuthContext);
 
     const [adminName, setAdminName] = useState("Admin");
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         const fetchAdminProfile = async () => {
@@ -60,33 +61,42 @@ function AdminNavbar() {
                 🍽️
             </Link>
 
-            <div className="admin-navbar-links">
+            <button
+    className="admin-mobile-menu-btn"
+    onClick={() => setIsMenuOpen(!isMenuOpen)}
+>
+    {isMenuOpen ? "✕ Close" : "☰ Menu"}
+</button>
 
-                <Link to="/admin/dashboard">
-                    Dashboard
-                </Link>
+<div
+    className={`admin-navbar-links ${
+        isMenuOpen ? "mobile-menu-open" : ""
+    }`}
+>
+    <Link to="/admin/dashboard" onClick={() => setIsMenuOpen(false)}>
+        Dashboard
+    </Link>
 
-                <Link to="/admin/menu">
-                    Menu
-                </Link>
+    <Link to="/admin/menu" onClick={() => setIsMenuOpen(false)}>
+        Menu
+    </Link>
 
-                <Link to="/admin/tables">
-                    Tables
-                </Link>
+    <Link to="/admin/tables" onClick={() => setIsMenuOpen(false)}>
+        Tables
+    </Link>
 
-                <Link to="/admin/orders">
-                    Orders
-                </Link>
+    <Link to="/admin/orders" onClick={() => setIsMenuOpen(false)}>
+        Orders
+    </Link>
 
-                <Link to="/admin/users">
-                    Users
-                </Link>
+    <Link to="/admin/users" onClick={() => setIsMenuOpen(false)}>
+        Users
+    </Link>
 
-                <Link to="/admin/payments">
-                    Payments
-                </Link>
-
-            </div>
+    <Link to="/admin/payments" onClick={() => setIsMenuOpen(false)}>
+        Payments
+    </Link>
+</div>
 
             <div className="admin-navbar-actions">
 
