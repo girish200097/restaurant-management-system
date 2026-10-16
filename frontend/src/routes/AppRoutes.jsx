@@ -19,6 +19,7 @@ import ManageUsers from "../pages/admin/ManageUsers";
 import ManagePayments from "../pages/admin/ManagePayments";
 import DineOut from "../pages/user/DineOut";
 import ManageDineOutOrders from "../pages/admin/ManageDineOutOrders";
+import OrderHistory from "../pages/user/OrderHistory";
 
 function AppRoutes() {
   return (
@@ -34,6 +35,14 @@ function AppRoutes() {
               </ProtectedRoute>
           }
       />
+      <Route
+        path="/order-history"
+        element={
+            <ProtectedRoute>
+            <OrderHistory />
+            </ProtectedRoute>
+        }
+        />
 
       <Route
         path="/home"

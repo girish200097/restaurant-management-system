@@ -153,6 +153,17 @@ const handleLogout = () => {
                     <p>{customer?.phone || "Not available"}</p>
                   </div>
 
+                  <Link
+                    to="/order-history"
+                    className="order-history-link"
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    🕘 Order History
+                  </Link>
+
                   <button
                     className="logout-button"
                     onClick={handleLogout}

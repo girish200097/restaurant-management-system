@@ -410,3 +410,23 @@ nav {
 .profile-dropdown .logout-button:hover {
   background: #c82333;
 }
+
+.order-history-link {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #333 !important;
+  background: #f8f8f8;
+  text-decoration: none;
+  font-size: 14px !important;
+  font-weight: 500;
+  text-align: left;
+  text-transform: none !important;
+}
+
+.order-history-link:hover {
+  background: #fff0e7 !important;
+  color: #e85d24 !important;
+}

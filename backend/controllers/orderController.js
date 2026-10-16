@@ -425,36 +425,30 @@ const assignOrderToWaiter = async (req, res) => {
 }
 
 //getMyOrders
-const getMyOrders = async(req,res)=> {
-    try{
-        console.log("Logged in user:", req.user);
-        console.log("User ID:", req.user.userId);
-        const orders = await Order.find({
-            customer:req.user.userId,
-        })
-        .populate("table")
-        .populate("items.menuItem")
-        .populate("waiter");
 
-        if(orders.length === 0) {
-            return res.status(200).json({
-                message: "No orders found",
-                orders: [],
-            });
-        }
+const getMyOrders = async (req, res) => {
+    try {
+        const orders = await Order.find({
+            customer: req.user.userId,
+        })
+            .populate("items.menuItem", "name image")
+            .sort({ createdAt: -1 });
 
         return res.status(200).json({
-            message: "Orders found",
+            message: orders.length
+                ? "Orders found"
+                : "No orders found",
             orders,
         });
-    }
-    catch(error) {
-        console.log(error);
+    } catch (error) {
+        console.log("Get my orders error:", error);
+
         return res.status(500).json({
             message: "Internal Server Error",
         });
     }
-}
+};
+
 
 //// getMyAssignedOrders
 const getMyAssignedOrders = async(req,res) => {
