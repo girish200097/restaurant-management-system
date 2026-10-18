@@ -106,6 +106,7 @@ function WaiterNavbar() {
 
                 // Logout even if availability update fails
                 localStorage.removeItem("token");
+                localStorage.removeItem("userId");  
                 window.location.href = "/";
             }
         };
