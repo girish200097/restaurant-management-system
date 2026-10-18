@@ -1974,13 +1974,14 @@
 }
 
 .food-type-toggle {
-    width: 46px;
-    height: 26px;
-    padding: 3px;
-    border: none;
-    border-radius: 20px;
+    width: 89px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid #e5d5ca;
+    border-radius: 7px;
     display: flex;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
     box-sizing: border-box;
     transition: background 0.2s ease;
@@ -1988,21 +1989,14 @@
 
 .food-type-toggle.veg {
     background: #198754;
-    justify-content: flex-start;
 }
 
 .food-type-toggle.non-veg {
     background: #c62828;
-    justify-content: flex-end;
 }
 
 .food-type-toggle-knob {
-    width: 20px;
-    height: 20px;
-    background: #ffffff;
-    border-radius: 50%;
-    flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    display: none;
 }
 
 .food-type-all {
