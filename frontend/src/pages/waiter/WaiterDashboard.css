@@ -417,3 +417,21 @@
         border-radius: 6px;
     }
 }
+/* Fixed cancelled-order notification */
+.waiter-cancelled-notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 500px;
+    box-sizing: border-box;
+    padding: 14px 20px;
+    background-color: #dc2626;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

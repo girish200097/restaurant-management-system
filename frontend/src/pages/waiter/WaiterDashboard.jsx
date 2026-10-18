@@ -316,17 +316,7 @@ function WaiterDashboard() {
             <WaiterNavbar />
         
             {cancelledNotification && (
-                <div
-                    style={{
-                        backgroundColor: "#dc2626",
-                        color: "white",
-                        padding: "14px 20px",
-                        margin: "12px",
-                        borderRadius: "8px",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                    }}
-                >
+                <div className="waiter-cancelled-notification">
                     🔔 {cancelledNotification.message}
                     {cancelledNotification.tableNumber != null &&
                         ` — Table ${cancelledNotification.tableNumber}`}
