@@ -473,3 +473,22 @@
     z-index: 9997;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
+/* Fixed order-completed notification */
+.waiter-completed-notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 500px;
+    box-sizing: border-box;
+    padding: 14px 20px;
+    background-color: #16a34a;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

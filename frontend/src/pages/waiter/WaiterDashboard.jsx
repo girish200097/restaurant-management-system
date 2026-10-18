@@ -38,6 +38,7 @@ function WaiterDashboard() {
     const [orderMessage, setOrderMessage] = useState("");
     const [cancelledNotification, setCancelledNotification] = useState(null);
     const [waiterCalls, setWaiterCalls] = useState({});
+    const [completedNotification, setCompletedNotification] = useState(null);
 
     const notifyWaiter = () => {
         const audio = new Audio("/notification.mp3");
@@ -243,6 +244,20 @@ function WaiterDashboard() {
                 return;
             }
 
+            if (status === "completed") {
+                const completedOrder = orders.find(
+                    (order) => order._id === orderId
+                );
+
+                setCompletedNotification({
+                    tableNumber: completedOrder?.table?.tableNumber,
+                    message: "Order Completed",
+                });
+
+                setTimeout(() => {
+                    setCompletedNotification(null);
+                }, 5000);
+            }
             setOrders((currentOrders) =>
                 currentOrders.map((order) =>
                     order._id === orderId
@@ -314,7 +329,13 @@ function WaiterDashboard() {
     return (
         <div>
             <WaiterNavbar />
-        
+                {completedNotification && (
+                    <div className="waiter-completed-notification">
+                        ✅ {completedNotification.message}
+                        {completedNotification.tableNumber != null &&
+                            ` — Table ${completedNotification.tableNumber}`}
+                    </div>
+                )}      
             {cancelledNotification && (
                 <div className="waiter-cancelled-notification">
                     🔔 {cancelledNotification.message}
