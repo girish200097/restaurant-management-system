@@ -823,27 +823,7 @@ const handleCallWaiter = async () => {
     <div className="menu-page">
 
       <h1>Menu Page</h1>
-
-  {/* <div className="order-mode-toggle">
-    <button
-      className="order-mode-active"
-      onClick={() => navigate("/menu")}
-    >
-      Dine-In
-    </button>
-
-    <button
-      className="order-mode-inactive"
-      onClick={() => navigate("/dineout")}
-    >
-      Dine-Out
-    </button>
-  </div> */}
-
-      {/* Categories */}
-
-      <div className="category-container">
-        {/* Veg / Non-Veg Filter */}
+          {/* Veg / Non-Veg Filter */}
         
     <div className="food-type-filter">
         <span className="food-type-label">
@@ -876,6 +856,25 @@ const handleCallWaiter = async () => {
         </button>
     </div>
 
+  {/* <div className="order-mode-toggle">
+    <button
+      className="order-mode-active"
+      onClick={() => navigate("/menu")}
+    >
+      Dine-In
+    </button>
+
+    <button
+      className="order-mode-inactive"
+      onClick={() => navigate("/dineout")}
+    >
+      Dine-Out
+    </button>
+  </div> */}
+
+      {/* Categories */}
+
+      <div className="category-container">
 
         <button
           onClick={() => setSelectedCategory("All")}
