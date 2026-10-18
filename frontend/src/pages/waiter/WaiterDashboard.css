@@ -435,3 +435,41 @@
     z-index: 9999;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
+/* Fixed new-order notification */
+.waiter-new-order-notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 500px;
+    box-sizing: border-box;
+    padding: 14px 20px;
+    background-color: #16a34a;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 9998;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Fixed existing-order update notification */
+.waiter-order-updated {
+    position: fixed;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 500px;
+    box-sizing: border-box;
+    padding: 14px 20px;
+    background-color: #2563eb;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 9997;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

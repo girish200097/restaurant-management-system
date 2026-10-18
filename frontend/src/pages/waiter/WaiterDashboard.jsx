@@ -348,7 +348,7 @@ function WaiterDashboard() {
             </div>
 
             {orderMessage && (
-                <div className="waiter-order-updated">
+                <div className="waiter-new-order-notification">
                     🔔 {orderMessage}
                 </div>
             )}
