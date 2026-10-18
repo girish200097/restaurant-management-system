@@ -2035,3 +2035,94 @@
     outline: 2px solid #e85d24;
     outline-offset: 3px;
 }
+
+
+
+/* Veg / Non-Veg Toggle */
+.food-type-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 16px auto 24px;
+    padding: 10px 14px;
+    width: fit-content;
+    max-width: 100%;
+    background: #fffaf5;
+    border: 1px solid #f0ded2;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.food-type-label {
+    min-width: 58px;
+    color: #49352b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.food-type-toggle {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    padding: 3px;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.2s ease;
+}
+
+.food-type-toggle.veg {
+    background: #198754;
+    justify-content: flex-start;
+}
+
+.food-type-toggle.non-veg {
+    background: #c62828;
+    justify-content: flex-end;
+}
+
+.food-type-toggle-knob {
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.food-type-all {
+    padding: 6px 10px;
+    border: 1px solid #e5d5ca;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #49352b;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.food-type-all:hover {
+    background: #fff0e5;
+}
+
+.food-type-toggle:focus-visible,
+.food-type-all:focus-visible {
+    outline: 2px solid #e85d24;
+    outline-offset: 3px;
+}
+
+@media (max-width: 400px) {
+    .food-type-filter {
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    .food-type-label {
+        min-width: 52px;
+        font-size: 13px;
+    }
+}
