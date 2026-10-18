@@ -462,7 +462,7 @@ function WaiterDashboard() {
                             </div>
 
                             {updatedOrderId === order._id && (
-                                <div className="waiter-order-updated">
+                                <div className="waiter-order-card-updated">
                                     🔔 Order has been updated
                                 </div>
                             )}
