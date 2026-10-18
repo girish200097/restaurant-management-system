@@ -495,3 +495,48 @@
         font-size: 14px;
     }
 }
+
+/* Veg / Non-Veg selector */
+.menu-food-type-control {
+    display: flex;
+    align-items: center;
+}
+
+.menu-food-type-control select {
+    height: 36px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 6px;
+    background: #fff1e8;
+    color: #e85d24;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-sizing: border-box;
+    outline: none;
+    max-width: 120px;
+}
+
+.menu-food-type-control select:hover {
+    background: #ffe1d0;
+}
+
+.menu-food-type-control select:focus-visible {
+    outline: 2px solid #e85d24;
+    outline-offset: 2px;
+}
+
+/* Keep all card actions aligned */
+.admin-menu-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.admin-menu-actions button {
+    height: 36px;
+    padding: 0 12px;
+    box-sizing: border-box;
+}

@@ -148,7 +148,7 @@ const getMenuById = async(req,res)=> {
 const updateMenu = async(req,res) => {
     try{
         const {id} = req.params;
-        const {name,price,category,isAvailable} = req.body;
+        const { name, price, category, isAvailable, foodType } = req.body;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
@@ -174,6 +174,15 @@ const updateMenu = async(req,res) => {
             updateData.isAvailable = isAvailable;
         }
 
+        if (foodType !== undefined) {
+            if (!["veg", "non-veg"].includes(foodType)) {
+                return res.status(400).json({
+                    message: "Invalid food type",
+                });
+            }
+
+            updateData.foodType = foodType;
+        }
         // Upload new image if admin selected one
         if(req.file) {
             const uploadResult = await new Promise((resolve, reject) => {

@@ -27,6 +27,14 @@ const menuSchema = new mongoose.Schema(
             required:true,
             
         },
+
+        foodType: {
+            type: String,
+            enum: ["veg", "non-veg"],
+            default: "veg",
+            required: true,
+        },
+        
         image:{
             type:String,
             default:"",

@@ -379,6 +379,42 @@ const handleAvailabilityChange = async (id, value) => {
     }
 };
 
+
+const handleFoodTypeChange = async (id, foodType) => {
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/menu/${id}`,
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ foodType }),
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || "Failed to update food type");
+            return;
+        }
+
+        setMenuItems((previousItems) =>
+            previousItems.map((item) =>
+                item._id === id ? data.menu : item
+            )
+        );
+    } catch (error) {
+        console.error("Food type update error:", error);
+        alert("Something went wrong");
+    }
+};
+
+
 const handleMouseDown = (e) => {
     setIsDragging(true);
 
@@ -632,6 +668,19 @@ const handleMouseUp = () => {
                                 >
                                     Edit
                                 </button>
+
+                                <div className="menu-food-type-control">
+                                    <select
+                                        value={item.foodType || "veg"}
+                                        onChange={(e) =>
+                                            handleFoodTypeChange(item._id, e.target.value)
+                                        }
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <option value="veg">🟢 Veg</option>
+                                        <option value="non-veg">🔴 Non-Veg</option>
+                                    </select>
+                                </div>
 
                                 <button
                                     className="delete-menu-btn"
