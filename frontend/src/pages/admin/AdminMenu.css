@@ -589,3 +589,66 @@
     outline-offset: 3px;
 }
 
+/* Admin Veg / Non-Veg Toggle */
+.menu-food-type-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.menu-food-type-control .food-type-label {
+    min-width: 58px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #49352b;
+    white-space: nowrap;
+}
+
+.menu-food-type-control .food-type-toggle {
+    width: 44px;
+    min-width: 44px;
+    height: 24px;
+    padding: 3px;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background 0.25s ease;
+}
+
+.menu-food-type-control .food-type-toggle.veg {
+    background: #28a745;
+    justify-content: flex-start;
+}
+
+.menu-food-type-control .food-type-toggle.non-veg {
+    background: #d9534f;
+    justify-content: flex-end;
+}
+
+.menu-food-type-control .food-type-toggle-knob {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Keep the toggle compact on mobile */
+@media (max-width: 600px) {
+    .menu-food-type-control {
+        gap: 6px;
+    }
+
+    .menu-food-type-control .food-type-label {
+        min-width: 54px;
+        font-size: 12px;
+    }
+}
