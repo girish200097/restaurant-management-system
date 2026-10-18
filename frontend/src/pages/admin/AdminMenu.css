@@ -506,7 +506,7 @@
     height: 36px;
     padding: 0 10px;
     border: none;
-    border-radius: 50%;
+    border-radius: 6px;
     background: #fff1e8;
     color: #e85d24;
     font-size: 13px;
@@ -556,32 +556,32 @@
 
 .food-type-toggle {
     width: 44px;
-    height: 24px;
-    padding: 3px;
+    height: 44px;
+    padding: 4px;
     border: none;
-    border-radius: 20px;
-    cursor: pointer;
+    border-radius: 50%;
     display: flex;
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
     transition: background 0.2s ease;
+    box-sizing: border-box;
 }
 
 .food-type-toggle.veg {
     background: #198754;
-    justify-content: flex-start;
 }
 
 .food-type-toggle.non-veg {
     background: #c62828;
-    justify-content: flex-end;
 }
 
 .food-type-toggle-knob {
-    width: 18px;
-    height: 18px;
-    background: #ffffff;
-    border-radius: 100%;
-    display: block;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .food-type-toggle:focus-visible {
