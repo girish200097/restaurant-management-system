@@ -1948,3 +1948,33 @@
 .menu-page {
     padding-bottom: 260px;
 }
+
+.food-type-filter {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.food-type-filter button {
+  padding: 9px 18px;
+  border: 1px solid #e5d5ca;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #4a3b34;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.food-type-filter button.active {
+  background: #e85d24;
+  border-color: #e85d24;
+  color: #ffffff;
+}
+
+.food-type-filter button:hover {
+  border-color: #e85d24;
+}

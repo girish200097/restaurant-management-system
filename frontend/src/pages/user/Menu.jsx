@@ -23,6 +23,7 @@ function Menu() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedFoodType, setSelectedFoodType] = useState("All");
   const [isGeneratingReceipt, setIsGeneratingReceipt] = useState(false);
   const [receiptSent, setReceiptSent] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -842,6 +843,29 @@ const handleCallWaiter = async () => {
       {/* Categories */}
 
       <div className="category-container">
+        {/* Veg / Non-Veg Filter */}
+            <div className="food-type-filter">
+            <button
+                className={selectedFoodType === "All" ? "active" : ""}
+                onClick={() => setSelectedFoodType("All")}
+            >
+                All
+            </button>
+
+            <button
+                className={selectedFoodType === "veg" ? "active" : ""}
+                onClick={() => setSelectedFoodType("veg")}
+            >
+                🟢 Veg
+            </button>
+
+            <button
+                className={selectedFoodType === "non-veg" ? "active" : ""}
+                onClick={() => setSelectedFoodType("non-veg")}
+            >
+                🔴 Non-Veg
+            </button>
+            </div>
 
         <button
           onClick={() => setSelectedCategory("All")}
@@ -891,13 +915,17 @@ const filteredMenus = menus.filter((menu) => {
         selectedCategory === "All" ||
         menu.category === selectedCategory;
 
+    const matchesFoodType =
+        selectedFoodType === "All" ||
+        (menu.foodType || "veg") === selectedFoodType;
+
     // Search works across every category
     if (searchText.trim() !== "") {
-        return matchesSearch;
+        return matchesSearch && matchesFoodType;
     }
 
     // When search is empty, apply the category filter
-    return matchesCategory;
+    return matchesCategory && matchesFoodType;
 });
 
   return (
