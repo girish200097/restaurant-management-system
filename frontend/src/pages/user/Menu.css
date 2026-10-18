@@ -1997,3 +1997,93 @@
         height: 18px;
     }
 }
+
+/* Fix Veg / Non-Veg filter layout */
+.menu-page .food-type-filter {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 24px;
+    padding: 8px 12px;
+
+    flex-wrap: nowrap;
+    background: #ffffff;
+    border: 1px solid #f0ded2;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+/* Veg / Non-Veg label */
+.menu-page .food-type-label {
+    min-width: 58px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #49352b;
+}
+
+/* Toggle */
+.menu-page .food-type-filter .food-type-toggle {
+    width: 48px;
+    min-width: 48px;
+    height: 26px;
+    padding: 3px;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: none;
+    transform: none;
+}
+
+.menu-page .food-type-toggle.veg {
+    background: #28a745;
+    justify-content: flex-start;
+}
+
+.menu-page .food-type-toggle.non-veg {
+    background: #d9534f;
+    justify-content: flex-end;
+}
+
+.menu-page .food-type-toggle-knob {
+    display: block;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Show All button */
+.menu-page .food-type-all {
+    padding: 6px 10px;
+    border: 1px solid #e5d5ca;
+    border-radius: 7px;
+    background: #fffaf5;
+    color: #49352b;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 400px) {
+    .menu-page .food-type-filter {
+        gap: 8px;
+        padding: 7px 9px;
+        margin-bottom: 20px;
+    }
+
+    .menu-page .food-type-label {
+        min-width: 52px;
+        font-size: 13px;
+    }
+}
