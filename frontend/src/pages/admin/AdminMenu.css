@@ -506,7 +506,7 @@
     height: 36px;
     padding: 0 10px;
     border: none;
-    border-radius: 6px;
+    border-radius: 50%;
     background: #fff1e8;
     color: #e85d24;
     font-size: 13px;
