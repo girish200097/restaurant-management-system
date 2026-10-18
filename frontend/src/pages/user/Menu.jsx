@@ -844,28 +844,38 @@ const handleCallWaiter = async () => {
 
       <div className="category-container">
         {/* Veg / Non-Veg Filter */}
-            <div className="food-type-filter">
-            <button
-                className={selectedFoodType === "All" ? "active" : ""}
-                onClick={() => setSelectedFoodType("All")}
-            >
-                All
-            </button>
+        
+    <div className="food-type-filter">
+        <span className="food-type-label">
+            {selectedFoodType === "non-veg" ? "Non-Veg" : "Veg"}
+        </span>
 
-            <button
-                className={selectedFoodType === "veg" ? "active" : ""}
-                onClick={() => setSelectedFoodType("veg")}
-            >
-                🟢 Veg
-            </button>
+        <button
+            type="button"
+            className={`food-type-toggle ${
+                selectedFoodType === "non-veg" ? "non-veg" : "veg"
+            }`}
+            role="switch"
+            aria-checked={selectedFoodType === "non-veg"}
+            aria-label="Filter menu by Veg or Non-Veg"
+            onClick={() =>
+                setSelectedFoodType((previous) =>
+                    previous === "veg" ? "non-veg" : "veg"
+                )
+            }
+        >
+            <span className="food-type-toggle-knob"></span>
+        </button>
 
-            <button
-                className={selectedFoodType === "non-veg" ? "active" : ""}
-                onClick={() => setSelectedFoodType("non-veg")}
-            >
-                🔴 Non-Veg
-            </button>
-            </div>
+        <button
+            type="button"
+            className="food-type-all"
+            onClick={() => setSelectedFoodType("All")}
+        >
+            Show All
+        </button>
+    </div>
+
 
         <button
           onClick={() => setSelectedCategory("All")}
@@ -900,9 +910,6 @@ const handleCallWaiter = async () => {
         </button>
 
       </div>
-
-
-      {/* Menu */}
 
             {/* Menu */}
 {!paymentSuccess && (() => {

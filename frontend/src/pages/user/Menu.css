@@ -1978,3 +1978,60 @@
 .food-type-filter button:hover {
   border-color: #e85d24;
 }
+
+.food-type-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.food-type-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.food-type-toggle {
+    width: 44px;
+    height: 24px;
+    padding: 3px;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.food-type-toggle.veg {
+    background: #198754;
+    justify-content: flex-start;
+}
+
+.food-type-toggle.non-veg {
+    background: #c62828;
+    justify-content: flex-end;
+}
+
+.food-type-toggle-knob {
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.food-type-all {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.food-type-toggle:focus-visible,
+.food-type-all:focus-visible {
+    outline: 2px solid #e85d24;
+    outline-offset: 3px;
+}

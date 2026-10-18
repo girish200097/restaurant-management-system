@@ -670,16 +670,27 @@ const handleMouseUp = () => {
                                 </button>
 
                                 <div className="menu-food-type-control">
-                                    <select
-                                        value={item.foodType || "veg"}
-                                        onChange={(e) =>
-                                            handleFoodTypeChange(item._id, e.target.value)
+                                    <span className="food-type-label">
+                                        {item.foodType === "non-veg" ? "Non-Veg" : "Veg"}
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        className={`food-type-toggle ${
+                                            item.foodType === "non-veg" ? "non-veg" : "veg"
+                                        }`}
+                                        role="switch"
+                                        aria-checked={item.foodType === "non-veg"}
+                                        aria-label={`Change ${item.name} food type`}
+                                        onClick={() =>
+                                            handleFoodTypeChange(
+                                                item._id,
+                                                item.foodType === "non-veg" ? "veg" : "non-veg"
+                                            )
                                         }
-                                        onClick={(e) => e.stopPropagation()}
                                     >
-                                        <option value="veg">🟢 Veg</option>
-                                        <option value="non-veg">🔴 Non-Veg</option>
-                                    </select>
+                                        <span className="food-type-toggle-knob"></span>
+                                    </button>
                                 </div>
 
                                 <button
