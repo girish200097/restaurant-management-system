@@ -1948,8 +1948,9 @@
 .menu-page {
     padding-bottom: 260px;
 }
+
 /* Veg / Non-Veg Toggle */
-.food-type-filter .food-type-toggle {
+.food-type-toggle {
     width: 48px;
     height: 26px;
     padding: 3px;
