@@ -1948,117 +1948,51 @@
 .menu-page {
     padding-bottom: 260px;
 }
-
-/* Customer Veg / Non-Veg Toggle */
-.food-type-filter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 auto 24px;
-    padding: 8px 12px;
-    flex-wrap: wrap;
-    background: #ffffff;
-    border: 1px solid #f0ded2;
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-
-.food-type-label {
-    min-width: 58px;
-    color: #49352b;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.food-type-toggle {
-    width: 89px;
-    height: 34px;
-    padding: 0;
-    border: 1px solid #e5d5ca;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: background 0.2s ease;
-}
-
-.food-type-toggle.veg {
-    background: #198754;
-}
-
-.food-type-toggle.non-veg {
-    background: #c62828;
-}
-
-.food-type-toggle-knob {
-    display: none;
-}
-
-.food-type-all {
-    padding: 6px 10px;
-    border: 1px solid #e5d5ca;
-    border-radius: 7px;
-    background: #fffaf5;
-    color: #49352b;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.food-type-all:hover {
-    background: #fff0e5;
-}
-
-.food-type-toggle:focus-visible,
-.food-type-all:focus-visible {
-    outline: 2px solid #e85d24;
-    outline-offset: 3px;
-}
-
-@media (max-width: 400px) {
-    .food-type-filter {
-        gap: 8px;
-        padding: 7px 9px;
-        margin-bottom: 20px;
-    }
-
-    .food-type-label {
-        min-width: 52px;
-        font-size: 13px;
-    }
-}
-
-
-/* Fix rectangular Veg / Non-Veg toggle */
+/* Veg / Non-Veg Toggle */
 .food-type-filter .food-type-toggle {
-    width: 89px;
-    height: 34px;
-    min-width: 89px;
-    padding: 0;
-    border: 1px solid #e5d5ca;
-    border-radius: 7px;
+    width: 48px;
+    height: 26px;
+    padding: 3px;
+    border: none;
+    border-radius: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    box-shadow: none;
-    transform: none;
+    justify-content: flex-start;
     cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.25s ease;
 }
 
 .food-type-filter .food-type-toggle.veg {
-    background: #198754;
+    background: #28a745;
+    justify-content: flex-start;
 }
 
 .food-type-filter .food-type-toggle.non-veg {
-    background: #c62828;
+    background: #d9534f;
+    justify-content: flex-end;
 }
 
 .food-type-filter .food-type-toggle .food-type-toggle-knob {
-    display: none;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .food-type-filter .food-type-toggle {
+        width: 40px;
+        height: 22px;
+        padding: 2px;
+    }
+
+    .food-type-filter .food-type-toggle .food-type-toggle-knob {
+        width: 18px;
+        height: 18px;
+    }
 }
