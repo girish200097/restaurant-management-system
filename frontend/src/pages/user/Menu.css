@@ -2034,3 +2034,31 @@
 }
 
 
+/* Fix rectangular Veg / Non-Veg toggle */
+.food-type-filter .food-type-toggle {
+    width: 89px;
+    height: 34px;
+    min-width: 89px;
+    padding: 0;
+    border: 1px solid #e5d5ca;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    box-shadow: none;
+    transform: none;
+    cursor: pointer;
+}
+
+.food-type-filter .food-type-toggle.veg {
+    background: #198754;
+}
+
+.food-type-filter .food-type-toggle.non-veg {
+    background: #c62828;
+}
+
+.food-type-filter .food-type-toggle .food-type-toggle-knob {
+    display: none;
+}
