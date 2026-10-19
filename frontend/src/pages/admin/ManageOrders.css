@@ -770,3 +770,55 @@
         font-size: 14px;
     }
 }
+
+/* Fixed Bulk Delete Button */
+.bulk-delete-orders-btn {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 10000;
+
+    padding: 14px 26px;
+    min-width: 200px;
+
+    background-color: #dc2626;
+    color: #ffffff;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+
+    transition: background-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+/* Hover Effect */
+.bulk-delete-orders-btn:hover {
+    background-color: #b91c1c;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+/* Click Effect */
+.bulk-delete-orders-btn:active {
+    transform: translateX(-50%) scale(0.97);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .bulk-delete-orders-btn {
+        bottom: 16px;
+        min-width: 0;
+        max-width: calc(100% - 32px);
+        padding: 13px 20px;
+        font-size: 14px;
+    }
+}

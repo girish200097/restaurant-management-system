@@ -226,6 +226,15 @@ const filteredOrders = orders
     if (loading) {
         return (
             <div className="manage-orders">
+                {selectionMode && selectedOrderIds.length > 0 && (
+                    <button
+                        type="button"
+                        className="bulk-delete-orders-btn"
+                        onClick={handleBulkDeleteOrders}
+                    >
+                        🗑️ Delete Selected ({selectedOrderIds.length})
+                    </button>
+                )}
                 <p className="orders-loading">Loading orders...</p>
             </div>
         );
