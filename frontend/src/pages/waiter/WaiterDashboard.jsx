@@ -176,6 +176,38 @@ function WaiterDashboard() {
             }, 5000);
         });
 
+        socket.on("orderCompleted", (data) => {
+            console.log("Order completed:", data);
+
+            setCompletedNotification({
+                tableNumber: data.tableNumber,
+                message: "Order Completed",
+            });
+
+            notifyWaiter();
+            fetchOrders();
+
+            setTimeout(() => {
+                setCompletedNotification(null);
+            }, 5000);
+        });
+
+                    socket.on("orderCompleted", (data) => {
+                console.log("Order completed:", data);
+
+                setCompletedNotification({
+                    tableNumber: data.tableNumber,
+                    message: "Order Completed",
+                });
+
+                notifyWaiter();
+                fetchOrders();
+
+                setTimeout(() => {
+                    setCompletedNotification(null);
+                }, 5000);
+            });
+
         socket.on("waiterCall", (data) => {
             console.log("Waiter call received:", data);
 

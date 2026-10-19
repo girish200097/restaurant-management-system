@@ -221,12 +221,24 @@ const verifyPayment = async (req, res) => {
                 await table.save();
             }
         }
-        const io = getIO();
+       const io = getIO();
 
-        io.to(`order_${order._id}`).emit("orderStatusUpdated", {
+        const completionData = {
             orderId: order._id.toString(),
-            orderStatus: order.orderStatus
-        });
+            orderStatus: order.orderStatus,
+            tableNumber: order.table?.tableNumber ?? null,
+        };
+
+        // Notify the customer/order room
+        io.to(`order_${order._id}`).emit("orderStatusUpdated", completionData);
+
+        // Notify the assigned waiter
+        if (order.waiter) {
+            io.to(`waiter_${order.waiter.toString()}`).emit(
+                "orderCompleted",
+                completionData
+            );
+        }
 
         return res.status(200).json({
             message: "Payment completed successfully",
@@ -351,11 +363,22 @@ const paymentWebhook = async (req, res) => {
                 order.orderStatus = "completed";
  
                 await order.save();
+                const io = getIO();
 
-                 io.to(`order_${order._id}`).emit("orderStatusUpdated", {
+                const completionData = {
                     orderId: order._id.toString(),
-                    orderStatus: order.orderStatus
-                });
+                    orderStatus: order.orderStatus,
+                    tableNumber: order.table?.tableNumber ?? null,
+                };
+
+                io.to(`order_${order._id}`).emit("orderStatusUpdated", completionData);
+
+                if (order.waiter) {
+                    io.to(`waiter_${order.waiter.toString()}`).emit(
+                        "orderCompleted",
+                        completionData
+                    );
+                }
 
                 if (order.table) {
                     order.table.status = "available";
