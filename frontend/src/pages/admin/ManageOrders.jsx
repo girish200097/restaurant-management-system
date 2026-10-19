@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./ManageOrders.css";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
@@ -11,6 +11,10 @@ function ManageOrders() {
     const [searchOrder, setSearchOrder] = useState("");
     const [searchType, setSearchType] = useState("all");
     const [showSearchFilters, setShowSearchFilters] = useState(false);
+    const [selectedOrderIds, setSelectedOrderIds] = useState([]);
+    const [selectionMode, setSelectionMode] = useState(false);
+    const longPressTimer = useRef(null);
+    const suppressNextClick = useRef(false);
     const fetchOrders = async () => {
         try {
             const token = localStorage.getItem("adminToken");
@@ -48,6 +52,24 @@ function ManageOrders() {
             expandedOrder === orderId ? null : orderId
         );
     };
+
+    const handleOrderSelection = (orderId) => {
+    setSelectedOrderIds((previousIds) => {
+        if (previousIds.includes(orderId)) {
+            const updatedIds = previousIds.filter(
+                (id) => id !== orderId
+            );
+
+            if (updatedIds.length === 0) {
+                setSelectionMode(false);
+            }
+
+            return updatedIds;
+        }
+
+        return [...previousIds, orderId];
+    });
+};
 
     const handleDeleteOrder = async (orderId) => {
     const confirmed = window.confirm(
@@ -93,6 +115,60 @@ function ManageOrders() {
     }
 };
 
+
+const handleBulkDeleteOrders = async () => {
+    if (selectedOrderIds.length === 0) return;
+
+    const confirmed = window.confirm(
+        `Are you sure you want to permanently delete ${selectedOrderIds.length} orders?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+        const token = localStorage.getItem("adminToken");
+
+        const results = await Promise.all(
+            selectedOrderIds.map((id) =>
+                fetch(`${VITE_API_URL}/order/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+            )
+        );
+
+        const deletedIds = selectedOrderIds.filter(
+            (_, index) => results[index].ok
+        );
+
+        const failedCount = results.filter(
+            (response) => !response.ok
+        ).length;
+
+        setOrders((previousOrders) =>
+            previousOrders.filter(
+                (order) => !deletedIds.includes(order._id)
+            )
+        );
+
+        setSelectedOrderIds([]);
+        setSelectionMode(false);
+        setExpandedOrder(null);
+
+        if (failedCount > 0) {
+            alert(
+                `${deletedIds.length} orders deleted. ${failedCount} orders failed.`
+            );
+        } else {
+            alert(`${deletedIds.length} orders deleted successfully.`);
+        }
+    } catch (error) {
+        console.error("Bulk delete orders error:", error);
+        alert("Something went wrong while deleting orders.");
+    }
+};
 
     // Filter and sort orders
 const filteredOrders = orders
@@ -156,8 +232,17 @@ const filteredOrders = orders
     }
 
     return (
-        <div className="manage-orders">
+<div className="manage-orders">
 
+        {selectionMode && selectedOrderIds.length > 0 && (
+                <button
+                    type="button"
+                    className="bulk-delete-orders-btn"
+                    onClick={handleBulkDeleteOrders}
+                >
+                    🗑️ Delete Selected ({selectedOrderIds.length})
+                </button>
+            )}
     <div className="manage-orders-header">
     <div className="orders-search-wrapper">
         <div className="orders-search">
@@ -270,11 +355,39 @@ const filteredOrders = orders
                             <div
                                 className={`order-card ${
                                     isExpanded ? "expanded" : ""
+                                } ${
+                                    selectedOrderIds.includes(order._id)
+                                        ? "order-selected"
+                                        : ""
                                 }`}
                                 key={order._id}
-                                onClick={() =>
-                                    toggleOrder(order._id)
-                                }
+                                onClick={(event) => {
+                                    if (suppressNextClick.current) {
+                                        suppressNextClick.current = false;
+                                        return;
+                                    }
+
+                                    if (event.ctrlKey || event.metaKey || selectionMode) {
+                                        event.preventDefault();
+                                        handleOrderSelection(order._id);
+                                        return;
+                                    }
+
+                                    toggleOrder(order._id);
+                                }}
+                                onTouchStart={() => {
+                                    longPressTimer.current = setTimeout(() => {
+                                        suppressNextClick.current = true;
+                                        setSelectionMode(true);
+                                        handleOrderSelection(order._id);
+                                    }, 500);
+                                }}
+                                onTouchEnd={() => {
+                                    clearTimeout(longPressTimer.current);
+                                }}
+                                onTouchMove={() => {
+                                    clearTimeout(longPressTimer.current);
+                                }}
                             >
 
                                 {/* Summary */}
