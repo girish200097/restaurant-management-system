@@ -23,7 +23,7 @@ function Menu() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedFoodType, setSelectedFoodType] = useState("All");
+  const [selectedFoodType, setSelectedFoodType] = useState("veg");
   const [isGeneratingReceipt, setIsGeneratingReceipt] = useState(false);
   const [receiptSent, setReceiptSent] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
