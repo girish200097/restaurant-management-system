@@ -177,3 +177,39 @@
 .project-demo-notice a:hover {
     text-decoration: underline;
 }
+
+.project-demo-notice {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f0f7ff;
+    border: 1px solid #cfe3ff;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.project-demo-notice strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #1d4ed8;
+    font-size: 14px;
+}
+
+.project-demo-notice p {
+    margin-bottom: 12px;
+}
+
+.project-demo-notice button {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.project-demo-notice button:hover {
+    background: #1d4ed8;
+}
