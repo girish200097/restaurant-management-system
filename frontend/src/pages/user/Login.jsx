@@ -80,19 +80,24 @@ function Login() {
                 {error && <p className="login-error">{error}</p>}
             </form>
 
-            <div className="project-demo-notice">
-                <strong>Portfolio Project Notice</strong>
+          <div className="project-demo-notice">
+            <strong>📌 Portfolio Project Notice</strong>
 
-                <p>
-                    This website is a portfolio project developed for demonstration
-                    purposes. For project verification, a guided demo, or instructions
-                    to run it on your local system, please contact me.
-                </p>
+            <p>
+                This website is a portfolio project created for demonstration
+                purposes. You are currently accessing the customer view.
+            </p>
 
-                <a href="mailto:girishkundagolg@gmail.com">
-                    Contact Me
-                </a>
-            </div>
+            <p>
+                Want to explore the Admin or Waiter dashboard, or run this project
+                on your local system? Contact me to request demo access and setup
+                instructions.
+            </p>
+
+            <a href="mailto:girishkundagolg@gmail.com">
+                ✉️ Request Demo Access
+            </a>
+        </div>
         </div>
     );
 }
