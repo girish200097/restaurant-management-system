@@ -119,18 +119,18 @@ function ManageOrders() {
 const handleBulkDeleteOrders = async () => {
     if (selectedOrderIds.length === 0) return;
 
-    const confirmed = window.confirm(
-        `Are you sure you want to permanently delete ${selectedOrderIds.length} orders?`
+    const confirmDelete = window.confirm(
+        `Are you sure you want to delete ${selectedOrderIds.length} orders?`
     );
 
-    if (!confirmed) return;
+    if (!confirmDelete) return;
 
     try {
         const token = localStorage.getItem("adminToken");
 
         const results = await Promise.all(
             selectedOrderIds.map((id) =>
-                fetch(`${VITE_API_URL}/order/${id}`, {
+                fetch(`${import.meta.env.VITE_API_URL}/order/${id}`, {
                     method: "DELETE",
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -139,13 +139,11 @@ const handleBulkDeleteOrders = async () => {
             )
         );
 
+        const failed = results.filter((response) => !response.ok);
+
         const deletedIds = selectedOrderIds.filter(
             (_, index) => results[index].ok
         );
-
-        const failedCount = results.filter(
-            (response) => !response.ok
-        ).length;
 
         setOrders((previousOrders) =>
             previousOrders.filter(
@@ -157,9 +155,9 @@ const handleBulkDeleteOrders = async () => {
         setSelectionMode(false);
         setExpandedOrder(null);
 
-        if (failedCount > 0) {
+        if (failed.length > 0) {
             alert(
-                `${deletedIds.length} orders deleted. ${failedCount} orders failed.`
+                `${deletedIds.length} orders deleted. ${failed.length} orders failed.`
             );
         } else {
             alert(`${deletedIds.length} orders deleted successfully.`);
