@@ -81,23 +81,24 @@ function Login() {
             </form>
 
           <div className="project-demo-notice">
-            <strong>📌 Portfolio Project Notice</strong>
+    <strong>📌 Portfolio Project Notice</strong>
 
-            <p>
-                This website is a portfolio project created for demonstration
-                purposes. You are currently accessing the customer view.
-            </p>
+    <p>
+        You are viewing the customer side of this portfolio project.
+        To explore the Admin or Waiter dashboard, or to get local setup
+        instructions, please contact me.
+    </p>
 
-            <p>
-                Want to explore the Admin or Waiter dashboard, or run this project
-                on your local system? Contact me to request demo access and setup
-                instructions.
-            </p>
-
-            <a href="mailto:girishkundagolg@gmail.com">
-                ✉️ Request Demo Access
-            </a>
-        </div>
+    <button
+        type="button"
+        onClick={() => {
+            navigator.clipboard.writeText("girishkundagolg@gmail.com");
+            alert("Email address copied! You can contact me at girishkundagolg@gmail.com");
+        }}
+    >
+        ✉️ Copy Email Address
+    </button>
+</div>
         </div>
     );
 }
