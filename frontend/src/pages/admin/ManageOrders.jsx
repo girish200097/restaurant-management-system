@@ -53,7 +53,7 @@ function ManageOrders() {
         );
     };
 
-    const handleOrderSelection = (orderId) => {
+   const handleOrderSelection = (orderId) => {
     setSelectedOrderIds((previousIds) => {
         if (previousIds.includes(orderId)) {
             const updatedIds = previousIds.filter(
@@ -66,6 +66,8 @@ function ManageOrders() {
 
             return updatedIds;
         }
+
+        setSelectionMode(true);
 
         return [...previousIds, orderId];
     });
@@ -374,7 +376,11 @@ const filteredOrders = orders
                                         return;
                                     }
 
-                                    if (event.ctrlKey || event.metaKey || selectionMode) {
+                                    if (
+                                        event.ctrlKey ||
+                                        event.metaKey ||
+                                        selectionMode
+                                    ) {
                                         event.preventDefault();
                                         handleOrderSelection(order._id);
                                         return;
