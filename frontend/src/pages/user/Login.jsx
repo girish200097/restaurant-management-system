@@ -79,6 +79,20 @@ function Login() {
                 {message && <p className="login-message">{message}</p>}
                 {error && <p className="login-error">{error}</p>}
             </form>
+
+            <div className="project-demo-notice">
+                <strong>Portfolio Project Notice</strong>
+
+                <p>
+                    This website is a portfolio project developed for demonstration
+                    purposes. For project verification, a guided demo, or instructions
+                    to run it on your local system, please contact me.
+                </p>
+
+                <a href="mailto:girishkundagolg@gmail.com">
+                    Contact Me
+                </a>
+            </div>
         </div>
     );
 }
