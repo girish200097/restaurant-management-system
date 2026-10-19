@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./ManagePayments.css";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
@@ -7,7 +7,12 @@ function ManagePayments() {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [expandedPayment, setExpandedPayment] = useState(null);
+    const [selectedPaymentIds, setSelectedPaymentIds] = useState([]);
+    const [selectionMode, setSelectionMode] = useState(false);
+    const [deletingSelected, setDeletingSelected] = useState(false);
 
+    const longPressTimer = useRef(null);
+    const suppressNextClick = useRef(false);
     const [paymentStatusFilter, setPaymentStatusFilter] = useState("all");
 
     const fetchPayments = async () => {
@@ -35,12 +40,15 @@ function ManagePayments() {
     };
 
    useEffect(() => {
-        fetchPayments();
+    fetchPayments();
 
-        const interval = setInterval(fetchPayments, 2000);
+    const interval = setInterval(fetchPayments, 2000);
 
-        return () => clearInterval(interval);
-    }, []);
+    return () => {
+        clearInterval(interval);
+        clearTimeout(longPressTimer.current);
+    };
+}, []);
 
     const handleDeletePayment = async (paymentId) => {
         const confirmed = window.confirm(
@@ -96,7 +104,128 @@ function ManagePayments() {
             current === paymentId ? null : paymentId
         );
     };
+const handlePointerDown = (paymentId) => {
+    if (selectionMode || deletingSelected) return;
 
+    clearTimeout(longPressTimer.current);
+
+    longPressTimer.current = setTimeout(() => {
+        suppressNextClick.current = true;
+        setSelectionMode(true);
+        setSelectedPaymentIds([paymentId]);
+    }, 550);
+};
+
+const handlePointerUp = () => {
+    clearTimeout(longPressTimer.current);
+};
+
+    const handlePaymentClick = (paymentId) => {
+        if (suppressNextClick.current) {
+            suppressNextClick.current = false;
+            return;
+        }
+
+        if (selectionMode) {
+            setSelectedPaymentIds((current) => {
+                const updated = current.includes(paymentId)
+                    ? current.filter((id) => id !== paymentId)
+                    : [...current, paymentId];
+
+                if (updated.length === 0) {
+                    setSelectionMode(false);
+                }
+
+                return updated;
+            });
+
+            return;
+        }
+
+        togglePayment(paymentId);
+    };
+
+    const cancelSelection = () => {
+        setSelectedPaymentIds([]);
+        setSelectionMode(false);
+    };
+
+    const handleBulkDelete = async () => {
+        if (selectedPaymentIds.length === 0 || deletingSelected) return;
+
+        const confirmed = window.confirm(
+            `Permanently delete ${selectedPaymentIds.length} selected payment(s)?`
+        );
+
+        if (!confirmed) return;
+
+        setDeletingSelected(true);
+
+        try {
+            const token = localStorage.getItem("adminToken");
+
+            const results = await Promise.allSettled(
+                selectedPaymentIds.map(async (paymentId) => {
+                    const response = await fetch(
+                        `${VITE_API_URL}/payment/${paymentId}`,
+                        {
+                            method: "DELETE",
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || "Delete failed");
+                    }
+
+                    return paymentId;
+                })
+            );
+
+            const deletedIds = results
+                .filter((result) => result.status === "fulfilled")
+                .map((result) => result.value);
+
+            const failedIds = results
+                .filter((result) => result.status === "rejected")
+                .map((result) => {
+                    return selectedPaymentIds[
+                        results.indexOf(result)
+                    ];
+                });
+
+            setPayments((current) =>
+                current.filter((payment) => !deletedIds.includes(payment._id))
+            );
+
+            setSelectedPaymentIds(failedIds);
+
+            if (deletedIds.includes(expandedPayment)) {
+                setExpandedPayment(null);
+            }
+
+            if (failedIds.length === 0) {
+                cancelSelection();
+                alert(`${deletedIds.length} payment(s) deleted successfully.`);
+            } else {
+                setSelectionMode(true);
+                alert(
+                    `${deletedIds.length} deleted. ` +
+                    `${failedIds.length} failed. You can retry the remaining payments.`
+                );
+            }
+        } catch (error) {
+            console.error("Bulk delete error:", error);
+            alert("Failed to delete selected payments.");
+        } finally {
+            setDeletingSelected(false);
+        }
+    };
+    
     if (loading) {
         return (
             <div className="manage-payments">
@@ -141,17 +270,38 @@ function ManagePayments() {
 
                         return (
                             <div
-                                className={`payment-card ${
-                                    isExpanded ? "expanded" : ""
-                                }`}
                                 key={payment._id}
+                                className={`payment-card ${
+                                    expandedPayment === payment._id ? "expanded" : ""
+                                } ${
+                                    selectedPaymentIds.includes(payment._id)
+                                        ? "payment-card-selected"
+                                        : ""
+                                }`}
+                                onPointerDown={() => handlePointerDown(payment._id)}
+                                onPointerUp={handlePointerUp}
+                                onPointerLeave={handlePointerUp}
+                                onPointerCancel={handlePointerUp}
+                                onContextMenu={(event) => {
+                                    if (!selectionMode) event.preventDefault();
+                                }}
                             >
                                 <div
                                     className="payment-summary"
-                                    onClick={() =>
-                                        togglePayment(payment._id)
-                                    }
+                                    onClick={() => handlePaymentClick(payment._id)}
                                 >
+                                    {selectionMode && (
+                                        <span
+                                            className={`payment-select-indicator ${
+                                                selectedPaymentIds.includes(payment._id)
+                                                    ? "selected"
+                                                    : ""
+                                            }`}
+                                        >
+                                            {selectedPaymentIds.includes(payment._id) ? "✓" : ""}
+                                        </span>
+                                    )}
+
                                     <div className="payment-main-info">
                                         <strong>
                                             ₹{payment.amount}
@@ -181,7 +331,7 @@ function ManagePayments() {
                                     </div>
                                 </div>
 
-                                {isExpanded && (
+                                {expandedPayment === payment._id && !selectionMode && (
                                     <div className="payment-details">
                                         <div className="payment-detail">
                                             <strong>Order ID</strong>
@@ -280,6 +430,32 @@ function ManagePayments() {
                     })}
                 </div>
             )}
+            {selectionMode && (
+            <div className="payment-bulk-actions">
+                <span>{selectedPaymentIds.length} selected</span>
+
+                <button
+                    type="button"
+                    onClick={cancelSelection}
+                    disabled={deletingSelected}
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    className="payment-bulk-delete-btn"
+                    onClick={handleBulkDelete}
+                    disabled={
+                        deletingSelected || selectedPaymentIds.length === 0
+                    }
+                >
+                    {deletingSelected
+                        ? "Deleting..."
+                        : `🗑️ Delete Selected (${selectedPaymentIds.length})`}
+                </button>
+            </div>
+        )}
         </div>
     );
 }

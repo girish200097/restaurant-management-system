@@ -320,3 +320,111 @@
         width: 100%;
     }
 }
+
+
+/* Payment selection */
+
+.payment-card {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.payment-card-selected {
+    border: 2px solid #e85d24;
+    background: #fff5ef;
+    box-shadow: 0 3px 14px rgba(232, 93, 36, 0.15);
+}
+
+.payment-card-selected .payment-summary {
+    background: #fff5ef;
+}
+
+.payment-select-indicator {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #cbb8ac;
+    border-radius: 50%;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.payment-select-indicator.selected {
+    background: #e85d24;
+    border-color: #e85d24;
+}
+
+/* Floating bulk actions */
+
+.payment-bulk-actions {
+    position: fixed;
+    z-index: 1000;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: max-content;
+    max-width: calc(100% - 30px);
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid #ead8cd;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(63, 48, 40, 0.2);
+}
+
+.payment-bulk-actions span {
+    color: #4a3b34;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.payment-bulk-actions button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.payment-bulk-delete-btn {
+    background: #c0392b;
+    color: #fff;
+    font-weight: 600;
+}
+
+.payment-bulk-delete-btn:hover {
+    background: #a93226;
+}
+
+.payment-bulk-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .payment-bulk-actions {
+        bottom: 15px;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .payment-bulk-actions span {
+        font-size: 12px;
+    }
+
+    .payment-bulk-actions button {
+        padding: 9px;
+        font-size: 12px;
+    }
+
+    .payment-select-indicator {
+        width: 19px;
+        height: 19px;
+    }
+}
