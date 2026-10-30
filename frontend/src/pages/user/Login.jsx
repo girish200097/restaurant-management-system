@@ -89,15 +89,23 @@ function Login() {
         instructions, please contact me.
     </p>
 
+  <div className="contact-buttons">
     <button
         type="button"
         onClick={() => {
             navigator.clipboard.writeText("girishkundagolg@gmail.com");
-            alert("Email address copied! You can contact me at girishkundagolg@gmail.com");
+            alert("Email address copied!");
         }}
     >
         ✉️ Copy Email Address
     </button>
+
+    <a
+        href="mailto:girishkundagolg@gmail.com?subject=Request%20for%20Dashboard%20Access&body=Hello,%0A%0AI%20would%20like%20to%20request%20access%20to%20the%20Admin%20or%20Waiter%20dashboard.%0A%0AThank%20you."
+    >
+        📧 Mail Me
+    </a>
+</div>
 </div>
         </div>
     );

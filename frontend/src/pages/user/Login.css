@@ -213,3 +213,34 @@
 .project-demo-notice button:hover {
     background: #1d4ed8;
 }
+
+.contact-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.contact-buttons button,
+.contact-buttons a {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.contact-buttons button:hover,
+.contact-buttons a:hover {
+    background: #1d4ed8;
+}
+
+@media (max-width: 480px) {
+    .contact-buttons {
+        flex-direction: column;
+    }
+}
